@@ -1,0 +1,444 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// https://github.com/unlight/prisma-nestjs-graphql
+generator nestgraphql {
+  provider                              = "node node_modules/prisma-nestjs-graphql"
+  output                                = "../src/@generated"
+  purgeOutput                           = true
+  emitCompiled                          = false
+  emitSingle                            = true
+  requireSingleFieldsInWhereUniqueInput = true
+  fields_Validator_from                 = "class-validator"
+  fields_Validator_input                = true
+  fields_Scalars_from                   = "graphql-scalars"
+  fields_Scalars_input                  = true
+  fields_Scalars_output                 = true
+  fields_TF_from                        = "type-fest"
+}
+
+// https://github.com/notiz-dev/prisma-dbml-generator#additional-options
+// https://dbdiagram.io/d
+generator dbml {
+  provider   = "prisma-dbml-generator"
+  output     = "../dbml"
+  outputName = "mymodel.dbml"
+}
+
+// https://github.com/pantharshit00/prisma-docs-generator
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}
+
+model User {
+  /// @HideField({ match: 'User*@(Create|Update)*Input' })
+  id         String    @id @default(cuid())
+  /// @Validator.IsString()
+  /// @Validator.IsNotEmpty()
+  /// @Validator.IsEmail()
+  /// @FieldType('Scalars.GraphQLEmailAddress')f
+  email      String    @unique @db.VarChar(100)
+  type       UserType  @default(USER)
+  /// @HideField({ match: 'User*@(Where)*Input', output: true })
+  passwordId String    @unique
+  /// @FieldType('DateTime')
+  createdAt  DateTime? @default(now())
+
+  // Relations
+  role          UserRole[]
+  /// @HideField({ match: 'User*@(Where)*Input', output: true })
+  password      Password       @relation(fields: [passwordId], references: [id], onDelete: Cascade)
+  /// @HideField({ input: true, output: true })
+  refreshTokens RefreshToken[]
+  profile       Profile?
+  config        UserConfig?
+  todos         Note[]
+
+  @@index(fields: [id], type: Hash)
+  @@index(fields: [email], type: Hash)
+}
+
+model Password {
+  /// @HideField({ match: 'Password*@(Create|Update)*Input' })
+  id       String @id @default(cuid())
+  /// @Validator.IsString()
+  /// @Validator.IsNotEmpty()
+  password String
+  user     User?
+
+  @@index(fields: [id], type: Hash)
+}
+
+model RefreshToken {
+  /// @HideField({ match: 'RefreshToken*@(Create|Update)*Input' })
+  id        String    @id @default(cuid())
+  isRevoked Boolean   @default(false)
+  expiresAt DateTime?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index(fields: [id], type: Hash)
+}
+
+model Profile {
+  /// @HideField({ match: 'Profile*@(Create|Update)*Input' })
+  id        String    @id @default(cuid())
+  firstName String    @db.VarChar(50)
+  lastName  String    @db.VarChar(50)
+  username  String?   @unique @db.VarChar(50)
+  bio       String?   @db.Text
+  avatar    String?   @db.VarChar(255)
+  acronym   String?   @db.VarChar(2)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String    @unique
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+
+  // Indexes
+  @@unique(name: "fullname", fields: [firstName, lastName])
+  @@index(fields: [firstName], type: Hash)
+  @@index(fields: [lastName], type: Hash)
+  @@index(fields: [id], type: Hash)
+}
+
+model UserConfig {
+  /// @HideField({ match: 'UserConfig*@(Create|Update)*Input' })
+  id    String      @id @default(cuid())
+  theme ThemeColor? @default(AUTO)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+}
+
+model Log {
+  /// @HideField({ match: 'Log*@(Create|Update)*Input' })
+  id        String    @id @default(cuid())
+  from      LogFrom?
+  type      LogType   @default(LOG)
+  /// @FieldType('JSON')
+  /// @PropertyType('TF.JsonObject')
+  data      Json?     @db.JsonB
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+
+  // https://www.prisma.io/docs/orm/prisma-schema/data-model/indexes#block-range-index-brin
+  @@index(fields: [createdAt(ops: TimestampBloomOps)], type: Brin)
+  @@index(fields: [data(ops: JsonbOps)], type: Gin)
+}
+
+model Note {
+  /// @HideField({ match: 'Note*@(Create|Update)*Input' })
+  id          String       @id @default(cuid())
+  name        String?      @db.VarChar(255)
+  description String?      @db.Text
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  config      TodosConfig?
+  tasks       Task[]
+
+  /// @FieldType('DateTime')
+  pinnedAt  DateTime?
+  /// @FieldType('DateTime')
+  deletedAt DateTime?
+  /// @FieldType('DateTime')
+  archiveAt DateTime?
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+}
+
+// TODO: create graphql service
+model TodosConfig {
+  /// @HideField({ match: 'TodosConfig*@(Create|Update)*Input' })
+  id      String  @id @default(cuid())
+  /// @FieldType('HexColorCode')
+  color   String? @db.VarChar(15)
+  todosId String  @unique
+  todos   Note    @relation(fields: [todosId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+}
+
+// TODO: create graphql service
+model Task {
+  /// @HideField({ match: 'Task*@(Create|Update)*Input' })
+  id      String  @id @default(cuid())
+  name    String? @db.VarChar(8000)
+  todosId String
+  todos   Note    @relation(fields: [todosId], references: [id], onDelete: Cascade)
+
+  /// @FieldType('DateTime')
+  pinnedAt    DateTime?
+  /// @FieldType('DateTime')
+  completedAt DateTime?
+  /// @FieldType('DateTime')
+  deletedAt   DateTime?
+  /// @FieldType('DateTime')
+  createdAt   DateTime? @default(now())
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+}
+
+// model Workspace {
+//   /// @HideField({ match: 'Workspace*@(Create|Update)*Input' })
+//   id          String            @id @default(cuid())
+//   name        String            @unique @db.VarChar(50)
+//   aberration  String            @unique @db.VarChar(5)
+//   profile     WorkspaceProfile?
+//   createdBy   User              @relation("CreatedWorkspaceUser", fields: [createdById], references: [id])
+//   createdById String
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime?         @default(now())
+//
+//   // Relations
+//   assignedUsers       UsersOnWorkspaces[]
+//   assignedFlows       FlowsOnWorkspaces[]
+//   activeOnUser        UserConfig[]
+//   actionsOnWorkspaces ActionsOnWorkspaces[]
+//
+//   @@index(fields: [id], type: Hash)
+// }
+//
+// model WorkspaceProfile {
+//   /// @HideField({ match: 'WorkspaceProfile*@(Create|Update)*Input' })
+//   id          String    @id @default(cuid())
+//   description String?   @db.Text
+//   icon        String?   @db.VarChar(255)
+//   color       String?   @db.VarChar(15)
+//   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+//   workspaceId String    @unique
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime? @default(now())
+//
+//   @@index(fields: [id], type: Hash)
+// }
+//
+// model Tab {
+//   /// @HideField({ match: 'Tab*@(Create)*Input' })
+//   id     String @id @default(cuid())
+//   user   User   @relation("TabsOnUser", fields: [userId], references: [id], onDelete: Cascade)
+//   userId String
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   data   Json?  @db.JsonB
+//
+//   @@index(fields: [id], type: Hash)
+//   @@index(fields: [userId], type: Hash)
+// }
+//
+// model Log {
+//   /// @HideField({ match: 'Log*@(Create|Update)*Input' })
+//   id        String    @id @default(cuid())
+//   from      LogFrom?
+//   type      LogType   @default(LOG)
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   data      Json?     @db.JsonB
+//   /// @FieldType('DateTime')
+//   createdAt DateTime? @default(now())
+//
+//   // https://www.prisma.io/docs/orm/prisma-schema/data-model/indexes#block-range-index-brin
+//   @@index(fields: [createdAt(ops: TimestampBloomOps)], type: Brin)
+//   @@index(fields: [data(ops: JsonbOps)], type: Gin)
+// }
+//
+// // TODO: Add auditlog
+//
+// model Flow {
+//   /// @HideField({ match: 'Flow*@(Create|Update)*Input' })
+//   id          String    @id @default(cuid())
+//   externalId  String?   @unique @db.VarChar(255)
+//   /// @Validator.IsString()
+//   /// @Validator.IsNotEmpty()
+//   code        String    @unique @db.VarChar(255)
+//   /// @Validator.IsString()
+//   /// @Validator.IsNotEmpty()
+//   name        String    @unique @db.VarChar(255)
+//   description String?   @db.Text
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   data        Json?     @db.JsonB
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   edges       Json?     @db.JsonB
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime? @default(now())
+//
+//   user               User?               @relation(fields: [userId], references: [id])
+//   userId             String?
+//   versions           FlowVersion[]
+//   assignedWorkspaces FlowsOnWorkspaces[]
+//
+//   @@index(fields: [data(ops: JsonbOps)], type: Gin)
+//   @@index(fields: [id], type: Hash)
+//   @@index(fields: [userId], type: Hash)
+// }
+//
+// model FlowVersion {
+//   /// @HideField({ match: 'FlowHistory*@(Create|Update)*Input' })
+//   id          String    @id @default(cuid())
+//   /// @FieldType('DateTime')
+//   version     DateTime? @default(now())
+//   versionName String?   @db.VarChar(50)
+//   flow        Flow      @relation(fields: [flowId], references: [id])
+//   flowId      String
+//   user        User?     @relation(fields: [userId], references: [id])
+//   userId      String?
+//   externalId  String?   @db.VarChar(255)
+//   /// @Validator.IsString()
+//   /// @Validator.IsNotEmpty()
+//   code        String    @db.VarChar(255)
+//   /// @Validator.IsString()
+//   /// @Validator.IsNotEmpty()
+//   name        String    @db.VarChar(255)
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   data        Json?     @db.JsonB
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   edges       Json?     @db.JsonB
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime? @default(now())
+//
+//   @@unique(name: "uniqueVersion", [version, flowId, userId])
+//   @@index(fields: [data(ops: JsonbOps)], type: Gin)
+//   @@index(fields: [id], type: Hash)
+//   @@index(fields: [userId], type: Hash)
+//   @@index(fields: [flowId], type: Hash)
+// }
+//
+// model Auditlog {
+//   /// @HideField({ match: 'Auditlog*@(Create|Update)*Input' })
+//   id        String        @id @default(cuid())
+//   operation OperationType
+//   table     String
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   data      Json?         @db.JsonB
+//   /// @FieldType('DateTime')
+//   createdAt DateTime?     @default(now())
+//
+//   @@index(fields: [id], type: Hash)
+//   @@index(fields: [data(ops: JsonbOps)], type: Gin)
+//   @@index(fields: [createdAt(ops: TimestampBloomOps)], type: Brin)
+// }
+//
+// model Action {
+//   /// @HideField({ match: 'Action*@(Create|Update)*Input' })
+//   id          String     @id @default(cuid())
+//   name        String     @unique @db.VarChar(255)
+//   description String?    @db.Text
+//   class       String?    @db.VarChar(255)
+//   code        String?    @db.Text
+//   /// Variables on action
+//   /// @FieldType('JSON')
+//   /// @PropertyType('TF.JsonObject')
+//   variables   Json?      @db.JsonB
+//   /// @FieldType('PositiveInt')
+//   width       Int?       @db.Integer
+//   /// @FieldType('PositiveInt')
+//   height      Int?       @db.Integer
+//   /// @FieldType('PositiveInt')
+//   radius      Int?       @db.Integer
+//   /// @FieldType('HexColorCode')
+//   color       String?    @db.VarChar(30)
+//   type        ActionType @default(SQUARE)
+//
+//   /// @FieldType('DateTime')
+//   createdAt DateTime? @default(now())
+//
+//   // Reations
+//   actionsOnWorkspaces ActionsOnWorkspaces[]
+//
+//   @@index(fields: [id], type: Hash)
+//   @@index(fields: [variables(ops: JsonbOps)], type: Gin)
+// }
+
+// Relations M -> N
+// model UsersOnWorkspaces {
+//   user        User      @relation(fields: [userId], references: [id])
+//   userId      String
+//   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+//   workspaceId String
+//   /// @FieldType('DateTime')
+//   assignedAt  DateTime? @default(now())
+//
+//   @@id([userId, workspaceId])
+//   @@index(fields: [userId], type: Hash)
+//   @@index(fields: [workspaceId], type: Hash)
+// }
+//
+// model FlowsOnWorkspaces {
+//   flow        Flow      @relation(fields: [flowId], references: [id])
+//   flowId      String
+//   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+//   workspaceId String
+//   /// @FieldType('DateTime')
+//   assignedAt  DateTime? @default(now())
+//
+//   @@id([flowId, workspaceId])
+//   @@index(fields: [flowId], type: Hash)
+//   @@index(fields: [workspaceId], type: Hash)
+// }
+//
+// model ActionsOnWorkspaces {
+//   action      Action    @relation(fields: [actionId], references: [id])
+//   actionId    String
+//   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+//   workspaceId String
+//   /// @FieldType('DateTime')
+//   assignedAt  DateTime? @default(now())
+//
+//   @@id([actionId, workspaceId])
+//   @@index(fields: [actionId], type: Hash)
+//   @@index(fields: [workspaceId], type: Hash)
+// }
+
+enum ThemeColor {
+  LIGHT
+  DARK
+  AUTO
+}
+
+enum UserRole {
+  ROLE_GUEST
+  ROLE_USER
+  ROLE_DEVELOPER
+  ROLE_ADMIN
+}
+
+enum UserType {
+  GUEST
+  USER
+  ADMIN
+}
+
+enum LogType {
+  DEBUG
+  LOG
+  ERROR
+  VERBOSE
+  WARN
+}
+
+enum LogFrom {
+  API
+  APP
+}
