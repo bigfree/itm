@@ -51,7 +51,7 @@
     "graphql-type-json": "^0.3.2",
     "ioredis": "^5.4.1",
     "keyv": "^4.5.4",
-    "lru-cache": "^10.2.2",
+    "lru-cache": "^11.0.0",
     "nest-winston": "^1.9.6",
     "nestjs-throttler-storage-redis": "^0.4.4",
     "passport": "^0.7.0",
