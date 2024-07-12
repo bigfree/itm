@@ -22,6 +22,9 @@ import { winstonConfig } from './common/config/winston.config';
 import { graphqlConfig } from './common/config/graphql.config';
 import { AppVersionMiddleware } from './common/middleware/app-version/app-version.middleware';
 import { UserConfigModule } from './user-config/user-config.module';
+import { NoteModule } from './note/note.module';
+import { NoteConfigModule } from './note-config/note-config.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
     imports: [
@@ -50,6 +53,9 @@ import { UserConfigModule } from './user-config/user-config.module';
         AuthorizeModule,
         RefreshTokenModule,
         UserConfigModule,
+        NoteModule,
+        NoteConfigModule,
+        TaskModule,
     ],
     controllers: [AppController],
     providers: [

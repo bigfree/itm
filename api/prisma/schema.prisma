@@ -2,8 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -62,7 +63,8 @@ model User {
   refreshTokens RefreshToken[]
   profile       Profile?
   config        UserConfig?
-  todos         Note[]
+  notes         Note[]
+  tasks         Task[]
 
   @@index(fields: [id], type: Hash)
   @@index(fields: [email], type: Hash)
@@ -141,12 +143,12 @@ model Log {
 
 model Note {
   /// @HideField({ match: 'Note*@(Create|Update)*Input' })
-  id          String       @id @default(cuid())
-  name        String?      @db.VarChar(255)
-  description String?      @db.Text
+  id          String      @id @default(cuid())
+  name        String?     @db.VarChar(255)
+  description String?     @db.Text
   userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  config      TodosConfig?
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  config      NoteConfig?
   tasks       Task[]
 
   /// @FieldType('DateTime')
@@ -162,14 +164,13 @@ model Note {
   @@index(fields: [id], type: Hash)
 }
 
-// TODO: create graphql service
-model TodosConfig {
-  /// @HideField({ match: 'TodosConfig*@(Create|Update)*Input' })
-  id      String  @id @default(cuid())
+model NoteConfig {
+  /// @HideField({ match: 'NoteConfig*@(Create|Update)*Input' })
+  id     String  @id @default(cuid())
   /// @FieldType('HexColorCode')
-  color   String? @db.VarChar(15)
-  todosId String  @unique
-  todos   Note    @relation(fields: [todosId], references: [id], onDelete: Cascade)
+  color  String? @db.VarChar(15)
+  noteId String  @unique
+  note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@index(fields: [id], type: Hash)
@@ -178,10 +179,12 @@ model TodosConfig {
 // TODO: create graphql service
 model Task {
   /// @HideField({ match: 'Task*@(Create|Update)*Input' })
-  id      String  @id @default(cuid())
-  name    String? @db.VarChar(8000)
-  todosId String
-  todos   Note    @relation(fields: [todosId], references: [id], onDelete: Cascade)
+  id     String  @id @default(cuid())
+  name   String? @db.VarChar(8000)
+  noteId String
+  note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   /// @FieldType('DateTime')
   pinnedAt    DateTime?

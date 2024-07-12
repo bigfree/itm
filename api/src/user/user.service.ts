@@ -34,7 +34,8 @@ export class UserService {
             include: {
                 profile: true,
                 config: true,
-                todos: true,
+                notes: true,
+                tasks: true,
             },
             ...findUniqueUserArgs,
         });
@@ -51,7 +52,8 @@ export class UserService {
             include: {
                 profile: true,
                 config: true,
-                todos: true,
+                notes: true,
+                tasks: true,
             },
             ...findManyUserArgs,
         });
@@ -102,7 +104,8 @@ export class UserService {
             include: {
                 profile: true,
                 config: true,
-                todos: true,
+                notes: true,
+                tasks: true,
             },
             ...createOneUserArgs,
             data: {
@@ -140,7 +143,8 @@ export class UserService {
             include: {
                 profile: true,
                 config: true,
-                todos: true,
+                notes: true,
+                tasks: true,
             },
             ...updateOneUserArgs,
         });
@@ -161,7 +165,8 @@ export class UserService {
             include: {
                 profile: true,
                 config: true,
-                todos: true,
+                notes: true,
+                tasks: true,
             },
             ...deleteOneUserArgs,
         });

@@ -26,6 +26,20 @@ export const winstonConfig = (configService: ConfigService): WinstonModuleOption
                 }),
             ),
         }),
+        // TODO: add transport
+        // new PostgresTransport<Log>({
+        //     connectionString: configService.get<string>('DATABASE_URL') || '',
+        //     maxPool: 10,
+        //     level: 'info',
+        //     tableColumns: [
+        //         {
+        //             name: 'id',
+        //             dataType: 'SERIAL',
+        //             primaryKey: true,
+        //             unique: true,
+        //         },
+        //     ],
+        // }),
         // other transports...
     ],
 });
