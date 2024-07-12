@@ -15,9 +15,9 @@ const config: CodegenConfig = {
         //         fragmentMasking: false,
         //     },
         // },
-        './src/generated/freeFlow/': {
-            schema: './freeFlow.graphql',
-            documents: ['src/graphql/freeflow/**/*.{ts, tsx}'],
+        './src/generated/itm/': {
+            schema: './itm-gql.graphql',
+            documents: ['src/graphql/itm/**/*.{ts, tsx}'],
             preset: 'client',
             plugins: [],
             config: {

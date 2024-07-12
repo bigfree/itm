@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "schema:generate": "graphql-codegen",
-    "schema:fetch": "rover graph fetch free-flow-gql@current --output ./freeFlow.graphql"
+    "schema:fetch": "rover graph fetch itm-gql@current --output ./itm-gql.graphql"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",

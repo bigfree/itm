@@ -1,0 +1,1950 @@
+type Authorize {
+  """JWT Token"""
+  accessToken: JWT!
+
+  """JWT Token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
+
+input EnumLogFromNullableFilter {
+  equals: LogFrom
+  in: [LogFrom!]
+  not: NestedEnumLogFromNullableFilter
+  notIn: [LogFrom!]
+}
+
+input EnumLogTypeFilter {
+  equals: LogType
+  in: [LogType!]
+  not: NestedEnumLogTypeFilter
+  notIn: [LogType!]
+}
+
+input EnumThemeColorNullableFilter {
+  equals: ThemeColor
+  in: [ThemeColor!]
+  not: NestedEnumThemeColorNullableFilter
+  notIn: [ThemeColor!]
+}
+
+input EnumUserRoleNullableListFilter {
+  equals: [UserRole!]
+  has: UserRole
+  hasEvery: [UserRole!]
+  hasSome: [UserRole!]
+  isEmpty: Boolean
+}
+
+input EnumUserTypeFieldUpdateOperationsInput {
+  set: UserType
+}
+
+input EnumUserTypeFilter {
+  equals: UserType
+  in: [UserType!]
+  not: NestedEnumUserTypeFilter
+  notIn: [UserType!]
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input JsonNullableFilter {
+  array_contains: JSON
+  array_ends_with: JSON
+  array_starts_with: JSON
+  equals: JSON
+  gt: JSON
+  gte: JSON
+  lt: JSON
+  lte: JSON
+  not: JSON
+  path: [String!]
+  string_contains: String
+  string_ends_with: String
+  string_starts_with: String
+}
+
+type Log {
+  createdAt: DateTime
+  data: JSON
+  from: LogFrom
+  id: ID!
+  type: LogType!
+}
+
+type LogCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  data: Int!
+  from: Int!
+  id: Int!
+  type: Int!
+}
+
+input LogCreateInput {
+  createdAt: DateTime
+  data: JSON
+  from: LogFrom
+  type: LogType
+}
+
+enum LogFrom {
+  API
+  APP
+}
+
+type LogMaxAggregate {
+  createdAt: DateTime
+  from: LogFrom
+  id: String
+  type: LogType
+}
+
+type LogMinAggregate {
+  createdAt: DateTime
+  from: LogFrom
+  id: String
+  type: LogType
+}
+
+enum LogOrderByRelevanceFieldEnum {
+  id
+}
+
+input LogOrderByRelevanceInput {
+  fields: [LogOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input LogOrderByWithRelationInput {
+  _relevance: LogOrderByRelevanceInput
+  createdAt: SortOrderInput
+  data: SortOrderInput
+  from: SortOrderInput
+  id: SortOrder
+  type: SortOrder
+}
+
+enum LogScalarFieldEnum {
+  createdAt
+  data
+  from
+  id
+  type
+}
+
+enum LogType {
+  DEBUG
+  ERROR
+  LOG
+  VERBOSE
+  WARN
+}
+
+input LogWhereInput {
+  AND: [LogWhereInput!]
+  NOT: [LogWhereInput!]
+  OR: [LogWhereInput!]
+  createdAt: DateTimeNullableFilter
+  data: JsonNullableFilter
+  from: EnumLogFromNullableFilter
+  id: StringFilter
+  type: EnumLogTypeFilter
+}
+
+input LogWhereUniqueInput {
+  AND: [LogWhereInput!]
+  NOT: [LogWhereInput!]
+  OR: [LogWhereInput!]
+  createdAt: DateTimeNullableFilter
+  data: JsonNullableFilter
+  from: EnumLogFromNullableFilter
+  id: String
+  type: EnumLogTypeFilter
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  archivedNote(id: String!): Note!
+  completedMyTask(id: String!): Task!
+  createLog(data: LogCreateInput): Log!
+  createMyConfig(userConfigCreateInput: UserConfigCreateInput!): UserConfig!
+  createNote(data: NoteCreateInput!): Note!
+  createNoteConfig(data: NoteConfigCreateInput!): NoteConfig!
+  createTask(data: TaskCreateInput!): Task!
+  createUser(data: UserCreateInput!): User!
+  createUserConfig(data: UserConfigCreateInput!): UserConfig!
+  deleteUser(where: UserWhereUniqueInput!): User!
+  login(loginInput: LoginInput!): Authorize!
+  logout: User!
+  pinnedNote(id: String!): Note!
+  refreshTokens(refreshInput: RefreshInput!): Authorize!
+  register(registerInput: RegisterInput!): Authorize!
+  removeNote(where: NoteWhereUniqueInput!): Note!
+  removeTask(where: TaskWhereUniqueInput!): Task!
+  updateMyConfig(userConfigUpdateInput: UserConfigUpdateInput!): UserConfig!
+  updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
+  updateNoteConfig(data: NoteConfigUpdateInput!, where: NoteConfigWhereUniqueInput!): NoteConfig!
+  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  updateUserConfig(data: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
+  upsertUserConfig(create: UserConfigCreateInput!, update: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedEnumLogFromNullableFilter {
+  equals: LogFrom
+  in: [LogFrom!]
+  not: NestedEnumLogFromNullableFilter
+  notIn: [LogFrom!]
+}
+
+input NestedEnumLogTypeFilter {
+  equals: LogType
+  in: [LogType!]
+  not: NestedEnumLogTypeFilter
+  notIn: [LogType!]
+}
+
+input NestedEnumThemeColorNullableFilter {
+  equals: ThemeColor
+  in: [ThemeColor!]
+  not: NestedEnumThemeColorNullableFilter
+  notIn: [ThemeColor!]
+}
+
+input NestedEnumUserTypeFilter {
+  equals: UserType
+  in: [UserType!]
+  not: NestedEnumUserTypeFilter
+  notIn: [UserType!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+type Note {
+  _count: NoteCount!
+  archiveAt: DateTime
+  config: NoteConfig
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  id: ID!
+  name: String
+  pinnedAt: DateTime
+  tasks: [Task!]
+  user: User!
+  userId: String!
+}
+
+type NoteConfig {
+  color: String
+  id: ID!
+  note: Note!
+  noteId: String!
+}
+
+type NoteConfigCountAggregate {
+  _all: Int!
+  color: Int!
+  id: Int!
+  noteId: Int!
+}
+
+input NoteConfigCreateInput {
+  color: String
+  note: NoteCreateNestedOneWithoutConfigInput!
+}
+
+input NoteConfigCreateNestedOneWithoutNoteInput {
+  connect: NoteConfigWhereUniqueInput
+  connectOrCreate: NoteConfigCreateOrConnectWithoutNoteInput
+  create: NoteConfigCreateWithoutNoteInput
+}
+
+input NoteConfigCreateOrConnectWithoutNoteInput {
+  create: NoteConfigCreateWithoutNoteInput!
+  where: NoteConfigWhereUniqueInput!
+}
+
+input NoteConfigCreateWithoutNoteInput {
+  color: String
+}
+
+type NoteConfigMaxAggregate {
+  color: String
+  id: String
+  noteId: String
+}
+
+type NoteConfigMinAggregate {
+  color: String
+  id: String
+  noteId: String
+}
+
+input NoteConfigNullableRelationFilter {
+  is: NoteConfigWhereInput
+  isNot: NoteConfigWhereInput
+}
+
+enum NoteConfigOrderByRelevanceFieldEnum {
+  color
+  id
+  noteId
+}
+
+input NoteConfigOrderByRelevanceInput {
+  fields: [NoteConfigOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input NoteConfigOrderByWithRelationInput {
+  _relevance: NoteConfigOrderByRelevanceInput
+  color: SortOrderInput
+  id: SortOrder
+  note: NoteOrderByWithRelationInput
+  noteId: SortOrder
+}
+
+input NoteConfigUpdateInput {
+  color: NullableStringFieldUpdateOperationsInput
+  note: NoteUpdateOneRequiredWithoutConfigNestedInput
+}
+
+input NoteConfigUpdateOneWithoutNoteNestedInput {
+  connect: NoteConfigWhereUniqueInput
+  connectOrCreate: NoteConfigCreateOrConnectWithoutNoteInput
+  create: NoteConfigCreateWithoutNoteInput
+  delete: NoteConfigWhereInput
+  disconnect: NoteConfigWhereInput
+  update: NoteConfigUpdateToOneWithWhereWithoutNoteInput
+  upsert: NoteConfigUpsertWithoutNoteInput
+}
+
+input NoteConfigUpdateToOneWithWhereWithoutNoteInput {
+  data: NoteConfigUpdateWithoutNoteInput!
+  where: NoteConfigWhereInput
+}
+
+input NoteConfigUpdateWithoutNoteInput {
+  color: NullableStringFieldUpdateOperationsInput
+}
+
+input NoteConfigUpsertWithoutNoteInput {
+  create: NoteConfigCreateWithoutNoteInput!
+  update: NoteConfigUpdateWithoutNoteInput!
+  where: NoteConfigWhereInput
+}
+
+input NoteConfigWhereInput {
+  AND: [NoteConfigWhereInput!]
+  NOT: [NoteConfigWhereInput!]
+  OR: [NoteConfigWhereInput!]
+  color: StringNullableFilter
+  id: StringFilter
+  note: NoteRelationFilter
+  noteId: StringFilter
+}
+
+input NoteConfigWhereUniqueInput {
+  AND: [NoteConfigWhereInput!]
+  NOT: [NoteConfigWhereInput!]
+  OR: [NoteConfigWhereInput!]
+  color: StringNullableFilter
+  id: String
+  note: NoteRelationFilter
+  noteId: String
+}
+
+type NoteCount {
+  tasks: Int!
+}
+
+type NoteCountAggregate {
+  _all: Int!
+  archiveAt: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  description: Int!
+  id: Int!
+  name: Int!
+  pinnedAt: Int!
+  userId: Int!
+}
+
+input NoteCreateInput {
+  archiveAt: DateTime
+  config: NoteConfigCreateNestedOneWithoutNoteInput
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  name: String
+  pinnedAt: DateTime
+  tasks: TaskCreateNestedManyWithoutNoteInput
+  user: UserCreateNestedOneWithoutNotesInput!
+}
+
+input NoteCreateManyUserInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  name: String
+  pinnedAt: DateTime
+}
+
+input NoteCreateManyUserInputEnvelope {
+  data: [NoteCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input NoteCreateNestedManyWithoutUserInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutUserInput!]
+  create: [NoteCreateWithoutUserInput!]
+  createMany: NoteCreateManyUserInputEnvelope
+}
+
+input NoteCreateNestedOneWithoutConfigInput {
+  connect: NoteWhereUniqueInput
+  connectOrCreate: NoteCreateOrConnectWithoutConfigInput
+  create: NoteCreateWithoutConfigInput
+}
+
+input NoteCreateNestedOneWithoutTasksInput {
+  connect: NoteWhereUniqueInput
+  connectOrCreate: NoteCreateOrConnectWithoutTasksInput
+  create: NoteCreateWithoutTasksInput
+}
+
+input NoteCreateOrConnectWithoutConfigInput {
+  create: NoteCreateWithoutConfigInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteCreateOrConnectWithoutTasksInput {
+  create: NoteCreateWithoutTasksInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteCreateOrConnectWithoutUserInput {
+  create: NoteCreateWithoutUserInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteCreateWithoutConfigInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  name: String
+  pinnedAt: DateTime
+  tasks: TaskCreateNestedManyWithoutNoteInput
+  user: UserCreateNestedOneWithoutNotesInput!
+}
+
+input NoteCreateWithoutTasksInput {
+  archiveAt: DateTime
+  config: NoteConfigCreateNestedOneWithoutNoteInput
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  name: String
+  pinnedAt: DateTime
+  user: UserCreateNestedOneWithoutNotesInput!
+}
+
+input NoteCreateWithoutUserInput {
+  archiveAt: DateTime
+  config: NoteConfigCreateNestedOneWithoutNoteInput
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  name: String
+  pinnedAt: DateTime
+  tasks: TaskCreateNestedManyWithoutNoteInput
+}
+
+input NoteListRelationFilter {
+  every: NoteWhereInput
+  none: NoteWhereInput
+  some: NoteWhereInput
+}
+
+type NoteMaxAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  id: String
+  name: String
+  pinnedAt: DateTime
+  userId: String
+}
+
+type NoteMinAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  id: String
+  name: String
+  pinnedAt: DateTime
+  userId: String
+}
+
+input NoteOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum NoteOrderByRelevanceFieldEnum {
+  description
+  id
+  name
+  userId
+}
+
+input NoteOrderByRelevanceInput {
+  fields: [NoteOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input NoteOrderByWithRelationInput {
+  _relevance: NoteOrderByRelevanceInput
+  archiveAt: SortOrderInput
+  config: NoteConfigOrderByWithRelationInput
+  createdAt: SortOrderInput
+  deletedAt: SortOrderInput
+  description: SortOrderInput
+  id: SortOrder
+  name: SortOrderInput
+  pinnedAt: SortOrderInput
+  tasks: TaskOrderByRelationAggregateInput
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input NoteRelationFilter {
+  is: NoteWhereInput
+  isNot: NoteWhereInput
+}
+
+enum NoteScalarFieldEnum {
+  archiveAt
+  createdAt
+  deletedAt
+  description
+  id
+  name
+  pinnedAt
+  userId
+}
+
+input NoteScalarWhereInput {
+  AND: [NoteScalarWhereInput!]
+  NOT: [NoteScalarWhereInput!]
+  OR: [NoteScalarWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: StringFilter
+  name: StringNullableFilter
+  pinnedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input NoteUpdateInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  config: NoteConfigUpdateOneWithoutNoteNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  tasks: TaskUpdateManyWithoutNoteNestedInput
+  user: UserUpdateOneRequiredWithoutNotesNestedInput
+}
+
+input NoteUpdateManyMutationInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NoteUpdateManyWithWhereWithoutUserInput {
+  data: NoteUpdateManyMutationInput!
+  where: NoteScalarWhereInput!
+}
+
+input NoteUpdateManyWithoutUserNestedInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutUserInput!]
+  create: [NoteCreateWithoutUserInput!]
+  createMany: NoteCreateManyUserInputEnvelope
+  delete: [NoteWhereUniqueInput!]
+  deleteMany: [NoteScalarWhereInput!]
+  disconnect: [NoteWhereUniqueInput!]
+  set: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [NoteUpdateManyWithWhereWithoutUserInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input NoteUpdateOneRequiredWithoutConfigNestedInput {
+  connect: NoteWhereUniqueInput
+  connectOrCreate: NoteCreateOrConnectWithoutConfigInput
+  create: NoteCreateWithoutConfigInput
+  update: NoteUpdateToOneWithWhereWithoutConfigInput
+  upsert: NoteUpsertWithoutConfigInput
+}
+
+input NoteUpdateOneRequiredWithoutTasksNestedInput {
+  connect: NoteWhereUniqueInput
+  connectOrCreate: NoteCreateOrConnectWithoutTasksInput
+  create: NoteCreateWithoutTasksInput
+  update: NoteUpdateToOneWithWhereWithoutTasksInput
+  upsert: NoteUpsertWithoutTasksInput
+}
+
+input NoteUpdateToOneWithWhereWithoutConfigInput {
+  data: NoteUpdateWithoutConfigInput!
+  where: NoteWhereInput
+}
+
+input NoteUpdateToOneWithWhereWithoutTasksInput {
+  data: NoteUpdateWithoutTasksInput!
+  where: NoteWhereInput
+}
+
+input NoteUpdateWithWhereUniqueWithoutUserInput {
+  data: NoteUpdateWithoutUserInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteUpdateWithoutConfigInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  tasks: TaskUpdateManyWithoutNoteNestedInput
+  user: UserUpdateOneRequiredWithoutNotesNestedInput
+}
+
+input NoteUpdateWithoutTasksInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  config: NoteConfigUpdateOneWithoutNoteNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutNotesNestedInput
+}
+
+input NoteUpdateWithoutUserInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  config: NoteConfigUpdateOneWithoutNoteNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  tasks: TaskUpdateManyWithoutNoteNestedInput
+}
+
+input NoteUpsertWithWhereUniqueWithoutUserInput {
+  create: NoteCreateWithoutUserInput!
+  update: NoteUpdateWithoutUserInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteUpsertWithoutConfigInput {
+  create: NoteCreateWithoutConfigInput!
+  update: NoteUpdateWithoutConfigInput!
+  where: NoteWhereInput
+}
+
+input NoteUpsertWithoutTasksInput {
+  create: NoteCreateWithoutTasksInput!
+  update: NoteUpdateWithoutTasksInput!
+  where: NoteWhereInput
+}
+
+input NoteWhereInput {
+  AND: [NoteWhereInput!]
+  NOT: [NoteWhereInput!]
+  OR: [NoteWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  config: NoteConfigNullableRelationFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: StringFilter
+  name: StringNullableFilter
+  pinnedAt: DateTimeNullableFilter
+  tasks: TaskListRelationFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input NoteWhereUniqueInput {
+  AND: [NoteWhereInput!]
+  NOT: [NoteWhereInput!]
+  OR: [NoteWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  config: NoteConfigNullableRelationFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: String
+  name: StringNullableFilter
+  pinnedAt: DateTimeNullableFilter
+  tasks: TaskListRelationFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input NullableEnumThemeColorFieldUpdateOperationsInput {
+  set: ThemeColor
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
+enum NullsOrder {
+  first
+  last
+}
+
+type PasswordCountAggregate {
+  _all: Int!
+  id: Int!
+  password: Int!
+}
+
+input PasswordCreateNestedOneWithoutUserInput {
+  connect: PasswordWhereUniqueInput
+  connectOrCreate: PasswordCreateOrConnectWithoutUserInput
+  create: PasswordCreateWithoutUserInput
+}
+
+input PasswordCreateOrConnectWithoutUserInput {
+  create: PasswordCreateWithoutUserInput!
+  where: PasswordWhereUniqueInput!
+}
+
+input PasswordCreateWithoutUserInput {
+  password: String!
+}
+
+type PasswordMaxAggregate {
+  id: String
+  password: String
+}
+
+type PasswordMinAggregate {
+  id: String
+  password: String
+}
+
+enum PasswordOrderByRelevanceFieldEnum {
+  id
+  password
+}
+
+input PasswordOrderByRelevanceInput {
+  fields: [PasswordOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input PasswordOrderByWithRelationInput {
+  _relevance: PasswordOrderByRelevanceInput
+  id: SortOrder
+  password: SortOrder
+  user: UserOrderByWithRelationInput
+}
+
+input PasswordUpdateOneRequiredWithoutUserNestedInput {
+  connect: PasswordWhereUniqueInput
+  connectOrCreate: PasswordCreateOrConnectWithoutUserInput
+  create: PasswordCreateWithoutUserInput
+  update: PasswordUpdateToOneWithWhereWithoutUserInput
+  upsert: PasswordUpsertWithoutUserInput
+}
+
+input PasswordUpdateToOneWithWhereWithoutUserInput {
+  data: PasswordUpdateWithoutUserInput!
+  where: PasswordWhereInput
+}
+
+input PasswordUpdateWithoutUserInput {
+  password: StringFieldUpdateOperationsInput
+}
+
+input PasswordUpsertWithoutUserInput {
+  create: PasswordCreateWithoutUserInput!
+  update: PasswordUpdateWithoutUserInput!
+  where: PasswordWhereInput
+}
+
+input PasswordWhereInput {
+  AND: [PasswordWhereInput!]
+  NOT: [PasswordWhereInput!]
+  OR: [PasswordWhereInput!]
+  id: StringFilter
+  password: StringFilter
+  user: UserNullableRelationFilter
+}
+
+input PasswordWhereUniqueInput {
+  AND: [PasswordWhereInput!]
+  NOT: [PasswordWhereInput!]
+  OR: [PasswordWhereInput!]
+  id: String
+  password: StringFilter
+  user: UserNullableRelationFilter
+}
+
+type Profile {
+  acronym: String
+  avatar: String
+  bio: String
+  createdAt: DateTime
+  firstName: String!
+  id: ID!
+  lastName: String!
+  user: User!
+  userId: String!
+  username: String
+}
+
+type ProfileCountAggregate {
+  _all: Int!
+  acronym: Int!
+  avatar: Int!
+  bio: Int!
+  createdAt: Int!
+  firstName: Int!
+  id: Int!
+  lastName: Int!
+  userId: Int!
+  username: Int!
+}
+
+input ProfileCreateNestedOneWithoutUserInput {
+  connect: ProfileWhereUniqueInput
+  connectOrCreate: ProfileCreateOrConnectWithoutUserInput
+  create: ProfileCreateWithoutUserInput
+}
+
+input ProfileCreateOrConnectWithoutUserInput {
+  create: ProfileCreateWithoutUserInput!
+  where: ProfileWhereUniqueInput!
+}
+
+input ProfileCreateWithoutUserInput {
+  acronym: String
+  avatar: String
+  bio: String
+  createdAt: DateTime
+  firstName: String!
+  lastName: String!
+  username: String
+}
+
+input ProfileFullnameCompoundUniqueInput {
+  firstName: String!
+  lastName: String!
+}
+
+type ProfileMaxAggregate {
+  acronym: String
+  avatar: String
+  bio: String
+  createdAt: DateTime
+  firstName: String
+  id: String
+  lastName: String
+  userId: String
+  username: String
+}
+
+type ProfileMinAggregate {
+  acronym: String
+  avatar: String
+  bio: String
+  createdAt: DateTime
+  firstName: String
+  id: String
+  lastName: String
+  userId: String
+  username: String
+}
+
+input ProfileNullableRelationFilter {
+  is: ProfileWhereInput
+  isNot: ProfileWhereInput
+}
+
+enum ProfileOrderByRelevanceFieldEnum {
+  acronym
+  avatar
+  bio
+  firstName
+  id
+  lastName
+  userId
+  username
+}
+
+input ProfileOrderByRelevanceInput {
+  fields: [ProfileOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input ProfileOrderByWithRelationInput {
+  _relevance: ProfileOrderByRelevanceInput
+  acronym: SortOrderInput
+  avatar: SortOrderInput
+  bio: SortOrderInput
+  createdAt: SortOrderInput
+  firstName: SortOrder
+  id: SortOrder
+  lastName: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  username: SortOrderInput
+}
+
+input ProfileUpdateOneWithoutUserNestedInput {
+  connect: ProfileWhereUniqueInput
+  connectOrCreate: ProfileCreateOrConnectWithoutUserInput
+  create: ProfileCreateWithoutUserInput
+  delete: ProfileWhereInput
+  disconnect: ProfileWhereInput
+  update: ProfileUpdateToOneWithWhereWithoutUserInput
+  upsert: ProfileUpsertWithoutUserInput
+}
+
+input ProfileUpdateToOneWithWhereWithoutUserInput {
+  data: ProfileUpdateWithoutUserInput!
+  where: ProfileWhereInput
+}
+
+input ProfileUpdateWithoutUserInput {
+  acronym: NullableStringFieldUpdateOperationsInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  bio: NullableStringFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input ProfileUpsertWithoutUserInput {
+  create: ProfileCreateWithoutUserInput!
+  update: ProfileUpdateWithoutUserInput!
+  where: ProfileWhereInput
+}
+
+input ProfileWhereInput {
+  AND: [ProfileWhereInput!]
+  NOT: [ProfileWhereInput!]
+  OR: [ProfileWhereInput!]
+  acronym: StringNullableFilter
+  avatar: StringNullableFilter
+  bio: StringNullableFilter
+  createdAt: DateTimeNullableFilter
+  firstName: StringFilter
+  id: StringFilter
+  lastName: StringFilter
+  user: UserRelationFilter
+  userId: StringFilter
+  username: StringNullableFilter
+}
+
+input ProfileWhereUniqueInput {
+  AND: [ProfileWhereInput!]
+  NOT: [ProfileWhereInput!]
+  OR: [ProfileWhereInput!]
+  acronym: StringNullableFilter
+  avatar: StringNullableFilter
+  bio: StringNullableFilter
+  createdAt: DateTimeNullableFilter
+  firstName: StringFilter
+  fullname: ProfileFullnameCompoundUniqueInput
+  id: String
+  lastName: StringFilter
+  user: UserRelationFilter
+  userId: String
+  username: String
+}
+
+type Query {
+  log(where: LogWhereUniqueInput!): Log!
+  logs(cursor: LogWhereUniqueInput, distinct: [LogScalarFieldEnum!], orderBy: [LogOrderByWithRelationInput!], skip: Int, take: Int, where: LogWhereInput): [Log!]!
+  me: User!
+  myConfig: UserConfig!
+  note(where: NoteWhereUniqueInput!): Note!
+  noteConfig(where: NoteConfigWhereUniqueInput!): NoteConfig!
+  notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
+  task(where: TaskWhereUniqueInput!): Task!
+  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
+  user(where: UserWhereUniqueInput!): User!
+  userConfig(where: UserConfigWhereUniqueInput!): UserConfig!
+  users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input RefreshInput {
+  """Refresh token"""
+  refreshToken: String!
+}
+
+type RefreshTokenCountAggregate {
+  _all: Int!
+  expiresAt: Int!
+  id: Int!
+  isRevoked: Int!
+  userId: Int!
+}
+
+type RefreshTokenMaxAggregate {
+  expiresAt: DateTime
+  id: String
+  isRevoked: Boolean
+  userId: String
+}
+
+type RefreshTokenMinAggregate {
+  expiresAt: DateTime
+  id: String
+  isRevoked: Boolean
+  userId: String
+}
+
+input RegisterInput {
+  """User unique email address"""
+  email: String!
+
+  """User password"""
+  password: String!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input SortOrderInput {
+  nulls: NullsOrder
+  sort: SortOrder!
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+type Subscription {
+  logCreated: Log!
+  noteConfigCreated: Note!
+  noteConfigUpdated: Note!
+  noteCreated: Note!
+  noteDeleted: Note!
+  noteUpdated: Note!
+  taskCreated: Task!
+  taskDeleted: Task!
+  taskUpdated: Task!
+  userCreated: User!
+  userDeleted: User!
+  userLogout: User!
+  userUpdated: User!
+}
+
+type Task {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: ID!
+  name: String
+  note: Note!
+  noteId: String!
+  pinnedAt: DateTime
+  user: User!
+  userId: String!
+}
+
+type TaskCountAggregate {
+  _all: Int!
+  completedAt: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  name: Int!
+  noteId: Int!
+  pinnedAt: Int!
+  userId: Int!
+}
+
+input TaskCreateInput {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String
+  note: NoteCreateNestedOneWithoutTasksInput!
+  pinnedAt: DateTime
+  user: UserCreateNestedOneWithoutTasksInput!
+}
+
+input TaskCreateManyNoteInput {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String
+  pinnedAt: DateTime
+  userId: String!
+}
+
+input TaskCreateManyNoteInputEnvelope {
+  data: [TaskCreateManyNoteInput!]!
+  skipDuplicates: Boolean
+}
+
+input TaskCreateManyUserInput {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String
+  noteId: String!
+  pinnedAt: DateTime
+}
+
+input TaskCreateManyUserInputEnvelope {
+  data: [TaskCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input TaskCreateNestedManyWithoutNoteInput {
+  connect: [TaskWhereUniqueInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutNoteInput!]
+  create: [TaskCreateWithoutNoteInput!]
+  createMany: TaskCreateManyNoteInputEnvelope
+}
+
+input TaskCreateNestedManyWithoutUserInput {
+  connect: [TaskWhereUniqueInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutUserInput!]
+  create: [TaskCreateWithoutUserInput!]
+  createMany: TaskCreateManyUserInputEnvelope
+}
+
+input TaskCreateOrConnectWithoutNoteInput {
+  create: TaskCreateWithoutNoteInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskCreateOrConnectWithoutUserInput {
+  create: TaskCreateWithoutUserInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskCreateWithoutNoteInput {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String
+  pinnedAt: DateTime
+  user: UserCreateNestedOneWithoutTasksInput!
+}
+
+input TaskCreateWithoutUserInput {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String
+  note: NoteCreateNestedOneWithoutTasksInput!
+  pinnedAt: DateTime
+}
+
+input TaskListRelationFilter {
+  every: TaskWhereInput
+  none: TaskWhereInput
+  some: TaskWhereInput
+}
+
+type TaskMaxAggregate {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  noteId: String
+  pinnedAt: DateTime
+  userId: String
+}
+
+type TaskMinAggregate {
+  completedAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  noteId: String
+  pinnedAt: DateTime
+  userId: String
+}
+
+input TaskOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum TaskOrderByRelevanceFieldEnum {
+  id
+  name
+  noteId
+  userId
+}
+
+input TaskOrderByRelevanceInput {
+  fields: [TaskOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input TaskOrderByWithRelationInput {
+  _relevance: TaskOrderByRelevanceInput
+  completedAt: SortOrderInput
+  createdAt: SortOrderInput
+  deletedAt: SortOrderInput
+  id: SortOrder
+  name: SortOrderInput
+  note: NoteOrderByWithRelationInput
+  noteId: SortOrder
+  pinnedAt: SortOrderInput
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum TaskScalarFieldEnum {
+  completedAt
+  createdAt
+  deletedAt
+  id
+  name
+  noteId
+  pinnedAt
+  userId
+}
+
+input TaskScalarWhereInput {
+  AND: [TaskScalarWhereInput!]
+  NOT: [TaskScalarWhereInput!]
+  OR: [TaskScalarWhereInput!]
+  completedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  id: StringFilter
+  name: StringNullableFilter
+  noteId: StringFilter
+  pinnedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input TaskUpdateInput {
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  note: NoteUpdateOneRequiredWithoutTasksNestedInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutTasksNestedInput
+}
+
+input TaskUpdateManyMutationInput {
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input TaskUpdateManyWithWhereWithoutNoteInput {
+  data: TaskUpdateManyMutationInput!
+  where: TaskScalarWhereInput!
+}
+
+input TaskUpdateManyWithWhereWithoutUserInput {
+  data: TaskUpdateManyMutationInput!
+  where: TaskScalarWhereInput!
+}
+
+input TaskUpdateManyWithoutNoteNestedInput {
+  connect: [TaskWhereUniqueInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutNoteInput!]
+  create: [TaskCreateWithoutNoteInput!]
+  createMany: TaskCreateManyNoteInputEnvelope
+  delete: [TaskWhereUniqueInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutNoteInput!]
+  updateMany: [TaskUpdateManyWithWhereWithoutNoteInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutNoteInput!]
+}
+
+input TaskUpdateManyWithoutUserNestedInput {
+  connect: [TaskWhereUniqueInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutUserInput!]
+  create: [TaskCreateWithoutUserInput!]
+  createMany: TaskCreateManyUserInputEnvelope
+  delete: [TaskWhereUniqueInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [TaskUpdateManyWithWhereWithoutUserInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input TaskUpdateWithWhereUniqueWithoutNoteInput {
+  data: TaskUpdateWithoutNoteInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskUpdateWithWhereUniqueWithoutUserInput {
+  data: TaskUpdateWithoutUserInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskUpdateWithoutNoteInput {
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutTasksNestedInput
+}
+
+input TaskUpdateWithoutUserInput {
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  note: NoteUpdateOneRequiredWithoutTasksNestedInput
+  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input TaskUpsertWithWhereUniqueWithoutNoteInput {
+  create: TaskCreateWithoutNoteInput!
+  update: TaskUpdateWithoutNoteInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutUserInput {
+  create: TaskCreateWithoutUserInput!
+  update: TaskUpdateWithoutUserInput!
+  where: TaskWhereUniqueInput!
+}
+
+input TaskWhereInput {
+  AND: [TaskWhereInput!]
+  NOT: [TaskWhereInput!]
+  OR: [TaskWhereInput!]
+  completedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  id: StringFilter
+  name: StringNullableFilter
+  note: NoteRelationFilter
+  noteId: StringFilter
+  pinnedAt: DateTimeNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input TaskWhereUniqueInput {
+  AND: [TaskWhereInput!]
+  NOT: [TaskWhereInput!]
+  OR: [TaskWhereInput!]
+  completedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  deletedAt: DateTimeNullableFilter
+  id: String
+  name: StringNullableFilter
+  note: NoteRelationFilter
+  noteId: StringFilter
+  pinnedAt: DateTimeNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+enum ThemeColor {
+  AUTO
+  DARK
+  LIGHT
+}
+
+type User {
+  _count: UserCount!
+  config: UserConfig
+  createdAt: DateTime
+  email: EmailAddress!
+  id: ID!
+  notes: [Note!]
+  profile: Profile
+  role: [UserRole!]
+  tasks: [Task!]
+  type: UserType!
+}
+
+type UserConfig {
+  id: ID!
+  theme: ThemeColor
+  user: User!
+  userId: String!
+}
+
+type UserConfigCountAggregate {
+  _all: Int!
+  id: Int!
+  theme: Int!
+  userId: Int!
+}
+
+input UserConfigCreateInput {
+  theme: ThemeColor
+  user: UserCreateNestedOneWithoutConfigInput!
+}
+
+input UserConfigCreateNestedOneWithoutUserInput {
+  connect: UserConfigWhereUniqueInput
+  connectOrCreate: UserConfigCreateOrConnectWithoutUserInput
+  create: UserConfigCreateWithoutUserInput
+}
+
+input UserConfigCreateOrConnectWithoutUserInput {
+  create: UserConfigCreateWithoutUserInput!
+  where: UserConfigWhereUniqueInput!
+}
+
+input UserConfigCreateWithoutUserInput {
+  theme: ThemeColor
+}
+
+type UserConfigMaxAggregate {
+  id: String
+  theme: ThemeColor
+  userId: String
+}
+
+type UserConfigMinAggregate {
+  id: String
+  theme: ThemeColor
+  userId: String
+}
+
+input UserConfigNullableRelationFilter {
+  is: UserConfigWhereInput
+  isNot: UserConfigWhereInput
+}
+
+enum UserConfigOrderByRelevanceFieldEnum {
+  id
+  userId
+}
+
+input UserConfigOrderByRelevanceInput {
+  fields: [UserConfigOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input UserConfigOrderByWithRelationInput {
+  _relevance: UserConfigOrderByRelevanceInput
+  id: SortOrder
+  theme: SortOrderInput
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input UserConfigUpdateInput {
+  theme: NullableEnumThemeColorFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutConfigNestedInput
+}
+
+input UserConfigUpdateOneWithoutUserNestedInput {
+  connect: UserConfigWhereUniqueInput
+  connectOrCreate: UserConfigCreateOrConnectWithoutUserInput
+  create: UserConfigCreateWithoutUserInput
+  delete: UserConfigWhereInput
+  disconnect: UserConfigWhereInput
+  update: UserConfigUpdateToOneWithWhereWithoutUserInput
+  upsert: UserConfigUpsertWithoutUserInput
+}
+
+input UserConfigUpdateToOneWithWhereWithoutUserInput {
+  data: UserConfigUpdateWithoutUserInput!
+  where: UserConfigWhereInput
+}
+
+input UserConfigUpdateWithoutUserInput {
+  theme: NullableEnumThemeColorFieldUpdateOperationsInput
+}
+
+input UserConfigUpsertWithoutUserInput {
+  create: UserConfigCreateWithoutUserInput!
+  update: UserConfigUpdateWithoutUserInput!
+  where: UserConfigWhereInput
+}
+
+input UserConfigWhereInput {
+  AND: [UserConfigWhereInput!]
+  NOT: [UserConfigWhereInput!]
+  OR: [UserConfigWhereInput!]
+  id: StringFilter
+  theme: EnumThemeColorNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input UserConfigWhereUniqueInput {
+  AND: [UserConfigWhereInput!]
+  NOT: [UserConfigWhereInput!]
+  OR: [UserConfigWhereInput!]
+  id: String
+  theme: EnumThemeColorNullableFilter
+  user: UserRelationFilter
+  userId: String
+}
+
+type UserCount {
+  notes: Int!
+  refreshTokens: Int!
+  tasks: Int!
+}
+
+type UserCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  email: Int!
+  id: Int!
+  role: Int!
+  type: Int!
+}
+
+input UserCreateInput {
+  config: UserConfigCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: EmailAddress!
+  notes: NoteCreateNestedManyWithoutUserInput
+  password: PasswordCreateNestedOneWithoutUserInput!
+  profile: ProfileCreateNestedOneWithoutUserInput
+  role: UserCreateroleInput
+  tasks: TaskCreateNestedManyWithoutUserInput
+  type: UserType
+}
+
+input UserCreateNestedOneWithoutConfigInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutConfigInput
+  create: UserCreateWithoutConfigInput
+}
+
+input UserCreateNestedOneWithoutNotesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotesInput
+  create: UserCreateWithoutNotesInput
+}
+
+input UserCreateNestedOneWithoutTasksInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutTasksInput
+  create: UserCreateWithoutTasksInput
+}
+
+input UserCreateOrConnectWithoutConfigInput {
+  create: UserCreateWithoutConfigInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutNotesInput {
+  create: UserCreateWithoutNotesInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutTasksInput {
+  create: UserCreateWithoutTasksInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateWithoutConfigInput {
+  createdAt: DateTime
+  email: EmailAddress!
+  notes: NoteCreateNestedManyWithoutUserInput
+  password: PasswordCreateNestedOneWithoutUserInput!
+  profile: ProfileCreateNestedOneWithoutUserInput
+  role: UserCreateroleInput
+  tasks: TaskCreateNestedManyWithoutUserInput
+  type: UserType
+}
+
+input UserCreateWithoutNotesInput {
+  config: UserConfigCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: EmailAddress!
+  password: PasswordCreateNestedOneWithoutUserInput!
+  profile: ProfileCreateNestedOneWithoutUserInput
+  role: UserCreateroleInput
+  tasks: TaskCreateNestedManyWithoutUserInput
+  type: UserType
+}
+
+input UserCreateWithoutTasksInput {
+  config: UserConfigCreateNestedOneWithoutUserInput
+  createdAt: DateTime
+  email: EmailAddress!
+  notes: NoteCreateNestedManyWithoutUserInput
+  password: PasswordCreateNestedOneWithoutUserInput!
+  profile: ProfileCreateNestedOneWithoutUserInput
+  role: UserCreateroleInput
+  type: UserType
+}
+
+input UserCreateroleInput {
+  set: [UserRole!]!
+}
+
+type UserMaxAggregate {
+  createdAt: DateTime
+  email: EmailAddress
+  id: String
+  type: UserType
+}
+
+type UserMinAggregate {
+  createdAt: DateTime
+  email: EmailAddress
+  id: String
+  type: UserType
+}
+
+input UserNullableRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+enum UserOrderByRelevanceFieldEnum {
+  email
+  id
+  passwordId
+}
+
+input UserOrderByRelevanceInput {
+  fields: [UserOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input UserOrderByWithRelationInput {
+  _relevance: UserOrderByRelevanceInput
+  config: UserConfigOrderByWithRelationInput
+  createdAt: SortOrderInput
+  email: SortOrder
+  id: SortOrder
+  notes: NoteOrderByRelationAggregateInput
+  password: PasswordOrderByWithRelationInput
+  passwordId: SortOrder
+  profile: ProfileOrderByWithRelationInput
+  role: SortOrder
+  tasks: TaskOrderByRelationAggregateInput
+  type: SortOrder
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+enum UserRole {
+  ROLE_ADMIN
+  ROLE_DEVELOPER
+  ROLE_GUEST
+  ROLE_USER
+}
+
+enum UserScalarFieldEnum {
+  createdAt
+  email
+  id
+  passwordId
+  role
+  type
+}
+
+enum UserType {
+  ADMIN
+  GUEST
+  USER
+}
+
+input UserUpdateInput {
+  config: UserConfigUpdateOneWithoutUserNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutUserNestedInput
+  password: PasswordUpdateOneRequiredWithoutUserNestedInput
+  profile: ProfileUpdateOneWithoutUserNestedInput
+  role: UserUpdateroleInput
+  tasks: TaskUpdateManyWithoutUserNestedInput
+  type: EnumUserTypeFieldUpdateOperationsInput
+}
+
+input UserUpdateOneRequiredWithoutConfigNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutConfigInput
+  create: UserCreateWithoutConfigInput
+  update: UserUpdateToOneWithWhereWithoutConfigInput
+  upsert: UserUpsertWithoutConfigInput
+}
+
+input UserUpdateOneRequiredWithoutNotesNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotesInput
+  create: UserCreateWithoutNotesInput
+  update: UserUpdateToOneWithWhereWithoutNotesInput
+  upsert: UserUpsertWithoutNotesInput
+}
+
+input UserUpdateOneRequiredWithoutTasksNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutTasksInput
+  create: UserCreateWithoutTasksInput
+  update: UserUpdateToOneWithWhereWithoutTasksInput
+  upsert: UserUpsertWithoutTasksInput
+}
+
+input UserUpdateToOneWithWhereWithoutConfigInput {
+  data: UserUpdateWithoutConfigInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutNotesInput {
+  data: UserUpdateWithoutNotesInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutTasksInput {
+  data: UserUpdateWithoutTasksInput!
+  where: UserWhereInput
+}
+
+input UserUpdateWithoutConfigInput {
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutUserNestedInput
+  password: PasswordUpdateOneRequiredWithoutUserNestedInput
+  profile: ProfileUpdateOneWithoutUserNestedInput
+  role: UserUpdateroleInput
+  tasks: TaskUpdateManyWithoutUserNestedInput
+  type: EnumUserTypeFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutNotesInput {
+  config: UserConfigUpdateOneWithoutUserNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: PasswordUpdateOneRequiredWithoutUserNestedInput
+  profile: ProfileUpdateOneWithoutUserNestedInput
+  role: UserUpdateroleInput
+  tasks: TaskUpdateManyWithoutUserNestedInput
+  type: EnumUserTypeFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutTasksInput {
+  config: UserConfigUpdateOneWithoutUserNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutUserNestedInput
+  password: PasswordUpdateOneRequiredWithoutUserNestedInput
+  profile: ProfileUpdateOneWithoutUserNestedInput
+  role: UserUpdateroleInput
+  type: EnumUserTypeFieldUpdateOperationsInput
+}
+
+input UserUpdateroleInput {
+  push: [UserRole!]
+  set: [UserRole!]
+}
+
+input UserUpsertWithoutConfigInput {
+  create: UserCreateWithoutConfigInput!
+  update: UserUpdateWithoutConfigInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutNotesInput {
+  create: UserCreateWithoutNotesInput!
+  update: UserUpdateWithoutNotesInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutTasksInput {
+  create: UserCreateWithoutTasksInput!
+  update: UserUpdateWithoutTasksInput!
+  where: UserWhereInput
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  config: UserConfigNullableRelationFilter
+  createdAt: DateTimeNullableFilter
+  email: StringFilter
+  id: StringFilter
+  notes: NoteListRelationFilter
+  profile: ProfileNullableRelationFilter
+  role: EnumUserRoleNullableListFilter
+  tasks: TaskListRelationFilter
+  type: EnumUserTypeFilter
+}
+
+input UserWhereUniqueInput {
+  AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  config: UserConfigNullableRelationFilter
+  createdAt: DateTimeNullableFilter
+  email: EmailAddress
+  id: String
+  notes: NoteListRelationFilter
+  profile: ProfileNullableRelationFilter
+  role: EnumUserRoleNullableListFilter
+  tasks: TaskListRelationFilter
+  type: EnumUserTypeFilter
+}

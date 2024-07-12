@@ -4,7 +4,7 @@ import localForage from 'localforage';
 import { produce } from 'immer';
 import { LoginFormValues } from '@common/form-context/login.context.ts';
 import { apolloClient } from '@configs/apollo-client.config.ts';
-import { LoginMutation } from '@graphql/freeflow/mutation/login.mutation.ts';
+import { LoginMutation } from '@graphql/itm/mutation/login.mutation.ts';
 import useAccessTokenStore from '@stores/tokens/access-token.store.ts';
 import useRefreshTokenStore from '@stores/tokens/refresh-token.store.ts';
 
