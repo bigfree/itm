@@ -22,9 +22,10 @@ export class RolesGuard implements CanActivate {
     private getRoleFromContext(context: GqlExecutionContext): UserRole[] | null {
         if (context.getContext().connectionParams?.Authorization) {
             const connectionParams = context.getContext().connectionParams;
-            const decodedUser: AccessTokenData = this.jwtService.decode(
-                connectionParams.Authorization.replace('Bearer ', ''),
-            );
+            const bearerToken = connectionParams.Authorization ?? connectionParams.authorization ?? '';
+            const bearerTokenTrimmed = bearerToken.replace('Bearer', '').trim();
+            const decodedUser: AccessTokenData = this.jwtService.decode(bearerTokenTrimmed);
+
             return decodedUser?.role ?? null;
         }
 

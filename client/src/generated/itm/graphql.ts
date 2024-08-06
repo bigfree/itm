@@ -33,6 +33,15 @@ export type Authorize = {
   user: User;
 };
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type BoolFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>;
+  not?: InputMaybe<NestedBoolFilter>;
+};
+
 export type DateTimeNullableFilter = {
   equals?: InputMaybe<Scalars['DateTime']['input']>;
   gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -84,6 +93,17 @@ export type EnumUserTypeFilter = {
   notIn?: InputMaybe<Array<UserType>>;
 };
 
+export type IntNullableFilter = {
+  equals?: InputMaybe<Scalars['Int']['input']>;
+  gt?: InputMaybe<Scalars['Int']['input']>;
+  gte?: InputMaybe<Scalars['Int']['input']>;
+  in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  lt?: InputMaybe<Scalars['Int']['input']>;
+  lte?: InputMaybe<Scalars['Int']['input']>;
+  not?: InputMaybe<NestedIntNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
 export type JsonNullableFilter = {
   array_contains?: InputMaybe<Scalars['JSON']['input']>;
   array_ends_with?: InputMaybe<Scalars['JSON']['input']>;
@@ -105,7 +125,7 @@ export type Log = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   data?: Maybe<Scalars['JSON']['output']>;
   from?: Maybe<LogFrom>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   type: LogType;
 };
 
@@ -234,6 +254,7 @@ export type Mutation = {
   updateTask: Task;
   updateUser: User;
   updateUserConfig: UserConfig;
+  upsertNoteConfig: NoteConfig;
   upsertUserConfig: UserConfig;
 };
 
@@ -353,10 +374,22 @@ export type MutationUpdateUserConfigArgs = {
 };
 
 
+export type MutationUpsertNoteConfigArgs = {
+  create: NoteConfigCreateInput;
+  update: NoteConfigUpdateInput;
+  where: NoteConfigWhereUniqueInput;
+};
+
+
 export type MutationUpsertUserConfigArgs = {
   create: UserConfigCreateInput;
   update: UserConfigUpdateInput;
   where: UserConfigWhereUniqueInput;
+};
+
+export type NestedBoolFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>;
+  not?: InputMaybe<NestedBoolFilter>;
 };
 
 export type NestedDateTimeNullableFilter = {
@@ -398,6 +431,17 @@ export type NestedEnumUserTypeFilter = {
   notIn?: InputMaybe<Array<UserType>>;
 };
 
+export type NestedIntNullableFilter = {
+  equals?: InputMaybe<Scalars['Int']['input']>;
+  gt?: InputMaybe<Scalars['Int']['input']>;
+  gte?: InputMaybe<Scalars['Int']['input']>;
+  in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  lt?: InputMaybe<Scalars['Int']['input']>;
+  lte?: InputMaybe<Scalars['Int']['input']>;
+  not?: InputMaybe<NestedIntNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
 export type NestedStringFilter = {
   contains?: InputMaybe<Scalars['String']['input']>;
   endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -436,18 +480,35 @@ export type Note = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   tasks?: Maybe<Array<Task>>;
   user: User;
   userId: Scalars['String']['output'];
 };
 
+
+export type NoteTasksArgs = {
+  cursor?: InputMaybe<TaskWhereUniqueInput>;
+  distinct?: InputMaybe<Array<TaskScalarFieldEnum>>;
+  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TaskWhereInput>;
+};
+
+export type NoteAvgAggregate = {
+  __typename?: 'NoteAvgAggregate';
+  order?: Maybe<Scalars['Float']['output']>;
+};
+
 export type NoteConfig = {
   __typename?: 'NoteConfig';
   color?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
+  isOpenCompletedTask: Scalars['Boolean']['output'];
   note: Note;
   noteId: Scalars['String']['output'];
 };
@@ -457,11 +518,13 @@ export type NoteConfigCountAggregate = {
   _all: Scalars['Int']['output'];
   color: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  isOpenCompletedTask: Scalars['Int']['output'];
   noteId: Scalars['Int']['output'];
 };
 
 export type NoteConfigCreateInput = {
   color?: InputMaybe<Scalars['String']['input']>;
+  isOpenCompletedTask?: InputMaybe<Scalars['Boolean']['input']>;
   note: NoteCreateNestedOneWithoutConfigInput;
 };
 
@@ -478,12 +541,14 @@ export type NoteConfigCreateOrConnectWithoutNoteInput = {
 
 export type NoteConfigCreateWithoutNoteInput = {
   color?: InputMaybe<Scalars['String']['input']>;
+  isOpenCompletedTask?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type NoteConfigMaxAggregate = {
   __typename?: 'NoteConfigMaxAggregate';
   color?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  isOpenCompletedTask?: Maybe<Scalars['Boolean']['output']>;
   noteId?: Maybe<Scalars['String']['output']>;
 };
 
@@ -491,6 +556,7 @@ export type NoteConfigMinAggregate = {
   __typename?: 'NoteConfigMinAggregate';
   color?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
+  isOpenCompletedTask?: Maybe<Scalars['Boolean']['output']>;
   noteId?: Maybe<Scalars['String']['output']>;
 };
 
@@ -515,12 +581,14 @@ export type NoteConfigOrderByWithRelationInput = {
   _relevance?: InputMaybe<NoteConfigOrderByRelevanceInput>;
   color?: InputMaybe<SortOrderInput>;
   id?: InputMaybe<SortOrder>;
+  isOpenCompletedTask?: InputMaybe<SortOrder>;
   note?: InputMaybe<NoteOrderByWithRelationInput>;
   noteId?: InputMaybe<SortOrder>;
 };
 
 export type NoteConfigUpdateInput = {
   color?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  isOpenCompletedTask?: InputMaybe<BoolFieldUpdateOperationsInput>;
   note?: InputMaybe<NoteUpdateOneRequiredWithoutConfigNestedInput>;
 };
 
@@ -541,6 +609,7 @@ export type NoteConfigUpdateToOneWithWhereWithoutNoteInput = {
 
 export type NoteConfigUpdateWithoutNoteInput = {
   color?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  isOpenCompletedTask?: InputMaybe<BoolFieldUpdateOperationsInput>;
 };
 
 export type NoteConfigUpsertWithoutNoteInput = {
@@ -555,6 +624,7 @@ export type NoteConfigWhereInput = {
   OR?: InputMaybe<Array<NoteConfigWhereInput>>;
   color?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<StringFilter>;
+  isOpenCompletedTask?: InputMaybe<BoolFilter>;
   note?: InputMaybe<NoteRelationFilter>;
   noteId?: InputMaybe<StringFilter>;
 };
@@ -565,6 +635,7 @@ export type NoteConfigWhereUniqueInput = {
   OR?: InputMaybe<Array<NoteConfigWhereInput>>;
   color?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<Scalars['String']['input']>;
+  isOpenCompletedTask?: InputMaybe<BoolFilter>;
   note?: InputMaybe<NoteRelationFilter>;
   noteId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -583,6 +654,7 @@ export type NoteCountAggregate = {
   description: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   name: Scalars['Int']['output'];
+  order: Scalars['Int']['output'];
   pinnedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -594,6 +666,7 @@ export type NoteCreateInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
   user: UserCreateNestedOneWithoutNotesInput;
@@ -605,6 +678,7 @@ export type NoteCreateManyUserInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -653,6 +727,7 @@ export type NoteCreateWithoutConfigInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
   user: UserCreateNestedOneWithoutNotesInput;
@@ -665,6 +740,7 @@ export type NoteCreateWithoutTasksInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   user: UserCreateNestedOneWithoutNotesInput;
 };
@@ -676,6 +752,7 @@ export type NoteCreateWithoutUserInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
 };
@@ -694,6 +771,7 @@ export type NoteMaxAggregate = {
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -706,6 +784,7 @@ export type NoteMinAggregate = {
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -736,6 +815,7 @@ export type NoteOrderByWithRelationInput = {
   description?: InputMaybe<SortOrderInput>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrderInput>;
+  order?: InputMaybe<SortOrderInput>;
   pinnedAt?: InputMaybe<SortOrderInput>;
   tasks?: InputMaybe<TaskOrderByRelationAggregateInput>;
   user?: InputMaybe<UserOrderByWithRelationInput>;
@@ -754,6 +834,7 @@ export enum NoteScalarFieldEnum {
   Description = 'description',
   Id = 'id',
   Name = 'name',
+  Order = 'order',
   PinnedAt = 'pinnedAt',
   UserId = 'userId'
 }
@@ -768,8 +849,14 @@ export type NoteScalarWhereInput = {
   description?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<StringFilter>;
   name?: InputMaybe<StringNullableFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   userId?: InputMaybe<StringFilter>;
+};
+
+export type NoteSumAggregate = {
+  __typename?: 'NoteSumAggregate';
+  order?: Maybe<Scalars['Int']['output']>;
 };
 
 export type NoteUpdateInput = {
@@ -779,6 +866,7 @@ export type NoteUpdateInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
@@ -790,6 +878,7 @@ export type NoteUpdateManyMutationInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -849,6 +938,7 @@ export type NoteUpdateWithoutConfigInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
@@ -861,6 +951,7 @@ export type NoteUpdateWithoutTasksInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
 };
@@ -872,6 +963,7 @@ export type NoteUpdateWithoutUserInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
 };
@@ -905,6 +997,7 @@ export type NoteWhereInput = {
   description?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<StringFilter>;
   name?: InputMaybe<StringNullableFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   tasks?: InputMaybe<TaskListRelationFilter>;
   user?: InputMaybe<UserRelationFilter>;
@@ -922,6 +1015,7 @@ export type NoteWhereUniqueInput = {
   description?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<StringNullableFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   tasks?: InputMaybe<TaskListRelationFilter>;
   user?: InputMaybe<UserRelationFilter>;
@@ -934,6 +1028,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type NullableEnumThemeColorFieldUpdateOperationsInput = {
   set?: InputMaybe<ThemeColor>;
+};
+
+export type NullableIntFieldUpdateOperationsInput = {
+  decrement?: InputMaybe<Scalars['Int']['input']>;
+  divide?: InputMaybe<Scalars['Int']['input']>;
+  increment?: InputMaybe<Scalars['Int']['input']>;
+  multiply?: InputMaybe<Scalars['Int']['input']>;
+  set?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -1045,7 +1147,7 @@ export type Profile = {
   bio?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   lastName: Scalars['String']['output'];
   user: User;
   userId: Scalars['String']['output'];
@@ -1397,6 +1499,7 @@ export type Subscription = {
   logCreated: Log;
   noteConfigCreated: Note;
   noteConfigUpdated: Note;
+  noteConfigUpserted: Note;
   noteCreated: Note;
   noteDeleted: Note;
   noteUpdated: Note;
@@ -1414,13 +1517,19 @@ export type Task = {
   completedAt?: Maybe<Scalars['DateTime']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   name?: Maybe<Scalars['String']['output']>;
   note: Note;
   noteId: Scalars['String']['output'];
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   user: User;
   userId: Scalars['String']['output'];
+};
+
+export type TaskAvgAggregate = {
+  __typename?: 'TaskAvgAggregate';
+  order?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TaskCountAggregate = {
@@ -1432,6 +1541,7 @@ export type TaskCountAggregate = {
   id: Scalars['Int']['output'];
   name: Scalars['Int']['output'];
   noteId: Scalars['Int']['output'];
+  order: Scalars['Int']['output'];
   pinnedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -1442,6 +1552,7 @@ export type TaskCreateInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   note: NoteCreateNestedOneWithoutTasksInput;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   user: UserCreateNestedOneWithoutTasksInput;
 };
@@ -1451,6 +1562,7 @@ export type TaskCreateManyNoteInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   userId: Scalars['String']['input'];
 };
@@ -1466,6 +1578,7 @@ export type TaskCreateManyUserInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   noteId: Scalars['String']['input'];
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -1503,6 +1616,7 @@ export type TaskCreateWithoutNoteInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
   user: UserCreateNestedOneWithoutTasksInput;
 };
@@ -1513,6 +1627,7 @@ export type TaskCreateWithoutUserInput = {
   deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   note: NoteCreateNestedOneWithoutTasksInput;
+  order?: InputMaybe<Scalars['Int']['input']>;
   pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -1530,6 +1645,7 @@ export type TaskMaxAggregate = {
   id?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   noteId?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -1542,6 +1658,7 @@ export type TaskMinAggregate = {
   id?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   noteId?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Scalars['Int']['output']>;
   pinnedAt?: Maybe<Scalars['DateTime']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -1572,6 +1689,7 @@ export type TaskOrderByWithRelationInput = {
   name?: InputMaybe<SortOrderInput>;
   note?: InputMaybe<NoteOrderByWithRelationInput>;
   noteId?: InputMaybe<SortOrder>;
+  order?: InputMaybe<SortOrderInput>;
   pinnedAt?: InputMaybe<SortOrderInput>;
   user?: InputMaybe<UserOrderByWithRelationInput>;
   userId?: InputMaybe<SortOrder>;
@@ -1584,6 +1702,7 @@ export enum TaskScalarFieldEnum {
   Id = 'id',
   Name = 'name',
   NoteId = 'noteId',
+  Order = 'order',
   PinnedAt = 'pinnedAt',
   UserId = 'userId'
 }
@@ -1598,8 +1717,14 @@ export type TaskScalarWhereInput = {
   id?: InputMaybe<StringFilter>;
   name?: InputMaybe<StringNullableFilter>;
   noteId?: InputMaybe<StringFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   userId?: InputMaybe<StringFilter>;
+};
+
+export type TaskSumAggregate = {
+  __typename?: 'TaskSumAggregate';
+  order?: Maybe<Scalars['Int']['output']>;
 };
 
 export type TaskUpdateInput = {
@@ -1608,6 +1733,7 @@ export type TaskUpdateInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   note?: InputMaybe<NoteUpdateOneRequiredWithoutTasksNestedInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutTasksNestedInput>;
 };
@@ -1617,6 +1743,7 @@ export type TaskUpdateManyMutationInput = {
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -1673,6 +1800,7 @@ export type TaskUpdateWithoutNoteInput = {
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutTasksNestedInput>;
 };
@@ -1683,6 +1811,7 @@ export type TaskUpdateWithoutUserInput = {
   deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   note?: InputMaybe<NoteUpdateOneRequiredWithoutTasksNestedInput>;
+  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
 };
 
@@ -1709,6 +1838,7 @@ export type TaskWhereInput = {
   name?: InputMaybe<StringNullableFilter>;
   note?: InputMaybe<NoteRelationFilter>;
   noteId?: InputMaybe<StringFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<StringFilter>;
@@ -1725,6 +1855,7 @@ export type TaskWhereUniqueInput = {
   name?: InputMaybe<StringNullableFilter>;
   note?: InputMaybe<NoteRelationFilter>;
   noteId?: InputMaybe<StringFilter>;
+  order?: InputMaybe<IntNullableFilter>;
   pinnedAt?: InputMaybe<DateTimeNullableFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<StringFilter>;
@@ -1742,7 +1873,7 @@ export type User = {
   config?: Maybe<UserConfig>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['EmailAddress']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   notes?: Maybe<Array<Note>>;
   profile?: Maybe<Profile>;
   role?: Maybe<Array<UserRole>>;
@@ -1752,7 +1883,7 @@ export type User = {
 
 export type UserConfig = {
   __typename?: 'UserConfig';
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   theme?: Maybe<ThemeColor>;
   user: User;
   userId: Scalars['String']['output'];
@@ -2185,14 +2316,20 @@ export type UserWhereUniqueInput = {
   type?: InputMaybe<EnumUserTypeFilter>;
 };
 
+export type NoteFragmentFragment = { __typename?: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null };
+
+export type NoteConfigFragmentFragment = { __typename?: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean };
+
 export type ProfileFragmentFragment = { __typename: 'Profile', id: string, acronym?: string | null, avatar?: string | null, firstName: string, lastName: string, username?: string | null, bio?: string | null };
+
+export type TaskFragmentFragment = { __typename?: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null };
 
 export type MeFragmentFragment = { __typename: 'User', id: string, type: UserType, role?: Array<UserRole> | null, email: any };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename: 'Query', me: { __typename: 'User', id: string, type: UserType, role?: Array<UserRole> | null, email: any } };
+export type MeQuery = { __typename: 'Query', me: { __typename: 'User', id: string, type: UserType, role?: Array<UserRole> | null, email: any, profile?: { __typename: 'Profile', id: string, acronym?: string | null, avatar?: string | null, firstName: string, lastName: string, username?: string | null, bio?: string | null } | null, config?: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null } | null } };
 
 export type MyConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2216,10 +2353,86 @@ export type UpdateUserConfigMutationVariables = Exact<{
 
 export type UpdateUserConfigMutation = { __typename?: 'Mutation', updateUserConfig: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null } };
 
+export type UpsertNoteConfigMutationMutationVariables = Exact<{
+  create: NoteConfigCreateInput;
+  update: NoteConfigUpdateInput;
+  where: NoteConfigWhereUniqueInput;
+}>;
+
+
+export type UpsertNoteConfigMutationMutation = { __typename?: 'Mutation', upsertNoteConfig: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } };
+
+export type CreateNoteMutationVariables = Exact<{
+  data: NoteCreateInput;
+}>;
+
+
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null } };
+
+export type UpdateNoteMutationVariables = Exact<{
+  data: NoteUpdateInput;
+  where: NoteWhereUniqueInput;
+}>;
+
+
+export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote: { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null } };
+
+export type UpdateTaskMutationMutationVariables = Exact<{
+  data: TaskUpdateInput;
+  where: TaskWhereUniqueInput;
+}>;
+
+
+export type UpdateTaskMutationMutation = { __typename?: 'Mutation', updateTask: { __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null } };
+
+export type CreateTaskMutationMutationVariables = Exact<{
+  data: TaskCreateInput;
+}>;
+
+
+export type CreateTaskMutationMutation = { __typename?: 'Mutation', createTask: { __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null } };
+
+export type RemoveTaskMutationMutationVariables = Exact<{
+  where: TaskWhereUniqueInput;
+}>;
+
+
+export type RemoveTaskMutationMutation = { __typename?: 'Mutation', removeTask: { __typename: 'Task', id: string } };
+
+export type NotesQueryVariables = Exact<{
+  noteWhere?: InputMaybe<NoteWhereInput>;
+  noteOrderBy?: InputMaybe<Array<NoteOrderByWithRelationInput> | NoteOrderByWithRelationInput>;
+}>;
+
+
+export type NotesQuery = { __typename: 'Query', notes: Array<{ __typename?: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null }> };
+
+export type NotesQueryFragmentFragment = { __typename?: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null };
+
+export type TasksQueryVariables = Exact<{
+  where?: InputMaybe<TaskWhereInput>;
+  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput> | TaskOrderByWithRelationInput>;
+}>;
+
+
+export type TasksQuery = { __typename: 'Query', tasks: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> };
+
 export const ProfileFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"acronym"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}}]} as unknown as DocumentNode<ProfileFragmentFragment, unknown>;
 export const MeFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]} as unknown as DocumentNode<MeFragmentFragment, unknown>;
 export const MyConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MyConfigFragmentFragment, unknown>;
-export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MeFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const NoteFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<NoteFragmentFragment, unknown>;
+export const NoteConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<NoteConfigFragmentFragment, unknown>;
+export const TaskFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<TaskFragmentFragment, unknown>;
+export const NotesQueryFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotesQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<NotesQueryFragmentFragment, unknown>;
+export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MeFragment"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"acronym"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
 export const MyConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"myConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MyConfigQuery, MyConfigQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const UpdateUserConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<UpdateUserConfigMutation, UpdateUserConfigMutationVariables>;
+export const UpsertNoteConfigMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertNoteConfigMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"create"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigCreateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"update"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertNoteConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"create"}}},{"kind":"Argument","name":{"kind":"Name","value":"update"},"value":{"kind":"Variable","name":{"kind":"Name","value":"update"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<UpsertNoteConfigMutationMutation, UpsertNoteConfigMutationMutationVariables>;
+export const CreateNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<CreateNoteMutation, CreateNoteMutationVariables>;
+export const UpdateNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<UpdateNoteMutation, UpdateNoteMutationVariables>;
+export const UpdateTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<UpdateTaskMutationMutation, UpdateTaskMutationMutationVariables>;
+export const CreateTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<CreateTaskMutationMutation, CreateTaskMutationMutationVariables>;
+export const RemoveTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<RemoveTaskMutationMutation, RemoveTaskMutationMutationVariables>;
+export const NotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Notes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"noteWhere"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"noteOrderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"noteWhere"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"noteOrderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NotesQueryFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotesQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}}]} as unknown as DocumentNode<NotesQuery, NotesQueryVariables>;
+export const TasksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<TasksQuery, TasksQueryVariables>;

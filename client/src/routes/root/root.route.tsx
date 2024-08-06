@@ -6,22 +6,26 @@ import '@mantine/spotlight/styles.css';
 import { FC, ReactElement } from 'react';
 import { AppShell, rem } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
-import { RootAppHeader, RootAppMain, RootAppNavbar } from '@routes/root/root.css.ts';
+import { AppShellHeaderCss, AppShellMainCss, AppShellNavbarCss, AppShellRootCss } from '@routes/root/root.css.ts';
+import AppHeader from '@components/app/header/app-header.component.tsx';
 
 const RootRoute: FC = (): ReactElement => {
     return (
         <AppShell
             classNames={{
-                header: RootAppHeader,
-                main: RootAppMain,
-                navbar: RootAppNavbar,
+                header: AppShellHeaderCss,
+                main: AppShellMainCss,
+                navbar: AppShellNavbarCss,
+                root: AppShellRootCss,
             }}
             withBorder={false}
             header={{
                 height: rem(60),
             }}
         >
-            <AppShell.Header></AppShell.Header>
+            <AppShell.Header>
+                <AppHeader />
+            </AppShell.Header>
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>

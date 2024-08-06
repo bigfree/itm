@@ -1,14 +1,17 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma/prisma.service';
 import {
+    AggregateTask,
     CreateOneTaskArgs,
     DeleteOneTaskArgs,
     FindManyTaskArgs,
     FindUniqueTaskArgs,
     Task,
+    TaskAggregateArgs,
     UpdateOneTaskArgs,
 } from '../@generated';
 import { GraphQLException } from '@nestjs/graphql/dist/exceptions';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TaskService {
@@ -17,50 +20,64 @@ export class TaskService {
     /**
      * Create one task
      * @param createOneTaskArgs
+     * @param select
      */
-    public async create(createOneTaskArgs: CreateOneTaskArgs): Promise<Task> {
+    public async create(createOneTaskArgs: CreateOneTaskArgs, select: Prisma.TaskSelect): Promise<Task> {
         return this.prismaService.task.create({
-            include: {
-                note: true,
-                user: true,
-            },
             ...createOneTaskArgs,
+            select,
         });
     }
 
     /**
      *
      * @param findManyTaskArgs
+     * @param select
+     * @param id
      */
-    public async findAll(findManyTaskArgs: FindManyTaskArgs): Promise<Task[]> {
+    public async findAll(
+        findManyTaskArgs: FindManyTaskArgs,
+        select: Prisma.TaskSelect,
+        id?: string | null,
+    ): Promise<Task[]> {
         return this.prismaService.task.findMany({
-            include: {
-                note: true,
-                user: true,
-            },
             ...findManyTaskArgs,
+            where: {
+                noteId: id ? { equals: id } : undefined,
+                ...findManyTaskArgs.where,
+            },
+            select,
         });
     }
 
     /**
      *
-     * @param findUniqueTaskArgs
+     * @param aggregateTaskArgs
      */
-    public async findOne(findUniqueTaskArgs: FindUniqueTaskArgs): Promise<Task | null> {
+    // public async aggregate(aggregateTaskArgs: TaskAggregateArgs): Promise<AggregateTask> {
+    //     return this.prismaService.task.aggregate({
+    //         ...aggregateTaskArgs,
+    //     });
+    // }
+
+    /**
+     *
+     * @param findUniqueTaskArgs
+     * @param select
+     */
+    public async findOne(findUniqueTaskArgs: FindUniqueTaskArgs, select: Prisma.TaskSelect): Promise<Task | null> {
         return this.prismaService.task.findUniqueOrThrow({
-            include: {
-                note: true,
-                user: true,
-            },
             ...findUniqueTaskArgs,
+            select,
         });
     }
 
     /**
      *
      * @param updateOneTaskArgs
+     * @param select
      */
-    public async update(updateOneTaskArgs: UpdateOneTaskArgs): Promise<Task> {
+    public async update(updateOneTaskArgs: UpdateOneTaskArgs, select: Prisma.TaskSelect): Promise<Task> {
         const existingTask = await this.prismaService.task.findUnique({
             where: updateOneTaskArgs.where,
         });
@@ -77,19 +94,17 @@ export class TaskService {
         }
 
         return this.prismaService.task.update({
-            include: {
-                note: true,
-                user: true,
-            },
             ...updateOneTaskArgs,
+            select,
         });
     }
 
     /**
      *
      * @param deleteOneTaskArgs
+     * @param select
      */
-    public async remove(deleteOneTaskArgs: DeleteOneTaskArgs): Promise<Task> {
+    public async remove(deleteOneTaskArgs: DeleteOneTaskArgs, select: Prisma.TaskSelect): Promise<Task> {
         const existingTask = await this.prismaService.task.findUnique({
             where: deleteOneTaskArgs.where,
         });
@@ -106,11 +121,8 @@ export class TaskService {
         }
 
         return this.prismaService.task.delete({
-            include: {
-                note: true,
-                user: true,
-            },
             ...deleteOneTaskArgs,
+            select,
         });
     }
 
@@ -118,8 +130,9 @@ export class TaskService {
      * Complete task
      * @param userId
      * @param taskId
+     * @param select
      */
-    public async completedMyTask(userId: string, taskId: string): Promise<Task> {
+    public async completedMyTask(userId: string, taskId: string, select: Prisma.TaskSelect): Promise<Task> {
         const existingTask = await this.prismaService.task.findUnique({
             where: {
                 id: taskId,
@@ -150,10 +163,6 @@ export class TaskService {
         }
 
         return this.prismaService.task.update({
-            include: {
-                note: true,
-                user: true,
-            },
             where: {
                 id: taskId,
                 userId,
@@ -161,6 +170,7 @@ export class TaskService {
             data: {
                 completedAt: new Date(),
             },
+            select,
         });
     }
 }

@@ -44,7 +44,7 @@ export class AuthorizeService {
         const user = await this.fetchUserByEmail(loginInput.email);
 
         /** Validates if the provided password is valid. */
-        const isPasswordValid = await this.userPasswordService.comparePassword(
+        const isPasswordValid: boolean = await this.userPasswordService.comparePassword(
             loginInput.password,
             user?.password?.password ?? '',
         );

@@ -5,6 +5,14 @@ export const MeQuery = gql(/* GraphQL */ `
         __typename
         me {
             ...MeFragment
+            profile {
+                __typename
+                ...ProfileFragment
+            }
+            config {
+                __typename
+                ...MyConfigFragment
+            }
         }
     }
 `);

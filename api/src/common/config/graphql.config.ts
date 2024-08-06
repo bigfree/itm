@@ -5,6 +5,9 @@ import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { DateScalarMode } from '@nestjs/graphql';
 import { GraphQLFormattedError } from 'graphql/error';
+import { Context } from 'graphql-ws';
+import { JwtService } from '@nestjs/jwt';
+import { AccessTokenPayload } from '../types/authorize.types';
 
 export const graphqlConfig = (configService: ConfigService): ApolloDriverConfig => ({
     playground: false,
@@ -20,6 +23,21 @@ export const graphqlConfig = (configService: ConfigService): ApolloDriverConfig 
     subscriptions: {
         'graphql-ws': {
             path: configService.get<string>('GRAPHQL_SUBSCRIPTION_PATH') || '/graphql',
+            onConnect: ({ connectionParams, extra }: Context<any>) => {
+                const jwtService: JwtService = new JwtService();
+                const authToken = connectionParams?.Authorization ?? connectionParams?.authorization ?? '';
+                const authTokenTrimmed = authToken.replace('Bearer', '').trim();
+
+                extra['user'] = jwtService.decode<AccessTokenPayload>(authTokenTrimmed);
+
+                return {
+                    req: {
+                        headers: {
+                            Authorization: authToken,
+                        },
+                    },
+                };
+            },
         },
     },
     context: ({ req, res, connectionParams, extra }) => ({

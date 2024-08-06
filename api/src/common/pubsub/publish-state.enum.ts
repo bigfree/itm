@@ -9,6 +9,7 @@ export enum PublishStateEnum {
     NOTE_DELETED = 'noteDeleted',
     NOTE_CONFIG_CREATED = 'noteConfigCreated',
     NOTE_CONFIG_UPDATED = 'noteConfigUpdated',
+    NOTE_CONFIG_UPSERTED = 'noteConfigUpserted',
     TASK_CREATED = 'taskCreated',
     TASK_UPDATED = 'taskUpdated',
     TASK_DELETED = 'taskDeleted',

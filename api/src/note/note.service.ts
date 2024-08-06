@@ -9,6 +9,7 @@ import {
 } from '../@generated';
 import { PrismaService } from '../common/prisma/prisma.service';
 import { GraphQLException } from '@nestjs/graphql/dist/exceptions';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class NoteService {
@@ -17,54 +18,49 @@ export class NoteService {
     /**
      * Create one note
      * @param createOneNoteArgs
+     * @param select
      */
-    public async createOne(createOneNoteArgs: CreateOneNoteArgs): Promise<Note> {
+    public async createOne(createOneNoteArgs: CreateOneNoteArgs, select: Prisma.NoteSelect): Promise<Note> {
         return this.prismaService.note.create({
-            include: {
-                config: true,
-                tasks: true,
-                _count: true,
-            },
             ...createOneNoteArgs,
+            select,
         });
     }
 
     /**
      * Find many notes
      * @param findManyNoteArgs
+     * @param select
      */
-    public async findAll(findManyNoteArgs: FindManyNoteArgs): Promise<Note[]> {
+    public async findAll(findManyNoteArgs: FindManyNoteArgs, select: Prisma.NoteSelect): Promise<Note[]> {
         return this.prismaService.note.findMany({
-            include: {
-                config: true,
-                tasks: true,
-                _count: true,
-            },
             ...findManyNoteArgs,
+            select,
         });
     }
 
     /**
      * Find unique note
      * @param findUniqueNoteArgs
+     * @param select
      */
-    public async findOne(findUniqueNoteArgs: FindUniqueNoteArgs): Promise<Note | null> {
+    public async findOne(findUniqueNoteArgs: FindUniqueNoteArgs, select: Prisma.NoteSelect): Promise<Note | null> {
         return this.prismaService.note.findUniqueOrThrow({
-            include: {
-                config: true,
-                tasks: true,
-                _count: true,
-            },
             ...findUniqueNoteArgs,
+            select,
         });
     }
 
     /**
      * Update one note
      * @param updateOneNoteArgs
+     * @param select
      */
-    public async update(updateOneNoteArgs: UpdateOneNoteArgs): Promise<Note> {
+    public async update(updateOneNoteArgs: UpdateOneNoteArgs, select: Prisma.NoteSelect): Promise<Note> {
         const existingNote = await this.prismaService.note.findUnique({
+            select: {
+                id: true,
+            },
             where: updateOneNoteArgs.where,
         });
 
@@ -80,12 +76,8 @@ export class NoteService {
         }
 
         return this.prismaService.note.update({
-            include: {
-                config: true,
-                tasks: true,
-                _count: true,
-            },
             ...updateOneNoteArgs,
+            select,
         });
     }
 

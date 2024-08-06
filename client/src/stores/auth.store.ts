@@ -32,7 +32,7 @@ export type AuthStore = AuthProps & AuthActions;
 
 const authForageStore: LocalForage = localForage.createInstance({
     driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
-    name: 'freeflow',
+    name: 'itm',
     storeName: 'auth',
     version: AUTH_STORE_VERSION,
 });

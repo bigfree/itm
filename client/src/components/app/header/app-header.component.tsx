@@ -1,0 +1,25 @@
+import { FC, Fragment, ReactElement } from 'react';
+import { Flex } from '@mantine/core';
+import { AppHeaderFlexCss } from '@components/app/header/app-header.css.ts';
+import AppHeaderAvatar from '@components/app/header/avatar/app-header-avatar.component.tsx';
+import AppHeaderNotifications from '@components/app/header/notifications/app-header-notifications.component.tsx';
+import AppHeaderConfig from '@components/app/header/config/app-header-config.component.tsx';
+
+type AppHeaderProps = NonNullable<unknown>;
+
+const AppHeader: FC<AppHeaderProps> = (): ReactElement => {
+    return (
+        <Fragment>
+            <Flex className={AppHeaderFlexCss} align={'center'} style={{ flex: 1 }}>
+                a
+            </Flex>
+            <Flex className={AppHeaderFlexCss} align={'center'} gap={'xs'}>
+                <AppHeaderAvatar />
+                <AppHeaderConfig />
+                <AppHeaderNotifications />
+            </Flex>
+        </Fragment>
+    );
+};
+
+export default AppHeader;

@@ -10,6 +10,8 @@ async function main() {
     await prisma.user.deleteMany();
     await prisma.log.deleteMany();
     await prisma.refreshToken.deleteMany();
+    await prisma.note.deleteMany();
+    await prisma.task.deleteMany();
 
     console.log('Seeding...');
 
@@ -103,6 +105,33 @@ async function main() {
             },
         },
     });
+
+    let noteOrder: number = 0;
+    Array(5)
+        .fill(null)
+        .map(async () => {
+            const seedNote = await prisma.note.create({
+                data: {
+                    userId: roleAdminUser.id,
+                    name: faker.lorem.paragraph({ min: 1, max: 2 }),
+                    order: noteOrder++,
+                },
+            });
+
+            let taskOrder: number = 0;
+            Array(3)
+                .fill(null)
+                .map(async () => {
+                    await prisma.task.create({
+                        data: {
+                            userId: roleAdminUser.id,
+                            noteId: seedNote.id,
+                            name: faker.lorem.sentences({ min: 1, max: 1 }),
+                            order: taskOrder++,
+                        },
+                    });
+                });
+        });
 
     // /**
     //  * Create workspace

@@ -20,6 +20,7 @@ generator nestgraphql {
   emitCompiled                          = false
   emitSingle                            = true
   requireSingleFieldsInWhereUniqueInput = true
+  noTypeId                              = true
   fields_Validator_from                 = "class-validator"
   fields_Validator_input                = true
   fields_Scalars_from                   = "graphql-scalars"
@@ -147,6 +148,7 @@ model Note {
   name        String?     @db.VarChar(255)
   description String?     @db.Text
   userId      String
+  order       Int?        @db.Integer
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   config      NoteConfig?
   tasks       Task[]
@@ -166,11 +168,12 @@ model Note {
 
 model NoteConfig {
   /// @HideField({ match: 'NoteConfig*@(Create|Update)*Input' })
-  id     String  @id @default(cuid())
+  id                  String  @id @default(cuid())
   /// @FieldType('HexColorCode')
-  color  String? @db.VarChar(15)
-  noteId String  @unique
-  note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  color               String? @db.VarChar(15)
+  isOpenCompletedTask Boolean @default(false)
+  noteId              String  @unique
+  note                Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@index(fields: [id], type: Hash)
@@ -181,6 +184,7 @@ model Task {
   /// @HideField({ match: 'Task*@(Create|Update)*Input' })
   id     String  @id @default(cuid())
   name   String? @db.VarChar(8000)
+  order  Int?    @db.Integer
   noteId String
   note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
   userId String

@@ -1,7 +1,14 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateOneNoteConfigArgs, FindUniqueNoteConfigArgs, NoteConfig, UpdateOneNoteConfigArgs } from '../@generated';
+import {
+    CreateOneNoteConfigArgs,
+    FindUniqueNoteConfigArgs,
+    NoteConfig,
+    UpdateOneNoteConfigArgs,
+    UpsertOneNoteConfigArgs,
+} from '../@generated';
 import { PrismaService } from '../common/prisma/prisma.service';
 import { GraphQLException } from '@nestjs/graphql/dist/exceptions';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class NoteConfigService {
@@ -10,34 +17,42 @@ export class NoteConfigService {
     /**
      * Create note config
      * @param createOneNoteConfigArgs
+     * @param select
      */
-    public async create(createOneNoteConfigArgs: CreateOneNoteConfigArgs): Promise<NoteConfig> {
+    public async create(
+        createOneNoteConfigArgs: CreateOneNoteConfigArgs,
+        select: Prisma.NoteConfigSelect,
+    ): Promise<NoteConfig> {
         return this.prismaService.noteConfig.create({
-            include: {
-                note: true,
-            },
             ...createOneNoteConfigArgs,
+            select,
         });
     }
 
     /**
      * Find unique note
      * @param findUniqueNoteConfigArgs
+     * @param select
      */
-    public async findOne(findUniqueNoteConfigArgs: FindUniqueNoteConfigArgs): Promise<NoteConfig | null> {
+    public async findOne(
+        findUniqueNoteConfigArgs: FindUniqueNoteConfigArgs,
+        select: Prisma.NoteConfigSelect,
+    ): Promise<NoteConfig | null> {
         return this.prismaService.noteConfig.findUniqueOrThrow({
-            include: {
-                note: true,
-            },
             ...findUniqueNoteConfigArgs,
+            select,
         });
     }
 
     /**
      * Update one note config
      * @param updateOneNoteConfigArgs
+     * @param select
      */
-    public async update(updateOneNoteConfigArgs: UpdateOneNoteConfigArgs): Promise<NoteConfig> {
+    public async update(
+        updateOneNoteConfigArgs: UpdateOneNoteConfigArgs,
+        select: Prisma.NoteConfigSelect,
+    ): Promise<NoteConfig> {
         const existingConfig = await this.prismaService.noteConfig.findUnique({
             where: updateOneNoteConfigArgs.where,
         });
@@ -54,10 +69,23 @@ export class NoteConfigService {
         }
 
         return this.prismaService.noteConfig.update({
-            include: {
-                note: true,
-            },
             ...updateOneNoteConfigArgs,
+            select,
+        });
+    }
+
+    /**
+     * Upsert one note config
+     * @param upsertOneNoteConfigArgs
+     * @param select
+     */
+    public async upsert(
+        upsertOneNoteConfigArgs: UpsertOneNoteConfigArgs,
+        select: Prisma.NoteConfigSelect,
+    ): Promise<NoteConfig> {
+        return this.prismaService.noteConfig.upsert({
+            ...upsertOneNoteConfigArgs,
+            select,
         });
     }
 }

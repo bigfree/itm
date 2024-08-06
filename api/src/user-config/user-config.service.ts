@@ -6,7 +6,7 @@ import {
     UpdateOneUserConfigArgs,
     UpsertOneUserConfigArgs,
 } from '../@generated';
-import { UserConfig } from '@prisma/client';
+import { Prisma, UserConfig } from '@prisma/client';
 
 @Injectable()
 export class UserConfigService {
@@ -21,11 +21,16 @@ export class UserConfigService {
      * Find a unique UserConfig based on the provided arguments.
      *
      * @param {FindUniqueUserConfigArgs} findUniqueUserConfigArgs - The arguments used to find the unique UserConfig.
+     * @param select
      * @return {Promise<UserConfig | null>} - A promise that resolves to the found UserConfig, or null if not found.
      */
-    async findUnique(findUniqueUserConfigArgs: FindUniqueUserConfigArgs): Promise<UserConfig | null> {
+    async findUnique(
+        findUniqueUserConfigArgs: FindUniqueUserConfigArgs,
+        select: Prisma.UserConfigSelect,
+    ): Promise<UserConfig | null> {
         return this.prismaService.userConfig.findUnique({
-            where: findUniqueUserConfigArgs.where,
+            ...findUniqueUserConfigArgs,
+            select,
         });
     }
 
@@ -33,11 +38,16 @@ export class UserConfigService {
      * Creates a new User Config in the database.
      *
      * @param {CreateOneUserConfigArgs} createOneUserConfigArgs - The arguments for creating the User Config.
+     * @param select
      * @returns {Promise<UserConfig>} - A Promise that resolves to the newly created User Config.
      */
-    public async createOne(createOneUserConfigArgs: CreateOneUserConfigArgs): Promise<UserConfig> {
+    public async createOne(
+        createOneUserConfigArgs: CreateOneUserConfigArgs,
+        select: Prisma.UserConfigSelect,
+    ): Promise<UserConfig> {
         return this.prismaService.userConfig.create({
-            data: createOneUserConfigArgs.data,
+            ...createOneUserConfigArgs,
+            select,
         });
     }
 
@@ -45,12 +55,16 @@ export class UserConfigService {
      * Updates a single user configuration based on the provided arguments.
      *
      * @param {UpdateOneUserConfigArgs} updateOneUserConfigArgs - The arguments for updating the user configuration.
+     * @param select
      * @return {Promise<UserConfig>} - A promise that resolves to the updated user configuration.
      */
-    async updateOne(updateOneUserConfigArgs: UpdateOneUserConfigArgs): Promise<UserConfig> {
+    async updateOne(
+        updateOneUserConfigArgs: UpdateOneUserConfigArgs,
+        select: Prisma.UserConfigSelect,
+    ): Promise<UserConfig> {
         return this.prismaService.userConfig.update({
-            where: updateOneUserConfigArgs.where,
-            data: updateOneUserConfigArgs.data,
+            ...updateOneUserConfigArgs,
+            select,
         });
     }
 
@@ -58,13 +72,16 @@ export class UserConfigService {
      * Upserts a user configuration in the database.
      *
      * @param {UpsertOneUserConfigArgs} upsertOneUserConfigArgs - The object containing the arguments for upserting the user configuration.
+     * @param select
      * @return {Promise<UserConfig>} - A promise that resolves to the upserted user configuration.
      */
-    async upsertOne(upsertOneUserConfigArgs: UpsertOneUserConfigArgs): Promise<UserConfig> {
+    async upsertOne(
+        upsertOneUserConfigArgs: UpsertOneUserConfigArgs,
+        select: Prisma.UserConfigSelect,
+    ): Promise<UserConfig> {
         return this.prismaService.userConfig.upsert({
-            where: upsertOneUserConfigArgs.where,
-            update: upsertOneUserConfigArgs.update,
-            create: upsertOneUserConfigArgs.create,
+            ...upsertOneUserConfigArgs,
+            select,
         });
     }
 }

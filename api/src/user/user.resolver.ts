@@ -13,11 +13,12 @@ import { AccessTokenData } from '../common/types/authorize.types';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/role.guard';
-import { UserRole } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
 import { GqlThrottlerGuard } from '../common/guards/gql-throttle.guard';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PublishStateEnum } from '../common/pubsub/publish-state.enum';
 import { PubSub } from 'graphql-subscriptions';
+import PrismaSelect from '../common/decorators/prisma-select.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => User)
@@ -37,57 +38,76 @@ export class UserResolver {
      * Returns the user associated with the JWT token data.
      *
      * @param {AccessTokenData} accessTokenData - The JWT token data containing user identification information.
+     * @param select
      * @returns {Promise<User | null>} - The user object if found, otherwise null.
      */
     @UseGuards(GqlThrottlerGuard)
     @SkipThrottle({ short: true })
     @Query(() => User, { name: 'me' })
-    public async me(@CurrentUser() accessTokenData: AccessTokenData): Promise<User | null> {
-        return await this.userService.findUnique({
-            where: {
-                id: accessTokenData.id,
-                email: accessTokenData.email,
+    public async me(
+        @CurrentUser() accessTokenData: AccessTokenData,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User | null> {
+        return await this.userService.findUnique(
+            {
+                where: {
+                    id: accessTokenData.id,
+                    email: accessTokenData.email,
+                },
             },
-        });
+            select,
+        );
     }
 
     /**
      * Finds a unique user based on the provided arguments.
      *
      * @param {FindUniqueUserArgs} findUniqueUserArgs - The arguments used to find the user.
+     * @param select
      * @returns {Promise<User | null>} - A Promise that resolves to a User object if found, or null if not found.
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_ADMIN]))
     @SkipThrottle({ short: true })
     @Query(() => User, { name: 'user' })
-    public async findOne(@Args() findUniqueUserArgs: FindUniqueUserArgs): Promise<User | null> {
-        return await this.userService.findUnique(findUniqueUserArgs);
+    public async findOne(
+        @Args() findUniqueUserArgs: FindUniqueUserArgs,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User | null> {
+        return await this.userService.findUnique(findUniqueUserArgs, select);
     }
 
     /**
      * Retrieves all users based on the provided arguments.
      *
      * @param {FindManyUserArgs} findManyUserArgs - The arguments to filter or paginate the users.
+     * @param select
      * @return {Promise<User[]>} - A promise that resolves to an array of User objects.
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_USER]))
     @SkipThrottle({ short: true })
     @Query(() => [User], { name: 'users' })
-    public async findAll(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
-        return await this.userService.findMany(findManyUserArgs);
+    public async findAll(
+        @Args() findManyUserArgs: FindManyUserArgs,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User[]> {
+        return await this.userService.findMany(findManyUserArgs, select);
     }
 
     /**
      * Creates a new user.
      *
      * @param {CreateOneUserArgs} createOneUserArgs - The arguments for creating a user.
+     * @param select
      * @returns {Promise<User>} - A promise that resolves to the created user.
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_ADMIN]))
     @SkipThrottle({ short: true })
     @Mutation(() => User)
-    public async createUser(@Args() createOneUserArgs: CreateOneUserArgs): Promise<User> {
-        const user = await this.userService.createOne(createOneUserArgs);
+    public async createUser(
+        @Args() createOneUserArgs: CreateOneUserArgs,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User> {
+        const user: User = await this.userService.createOne(createOneUserArgs, select);
 
         await this.pubSub.publish(PublishStateEnum.USER_CREATED, {
             [PublishStateEnum.USER_CREATED]: user,
@@ -100,13 +120,17 @@ export class UserResolver {
      * Updates a user with the provided data.
      *
      * @param {UpdateOneUserArgs} updateOneUserArgs - The arguments for updating a user.
+     * @param select
      * @returns {Promise<User>} - A promise that resolves to the updated user.
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_ADMIN]))
     @SkipThrottle({ short: true })
     @Mutation(() => User)
-    public async updateUser(@Args() updateOneUserArgs: UpdateOneUserArgs): Promise<User> {
-        const user = await this.userService.updateOne(updateOneUserArgs);
+    public async updateUser(
+        @Args() updateOneUserArgs: UpdateOneUserArgs,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User> {
+        const user: User = await this.userService.updateOne(updateOneUserArgs, select);
 
         await this.pubSub.publish(PublishStateEnum.USER_UPDATED, {
             [PublishStateEnum.USER_UPDATED]: user,
@@ -119,13 +143,17 @@ export class UserResolver {
      * Delete a user.
      *
      * @param {DeleteOneUserArgs} deleteOneUserArgs - The arguments for deleting a user.
+     * @param select
      * @return {Promise<User>} - The deleted user.
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_ADMIN]))
     @SkipThrottle({ short: true })
     @Mutation(() => User)
-    public async deleteUser(@Args() deleteOneUserArgs: DeleteOneUserArgs): Promise<User> {
-        const user = await this.userService.deleteOne(deleteOneUserArgs);
+    public async deleteUser(
+        @Args() deleteOneUserArgs: DeleteOneUserArgs,
+        @PrismaSelect() select: Prisma.UserSelect,
+    ): Promise<User> {
+        const user: User = await this.userService.deleteOne(deleteOneUserArgs, select);
 
         await this.pubSub.publish(PublishStateEnum.USER_DELETED, {
             [PublishStateEnum.USER_DELETED]: user,

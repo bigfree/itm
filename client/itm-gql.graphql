@@ -7,6 +7,15 @@ type Authorize {
   user: User!
 }
 
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -68,6 +77,17 @@ input EnumUserTypeFilter {
   notIn: [UserType!]
 }
 
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -98,7 +118,7 @@ type Log {
   createdAt: DateTime
   data: JSON
   from: LogFrom
-  id: ID!
+  id: String!
   type: LogType!
 }
 
@@ -223,7 +243,13 @@ type Mutation {
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   updateUserConfig(data: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
+  upsertNoteConfig(create: NoteConfigCreateInput!, update: NoteConfigUpdateInput!, where: NoteConfigWhereUniqueInput!): NoteConfig!
   upsertUserConfig(create: UserConfigCreateInput!, update: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 input NestedDateTimeNullableFilter {
@@ -265,6 +291,17 @@ input NestedEnumUserTypeFilter {
   notIn: [UserType!]
 }
 
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -302,17 +339,23 @@ type Note {
   createdAt: DateTime
   deletedAt: DateTime
   description: String
-  id: ID!
+  id: String!
   name: String
+  order: Int
   pinnedAt: DateTime
-  tasks: [Task!]
+  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]
   user: User!
   userId: String!
 }
 
+type NoteAvgAggregate {
+  order: Float
+}
+
 type NoteConfig {
   color: String
-  id: ID!
+  id: String!
+  isOpenCompletedTask: Boolean!
   note: Note!
   noteId: String!
 }
@@ -321,11 +364,13 @@ type NoteConfigCountAggregate {
   _all: Int!
   color: Int!
   id: Int!
+  isOpenCompletedTask: Int!
   noteId: Int!
 }
 
 input NoteConfigCreateInput {
   color: String
+  isOpenCompletedTask: Boolean
   note: NoteCreateNestedOneWithoutConfigInput!
 }
 
@@ -342,17 +387,20 @@ input NoteConfigCreateOrConnectWithoutNoteInput {
 
 input NoteConfigCreateWithoutNoteInput {
   color: String
+  isOpenCompletedTask: Boolean
 }
 
 type NoteConfigMaxAggregate {
   color: String
   id: String
+  isOpenCompletedTask: Boolean
   noteId: String
 }
 
 type NoteConfigMinAggregate {
   color: String
   id: String
+  isOpenCompletedTask: Boolean
   noteId: String
 }
 
@@ -377,12 +425,14 @@ input NoteConfigOrderByWithRelationInput {
   _relevance: NoteConfigOrderByRelevanceInput
   color: SortOrderInput
   id: SortOrder
+  isOpenCompletedTask: SortOrder
   note: NoteOrderByWithRelationInput
   noteId: SortOrder
 }
 
 input NoteConfigUpdateInput {
   color: NullableStringFieldUpdateOperationsInput
+  isOpenCompletedTask: BoolFieldUpdateOperationsInput
   note: NoteUpdateOneRequiredWithoutConfigNestedInput
 }
 
@@ -403,6 +453,7 @@ input NoteConfigUpdateToOneWithWhereWithoutNoteInput {
 
 input NoteConfigUpdateWithoutNoteInput {
   color: NullableStringFieldUpdateOperationsInput
+  isOpenCompletedTask: BoolFieldUpdateOperationsInput
 }
 
 input NoteConfigUpsertWithoutNoteInput {
@@ -417,6 +468,7 @@ input NoteConfigWhereInput {
   OR: [NoteConfigWhereInput!]
   color: StringNullableFilter
   id: StringFilter
+  isOpenCompletedTask: BoolFilter
   note: NoteRelationFilter
   noteId: StringFilter
 }
@@ -427,6 +479,7 @@ input NoteConfigWhereUniqueInput {
   OR: [NoteConfigWhereInput!]
   color: StringNullableFilter
   id: String
+  isOpenCompletedTask: BoolFilter
   note: NoteRelationFilter
   noteId: String
 }
@@ -443,6 +496,7 @@ type NoteCountAggregate {
   description: Int!
   id: Int!
   name: Int!
+  order: Int!
   pinnedAt: Int!
   userId: Int!
 }
@@ -454,6 +508,7 @@ input NoteCreateInput {
   deletedAt: DateTime
   description: String
   name: String
+  order: Int
   pinnedAt: DateTime
   tasks: TaskCreateNestedManyWithoutNoteInput
   user: UserCreateNestedOneWithoutNotesInput!
@@ -465,6 +520,7 @@ input NoteCreateManyUserInput {
   deletedAt: DateTime
   description: String
   name: String
+  order: Int
   pinnedAt: DateTime
 }
 
@@ -513,6 +569,7 @@ input NoteCreateWithoutConfigInput {
   deletedAt: DateTime
   description: String
   name: String
+  order: Int
   pinnedAt: DateTime
   tasks: TaskCreateNestedManyWithoutNoteInput
   user: UserCreateNestedOneWithoutNotesInput!
@@ -525,6 +582,7 @@ input NoteCreateWithoutTasksInput {
   deletedAt: DateTime
   description: String
   name: String
+  order: Int
   pinnedAt: DateTime
   user: UserCreateNestedOneWithoutNotesInput!
 }
@@ -536,6 +594,7 @@ input NoteCreateWithoutUserInput {
   deletedAt: DateTime
   description: String
   name: String
+  order: Int
   pinnedAt: DateTime
   tasks: TaskCreateNestedManyWithoutNoteInput
 }
@@ -553,6 +612,7 @@ type NoteMaxAggregate {
   description: String
   id: String
   name: String
+  order: Int
   pinnedAt: DateTime
   userId: String
 }
@@ -564,6 +624,7 @@ type NoteMinAggregate {
   description: String
   id: String
   name: String
+  order: Int
   pinnedAt: DateTime
   userId: String
 }
@@ -594,6 +655,7 @@ input NoteOrderByWithRelationInput {
   description: SortOrderInput
   id: SortOrder
   name: SortOrderInput
+  order: SortOrderInput
   pinnedAt: SortOrderInput
   tasks: TaskOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
@@ -612,6 +674,7 @@ enum NoteScalarFieldEnum {
   description
   id
   name
+  order
   pinnedAt
   userId
 }
@@ -626,8 +689,13 @@ input NoteScalarWhereInput {
   description: StringNullableFilter
   id: StringFilter
   name: StringNullableFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   userId: StringFilter
+}
+
+type NoteSumAggregate {
+  order: Int
 }
 
 input NoteUpdateInput {
@@ -637,6 +705,7 @@ input NoteUpdateInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutNoteNestedInput
   user: UserUpdateOneRequiredWithoutNotesNestedInput
@@ -648,6 +717,7 @@ input NoteUpdateManyMutationInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -707,6 +777,7 @@ input NoteUpdateWithoutConfigInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutNoteNestedInput
   user: UserUpdateOneRequiredWithoutNotesNestedInput
@@ -719,6 +790,7 @@ input NoteUpdateWithoutTasksInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutNotesNestedInput
 }
@@ -730,6 +802,7 @@ input NoteUpdateWithoutUserInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutNoteNestedInput
 }
@@ -763,6 +836,7 @@ input NoteWhereInput {
   description: StringNullableFilter
   id: StringFilter
   name: StringNullableFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   tasks: TaskListRelationFilter
   user: UserRelationFilter
@@ -780,6 +854,7 @@ input NoteWhereUniqueInput {
   description: StringNullableFilter
   id: String
   name: StringNullableFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   tasks: TaskListRelationFilter
   user: UserRelationFilter
@@ -792,6 +867,14 @@ input NullableDateTimeFieldUpdateOperationsInput {
 
 input NullableEnumThemeColorFieldUpdateOperationsInput {
   set: ThemeColor
+}
+
+input NullableIntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -899,7 +982,7 @@ type Profile {
   bio: String
   createdAt: DateTime
   firstName: String!
-  id: ID!
+  id: String!
   lastName: String!
   user: User!
   userId: String!
@@ -1174,6 +1257,7 @@ type Subscription {
   logCreated: Log!
   noteConfigCreated: Note!
   noteConfigUpdated: Note!
+  noteConfigUpserted: Note!
   noteCreated: Note!
   noteDeleted: Note!
   noteUpdated: Note!
@@ -1190,13 +1274,18 @@ type Task {
   completedAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
-  id: ID!
+  id: String!
   name: String
   note: Note!
   noteId: String!
+  order: Int
   pinnedAt: DateTime
   user: User!
   userId: String!
+}
+
+type TaskAvgAggregate {
+  order: Float
 }
 
 type TaskCountAggregate {
@@ -1207,6 +1296,7 @@ type TaskCountAggregate {
   id: Int!
   name: Int!
   noteId: Int!
+  order: Int!
   pinnedAt: Int!
   userId: Int!
 }
@@ -1217,6 +1307,7 @@ input TaskCreateInput {
   deletedAt: DateTime
   name: String
   note: NoteCreateNestedOneWithoutTasksInput!
+  order: Int
   pinnedAt: DateTime
   user: UserCreateNestedOneWithoutTasksInput!
 }
@@ -1226,6 +1317,7 @@ input TaskCreateManyNoteInput {
   createdAt: DateTime
   deletedAt: DateTime
   name: String
+  order: Int
   pinnedAt: DateTime
   userId: String!
 }
@@ -1241,6 +1333,7 @@ input TaskCreateManyUserInput {
   deletedAt: DateTime
   name: String
   noteId: String!
+  order: Int
   pinnedAt: DateTime
 }
 
@@ -1278,6 +1371,7 @@ input TaskCreateWithoutNoteInput {
   createdAt: DateTime
   deletedAt: DateTime
   name: String
+  order: Int
   pinnedAt: DateTime
   user: UserCreateNestedOneWithoutTasksInput!
 }
@@ -1288,6 +1382,7 @@ input TaskCreateWithoutUserInput {
   deletedAt: DateTime
   name: String
   note: NoteCreateNestedOneWithoutTasksInput!
+  order: Int
   pinnedAt: DateTime
 }
 
@@ -1304,6 +1399,7 @@ type TaskMaxAggregate {
   id: String
   name: String
   noteId: String
+  order: Int
   pinnedAt: DateTime
   userId: String
 }
@@ -1315,6 +1411,7 @@ type TaskMinAggregate {
   id: String
   name: String
   noteId: String
+  order: Int
   pinnedAt: DateTime
   userId: String
 }
@@ -1345,6 +1442,7 @@ input TaskOrderByWithRelationInput {
   name: SortOrderInput
   note: NoteOrderByWithRelationInput
   noteId: SortOrder
+  order: SortOrderInput
   pinnedAt: SortOrderInput
   user: UserOrderByWithRelationInput
   userId: SortOrder
@@ -1357,6 +1455,7 @@ enum TaskScalarFieldEnum {
   id
   name
   noteId
+  order
   pinnedAt
   userId
 }
@@ -1371,8 +1470,13 @@ input TaskScalarWhereInput {
   id: StringFilter
   name: StringNullableFilter
   noteId: StringFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   userId: StringFilter
+}
+
+type TaskSumAggregate {
+  order: Int
 }
 
 input TaskUpdateInput {
@@ -1381,6 +1485,7 @@ input TaskUpdateInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   note: NoteUpdateOneRequiredWithoutTasksNestedInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksNestedInput
 }
@@ -1390,6 +1495,7 @@ input TaskUpdateManyMutationInput {
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -1446,6 +1552,7 @@ input TaskUpdateWithoutNoteInput {
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksNestedInput
 }
@@ -1456,6 +1563,7 @@ input TaskUpdateWithoutUserInput {
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   note: NoteUpdateOneRequiredWithoutTasksNestedInput
+  order: NullableIntFieldUpdateOperationsInput
   pinnedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -1482,6 +1590,7 @@ input TaskWhereInput {
   name: StringNullableFilter
   note: NoteRelationFilter
   noteId: StringFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   user: UserRelationFilter
   userId: StringFilter
@@ -1498,6 +1607,7 @@ input TaskWhereUniqueInput {
   name: StringNullableFilter
   note: NoteRelationFilter
   noteId: StringFilter
+  order: IntNullableFilter
   pinnedAt: DateTimeNullableFilter
   user: UserRelationFilter
   userId: StringFilter
@@ -1514,7 +1624,7 @@ type User {
   config: UserConfig
   createdAt: DateTime
   email: EmailAddress!
-  id: ID!
+  id: String!
   notes: [Note!]
   profile: Profile
   role: [UserRole!]
@@ -1523,7 +1633,7 @@ type User {
 }
 
 type UserConfig {
-  id: ID!
+  id: String!
   theme: ThemeColor
   user: User!
   userId: String!

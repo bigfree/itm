@@ -120,6 +120,17 @@ export class TokensService {
     }
 
     /**
+     * Retrieves user information from an access token.
+     *
+     * @param {string} bearerToken - The access token obtained from the client.
+     * @return {Promise<AccessTokenData>} - A Promise that resolves to the decoded access token data containing user information.
+     */
+    public async getUserFromAccessToken(bearerToken: string): Promise<AccessTokenData> {
+        const bearerTokenTrimmed: string = bearerToken.replace('Bearer', '').trim();
+        return this.jwtService.decode(bearerTokenTrimmed);
+    }
+
+    /**
      * Decode a refresh token.
      *
      * @param {string} token - The refresh token to decode.

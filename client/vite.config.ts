@@ -34,6 +34,12 @@ export default defineConfig({
                 ],
             },
         }),
+        // checker({
+        //     typescript: true,
+        //     // eslint: {
+        //     //     lintCommand: 'eslint . --ext ts,tsx'
+        //     // }
+        // })
     ],
     resolve: {
         alias: {

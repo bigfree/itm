@@ -29,7 +29,7 @@ declare module '@mantine/core' {
  * Represents the main theme for the application.
  */
 export const mainTheme: MantineThemeOverride = createTheme({
-    scale: 1.05,
+    scale: 1,
     fontFamily: `
         Poppins,
         -apple-system,
