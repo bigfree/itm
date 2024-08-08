@@ -17,8 +17,9 @@ export const AppShellMainCss = style({
 
 export const AppShellHeaderCss = style({
     zIndex: 99,
-    background: 'transparent',
+    background: vars.colors.gray[0],
     display: 'flex',
+    borderBottom: `${rem(1)} solid ${vars.colors.defaultBorder}`,
 });
 
 export const RootAppOutletWrapper = style({

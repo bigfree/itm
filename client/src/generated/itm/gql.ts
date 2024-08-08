@@ -29,7 +29,7 @@ const documents = {
     "\n    mutation UpdateTaskMutation($data: TaskUpdateInput!, $where: TaskWhereUniqueInput!) {\n        updateTask(data: $data, where: $where) {\n            __typename\n            ...TaskFragment\n        }\n    }\n": types.UpdateTaskMutationDocument,
     "\n    mutation CreateTaskMutation($data: TaskCreateInput!) {\n        createTask(data: $data) {\n            __typename\n            ...TaskFragment\n        }\n    }\n": types.CreateTaskMutationDocument,
     "\n    mutation RemoveTaskMutation($where: TaskWhereUniqueInput!) {\n        removeTask(where: $where) {\n            __typename\n            id\n        }\n    }\n": types.RemoveTaskMutationDocument,
-    "\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n#        $tasksWhere: TaskWhereInput\n#        $taskOrderBy: [TaskOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n": types.NotesDocument,
+    "\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n": types.NotesDocument,
     "\n    fragment NotesQueryFragment on Note {\n        ...NoteFragment\n        config {\n            __typename\n            ...NoteConfigFragment\n        }\n        tasks {\n            __typename\n            ...TaskFragment\n        }\n    }\n": types.NotesQueryFragmentFragmentDoc,
     "\n    query Tasks($where: TaskWhereInput, $orderBy: [TaskOrderByWithRelationInput!]) {\n        __typename\n        tasks(where: $where, orderBy: $orderBy) {\n            __typename\n            ...TaskFragment\n        }\n    }\n": types.TasksDocument,
 };
@@ -115,7 +115,7 @@ export function gql(source: "\n    mutation RemoveTaskMutation($where: TaskWhere
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n#        $tasksWhere: TaskWhereInput\n#        $taskOrderBy: [TaskOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n"): (typeof documents)["\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n#        $tasksWhere: TaskWhereInput\n#        $taskOrderBy: [TaskOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n"];
+export function gql(source: "\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n"): (typeof documents)["\n    query Notes(\n        $noteWhere: NoteWhereInput\n        $noteOrderBy: [NoteOrderByWithRelationInput!]\n    ) {\n        __typename\n        notes(where: $noteWhere, orderBy: $noteOrderBy) {\n            ...NotesQueryFragment\n        }\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

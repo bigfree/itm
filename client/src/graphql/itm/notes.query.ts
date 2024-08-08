@@ -4,8 +4,6 @@ export const NotesQuery = gql(/* GraphQL */ `
     query Notes(
         $noteWhere: NoteWhereInput
         $noteOrderBy: [NoteOrderByWithRelationInput!]
-#        $tasksWhere: TaskWhereInput
-#        $taskOrderBy: [TaskOrderByWithRelationInput!]
     ) {
         __typename
         notes(where: $noteWhere, orderBy: $noteOrderBy) {

@@ -8,7 +8,6 @@ import {
     NextLink,
     NormalizedCacheObject,
     Operation,
-    Reference,
     split,
 } from '@apollo/client';
 import { CachePersistor, LocalForageWrapper } from 'apollo3-cache-persist';
@@ -21,50 +20,8 @@ import { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql/languag
 import { onError } from '@apollo/client/link/error';
 import localForage from 'localforage';
 import useAccessTokenStore from '@stores/tokens/access-token.store.ts';
-import dayjs from 'dayjs';
 
-const cache: InMemoryCache = new InMemoryCache({
-    typePolicies: {
-        Note: {
-            fields: {
-                tasks: {
-                    read(existingTasks = [], { readField }) {
-                        const tasks: Reference[] = [...existingTasks];
-                        tasks.sort((taskA: Reference, taskB: Reference) => {
-                            const taskAOrder: number | undefined = readField<number>('order', taskA);
-                            const taskACreatedAt: string | undefined = readField<string>('createdAt', taskA);
-                            const taskBOrder: number | undefined = readField<number>('order', taskB);
-                            const taskBCreatedAt: string | undefined = readField<string>('createdAt', taskB);
-
-                            if (taskAOrder && taskBOrder && taskAOrder !== taskBOrder) {
-                                return taskAOrder - taskBOrder;
-                            }
-
-                            if (taskACreatedAt && taskBCreatedAt) {
-                                const dateA: dayjs.Dayjs = dayjs(taskACreatedAt);
-                                const dateB: dayjs.Dayjs = dayjs(taskBCreatedAt);
-
-                                // ASC
-                                return dateA.isBefore(dateB) ? -1 : 1;
-                            }
-
-                            return 0;
-                        });
-
-                        return tasks;
-                    },
-                },
-            },
-        },
-        // Note: {
-        //     fields: {
-        //         tasks: {
-        //             keyArgs: false
-        //         }
-        //     }
-        // }
-    },
-});
+const cache: InMemoryCache = new InMemoryCache();
 
 const store: LocalForage = localForage.createInstance({
     driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
@@ -155,7 +112,7 @@ export const apolloClient: ApolloClient<NormalizedCacheObject> = new ApolloClien
     // credentials: 'include',
     defaultOptions: {
         query: {
-            fetchPolicy: 'cache-only',
+            fetchPolicy: 'cache-first',
             errorPolicy: 'all',
         },
     },

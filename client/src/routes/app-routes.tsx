@@ -5,6 +5,9 @@ import AuthGuard from '@routes/guards/auth/auth.guard.tsx';
 import SignupRoute from '@routes/authorization/signup/signup.route.tsx';
 import LoginRoute from '@routes/authorization/login/login.route.tsx';
 import LogoutRoute from '@routes/authorization/logout/logout.route.tsx';
+import { FunctionComponent, lazy, LazyExoticComponent, Suspense } from 'react';
+
+const Board: LazyExoticComponent<FunctionComponent> = lazy(() => import('@components/board/board.component.tsx'));
 
 /**
  * Array of route objects for the application.
@@ -18,10 +21,20 @@ export const appRoutes: RouteObject[] = [
                 <RootRoute />
             </AuthGuard>
         ),
-        children: [{
-            index: true,
-            element: <IndexRoute />,
-        }],
+        children: [
+            {
+                index: true,
+                element: <IndexRoute />,
+            },
+            {
+                path: ':date',
+                element: (
+                    <Suspense fallback={null}>
+                        <Board />
+                    </Suspense>
+                ),
+            },
+        ],
     },
     {
         path: 'signup',
