@@ -6,7 +6,9 @@ import SignupRoute from '@routes/authorization/signup/signup.route.tsx';
 import LoginRoute from '@routes/authorization/login/login.route.tsx';
 import LogoutRoute from '@routes/authorization/logout/logout.route.tsx';
 import { FunctionComponent, lazy, LazyExoticComponent, Suspense } from 'react';
+import DateGuard from './guards/date.guard';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Board: LazyExoticComponent<FunctionComponent> = lazy(() => import('@components/board/board.component.tsx'));
 
 /**
@@ -18,13 +20,17 @@ export const appRoutes: RouteObject[] = [
         path: '/',
         element: (
             <AuthGuard>
-                <RootRoute />
+                <DateGuard>
+                    <RootRoute />
+                </DateGuard>
             </AuthGuard>
         ),
         children: [
             {
                 index: true,
-                element: <IndexRoute />,
+                element: (
+                    <IndexRoute />
+                ),
             },
             {
                 path: ':date',

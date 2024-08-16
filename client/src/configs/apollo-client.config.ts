@@ -20,8 +20,36 @@ import { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql/languag
 import { onError } from '@apollo/client/link/error';
 import localForage from 'localforage';
 import useAccessTokenStore from '@stores/tokens/access-token.store.ts';
+import { find, get } from 'lodash-es';
+import dayjs from 'dayjs';
 
-const cache: InMemoryCache = new InMemoryCache();
+const cache: InMemoryCache = new InMemoryCache({
+    typePolicies: {
+        Query: {
+            fields: {
+                notes: {
+                    keyArgs: (args) => {
+                        if (!args) {
+                            return '';
+                        }
+
+                        const date = get(find(args.where.AND, 'createdAt.gte'), 'createdAt.gte');
+                        const archived = get(find(args.where.AND, 'archiveAt.equals'), 'archiveAt.equals');
+                        const deleted = get(find(args.where.AND, 'deleteAt.equals'), 'deleteAt.equals');
+
+                        const variables = {
+                            date: dayjs(date).format('YYYY-MM-DD'),
+                            archived: !!archived,
+                            deleted: !!deleted,
+                        };
+
+                        return `(${JSON.stringify(variables)})`;
+                    },
+                },
+            },
+        },
+    },
+});
 
 const store: LocalForage = localForage.createInstance({
     driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
@@ -108,7 +136,10 @@ const splitLink = split(
 export const apolloClient: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: splitLink,
     cache,
-    connectToDevTools: true,
+    devtools: {
+        name: 'itm',
+        enabled: true
+    },
     // credentials: 'include',
     defaultOptions: {
         query: {

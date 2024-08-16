@@ -5,8 +5,8 @@ import { NotesQuery } from '@graphql/itm/notes.query.ts';
 import dayjs from 'dayjs';
 import useAuthStore, { AuthStore } from '@stores/auth.store.ts';
 import { SortOrder } from '@/generated/itm/graphql.ts';
-import { Box } from '@mantine/core';
 import { BoardComponentCss } from '@components/board/board.css.ts';
+import Note from '@components/note/note.component.tsx';
 
 type BoardProps = NonNullable<unknown>;
 
@@ -25,12 +25,22 @@ const Board: FC<BoardProps> = (): ReactElement => {
                     },
                     {
                         createdAt: {
-                            gte: dayjs.utc(selectActualDate).startOf('day').toDate(),
+                            gte: dayjs.utc(selectActualDate).startOf('day').toISOString(),
                         },
                     },
                     {
                         createdAt: {
-                            lt: dayjs.utc(selectActualDate).endOf('day').toDate()
+                            lte: dayjs.utc(selectActualDate).endOf('day').toISOString(),
+                        },
+                    },
+                    {
+                        archiveAt: {
+                            equals: null,
+                        },
+                    },
+                    {
+                        deletedAt: {
+                            equals: null,
                         }
                     }
                 ],
@@ -43,7 +53,7 @@ const Board: FC<BoardProps> = (): ReactElement => {
         },
     });
     return (
-        <div className={BoardComponentCss}>{notesData?.notes.map((note) => <Box key={note.id}>{note.name}</Box>)}</div>
+        <div className={BoardComponentCss}>{notesData?.notes.map((note) => <Note key={note.id} note={note} />)}</div>
     );
 };
 

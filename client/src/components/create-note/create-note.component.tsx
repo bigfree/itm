@@ -2,27 +2,29 @@ import { ChangeEvent, FC, ReactElement, useCallback, useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { ApolloCache, useMutation } from '@apollo/client';
 import { CreateNoteMutation } from '@graphql/itm/mutation/note.mutation.ts';
-import useAuthStore from '@stores/auth.store.ts';
+import useAuthStore, { AuthStore } from '@stores/auth.store.ts';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
+import useDateStore from '@stores/date.store.ts';
+import { addNoteToCache } from '@/cache/note.cache.ts';
 
 type CreateNoteProps = NonNullable<unknown>;
 
 const CreateNote: FC<CreateNoteProps> = (): ReactElement => {
-    const currentUserId = useAuthStore((state) => state.currentUserId);
+    const currentUserId: string | null = useAuthStore((state: AuthStore) => state.currentUserId);
+    const getSelectActualDateInDateFormat = useDateStore((state) => state.getSelectActualDateInDateFormat);
+
     const [noteName, setNoteName] = useState<string>('');
     const [createNote] = useMutation(CreateNoteMutation, {
-        update: (cache: ApolloCache<unknown>, { data: newNote }) => {
+        update: (_cache: ApolloCache<unknown>, { data: newNote }) => {
             if (!newNote?.createNote) {
                 return;
             }
-            // TODO: add to cache to actual date
-            cache.modify({
-                fields: {
-                    notes(existingNote = [], { toReference }) {
-                        return [toReference(newNote?.createNote), ...existingNote];
-                    },
-                },
+
+            addNoteToCache(newNote, {
+                date: getSelectActualDateInDateFormat(),
+                archived: false,
+                deleted: false,
             });
         },
         onCompleted: () => {
@@ -37,15 +39,17 @@ const CreateNote: FC<CreateNoteProps> = (): ReactElement => {
     /**
      * Create note on blur event
      */
-    const handleOnBlurNote = useCallback(async () => {
+    const handleOnBlurNote = useCallback(async (): Promise<void> => {
         if ('' === noteName) {
             return;
         }
 
+        const createdAt = dayjs().toDate().toISOString();
         await createNote({
             variables: {
                 data: {
                     name: noteName,
+                    createdAt: createdAt,
                     user: {
                         connect: {
                             id: currentUserId,
@@ -62,7 +66,7 @@ const CreateNote: FC<CreateNoteProps> = (): ReactElement => {
                     description: null,
                     tasks: [],
                     config: null,
-                    createdAt: dayjs().toDate(),
+                    createdAt: createdAt,
                     deletedAt: null,
                     pinnedAt: null,
                     archiveAt: null,

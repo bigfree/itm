@@ -4,7 +4,7 @@ import { AppHeaderFlexCss } from '@components/app/header/app-header.css.ts';
 import AppHeaderAvatar from '@components/app/header/avatar/app-header-avatar.component.tsx';
 import AppHeaderNotifications from '@components/app/header/notifications/app-header-notifications.component.tsx';
 import AppHeaderConfig from '@components/app/header/config/app-header-config.component.tsx';
-import ActualDate from '@components/app/header/actual-date/actual-date.component.tsx';
+import DatePicker from '@components/app/header/date-picker/date-picker.component.tsx';
 
 type AppHeaderProps = NonNullable<unknown>;
 
@@ -15,7 +15,7 @@ const AppHeader: FC<AppHeaderProps> = (): ReactElement => {
                 ITM
             </Flex>
             <Flex style={{ flex: 1 }} align={'center'} justify={'center'}>
-                <ActualDate/>
+                <DatePicker/>
             </Flex>
             <Flex className={AppHeaderFlexCss} align={'center'} gap={'xs'}>
                 <AppHeaderAvatar />
