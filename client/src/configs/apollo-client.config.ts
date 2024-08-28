@@ -34,12 +34,31 @@ const cache: InMemoryCache = new InMemoryCache({
                         }
 
                         const date = get(find(args.where.AND, 'createdAt.gte'), 'createdAt.gte');
+                        // TODO: archiveAt deleteAt??
                         const archived = get(find(args.where.AND, 'archiveAt.equals'), 'archiveAt.equals');
-                        const deleted = get(find(args.where.AND, 'deleteAt.equals'), 'deleteAt.equals');
+                        // TODO: really deleteAt??
+                        const deleted = get(find(args.where.AND, 'deletedAt.equals'), 'deletedAt.equals');
 
                         const variables = {
                             date: dayjs(date).format('YYYY-MM-DD'),
                             archived: !!archived,
+                            deleted: !!deleted,
+                        };
+
+                        return `(${JSON.stringify(variables)})`;
+                    },
+                },
+                tasks: {
+                    keyArgs: (args) => {
+                        if (!args) {
+                            return '';
+                        }
+
+                        const noteId = get(args.where, 'noteId.equals');
+                        const deleted = get(args.where, 'deletedAt.deletedAt');
+
+                        const variables = {
+                            noteId: noteId,
                             deleted: !!deleted,
                         };
 
@@ -54,7 +73,7 @@ const cache: InMemoryCache = new InMemoryCache({
 const store: LocalForage = localForage.createInstance({
     driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
     name: 'itm',
-    storeName: 'graphql',
+    storeName: 'data',
     version: 1,
 });
 
@@ -65,8 +84,7 @@ export const persistor: CachePersistor<NormalizedCacheObject> = new CachePersist
     debug: true,
     debounce: 50,
     trigger: 'write',
-    serialize: true,
-    key: 'persist-cache',
+    key: 'data',
 });
 
 await persistor.restore();
@@ -138,7 +156,7 @@ export const apolloClient: ApolloClient<NormalizedCacheObject> = new ApolloClien
     cache,
     devtools: {
         name: 'itm',
-        enabled: true
+        enabled: true,
     },
     // credentials: 'include',
     defaultOptions: {

@@ -1,6 +1,5 @@
-import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
+import { persist, PersistOptions } from 'zustand/middleware';
 import { create } from 'zustand';
-import localForage from 'localforage';
 import { produce } from 'immer';
 import { LoginFormValues } from '@common/form-context/login.context.ts';
 import { apolloClient } from '@configs/apollo-client.config.ts';
@@ -30,20 +29,20 @@ type AuthActions = {
 
 export type AuthStore = AuthProps & AuthActions;
 
-const authForageStore: LocalForage = localForage.createInstance({
-    driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
-    name: 'itm',
-    storeName: 'auth',
-    version: AUTH_STORE_VERSION,
-});
+// const authForageStore: LocalForage = localForage.createInstance({
+//     driver: localForage.INDEXEDDB,
+//     name: 'itm',
+//     storeName: 'auth',
+//     version: AUTH_STORE_VERSION,
+// });
 
 const persistorConfig: PersistOptions<AuthStore> = {
     name: 'auth',
-    storage: createJSONStorage(() => authForageStore),
+    // storage: createJSONStorage(() => authForageStore),
     version: AUTH_STORE_VERSION,
-    onRehydrateStorage: (state: AuthStore) => {
-        state.setHasHydrated(true);
-    },
+    // onRehydrateStorage: (state: AuthStore) => {
+    //     state.setHasHydrated(true);
+    // },
 };
 
 const useAuthStore = create<AuthStore>()(
@@ -60,6 +59,7 @@ const useAuthStore = create<AuthStore>()(
             getLoggedIn: () => get().isLoggedIn,
             getCurrentUserId: () => get().currentUserId,
             setLogin: async (loginFormValues: LoginFormValues) => {
+                console.log('setLogin');
                 // TODO: Add loading logic (loading, etc)
                 const { data, errors } = await apolloClient.mutate({
                     mutation: LoginMutation,
@@ -89,6 +89,7 @@ const useAuthStore = create<AuthStore>()(
                 }
             },
             revokeLogin: () => {
+                console.log('revokeLogin');
                 useAccessTokenStore.getState().revokeAccessToken();
                 useRefreshTokenStore.getState().revokeRefreshToken();
                 set(

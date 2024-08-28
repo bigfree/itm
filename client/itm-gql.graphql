@@ -335,6 +335,7 @@ input NestedStringNullableFilter {
 type Note {
   _count: NoteCount!
   archiveAt: DateTime
+  completedAt: DateTime
   config: NoteConfig
   createdAt: DateTime
   deletedAt: DateTime
@@ -491,6 +492,7 @@ type NoteCount {
 type NoteCountAggregate {
   _all: Int!
   archiveAt: Int!
+  completedAt: Int!
   createdAt: Int!
   deletedAt: Int!
   description: Int!
@@ -503,6 +505,7 @@ type NoteCountAggregate {
 
 input NoteCreateInput {
   archiveAt: DateTime
+  completedAt: DateTime
   config: NoteConfigCreateNestedOneWithoutNoteInput
   createdAt: DateTime
   deletedAt: DateTime
@@ -516,6 +519,7 @@ input NoteCreateInput {
 
 input NoteCreateManyUserInput {
   archiveAt: DateTime
+  completedAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
   description: String
@@ -565,6 +569,7 @@ input NoteCreateOrConnectWithoutUserInput {
 
 input NoteCreateWithoutConfigInput {
   archiveAt: DateTime
+  completedAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
   description: String
@@ -577,6 +582,7 @@ input NoteCreateWithoutConfigInput {
 
 input NoteCreateWithoutTasksInput {
   archiveAt: DateTime
+  completedAt: DateTime
   config: NoteConfigCreateNestedOneWithoutNoteInput
   createdAt: DateTime
   deletedAt: DateTime
@@ -589,6 +595,7 @@ input NoteCreateWithoutTasksInput {
 
 input NoteCreateWithoutUserInput {
   archiveAt: DateTime
+  completedAt: DateTime
   config: NoteConfigCreateNestedOneWithoutNoteInput
   createdAt: DateTime
   deletedAt: DateTime
@@ -607,6 +614,7 @@ input NoteListRelationFilter {
 
 type NoteMaxAggregate {
   archiveAt: DateTime
+  completedAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
   description: String
@@ -619,6 +627,7 @@ type NoteMaxAggregate {
 
 type NoteMinAggregate {
   archiveAt: DateTime
+  completedAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
   description: String
@@ -649,6 +658,7 @@ input NoteOrderByRelevanceInput {
 input NoteOrderByWithRelationInput {
   _relevance: NoteOrderByRelevanceInput
   archiveAt: SortOrderInput
+  completedAt: SortOrderInput
   config: NoteConfigOrderByWithRelationInput
   createdAt: SortOrderInput
   deletedAt: SortOrderInput
@@ -669,6 +679,7 @@ input NoteRelationFilter {
 
 enum NoteScalarFieldEnum {
   archiveAt
+  completedAt
   createdAt
   deletedAt
   description
@@ -684,6 +695,7 @@ input NoteScalarWhereInput {
   NOT: [NoteScalarWhereInput!]
   OR: [NoteScalarWhereInput!]
   archiveAt: DateTimeNullableFilter
+  completedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   deletedAt: DateTimeNullableFilter
   description: StringNullableFilter
@@ -700,6 +712,7 @@ type NoteSumAggregate {
 
 input NoteUpdateInput {
   archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
   config: NoteConfigUpdateOneWithoutNoteNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -713,6 +726,7 @@ input NoteUpdateInput {
 
 input NoteUpdateManyMutationInput {
   archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
@@ -773,6 +787,7 @@ input NoteUpdateWithWhereUniqueWithoutUserInput {
 
 input NoteUpdateWithoutConfigInput {
   archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
@@ -785,6 +800,7 @@ input NoteUpdateWithoutConfigInput {
 
 input NoteUpdateWithoutTasksInput {
   archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
   config: NoteConfigUpdateOneWithoutNoteNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -797,6 +813,7 @@ input NoteUpdateWithoutTasksInput {
 
 input NoteUpdateWithoutUserInput {
   archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  completedAt: NullableDateTimeFieldUpdateOperationsInput
   config: NoteConfigUpdateOneWithoutNoteNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   deletedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -830,6 +847,7 @@ input NoteWhereInput {
   NOT: [NoteWhereInput!]
   OR: [NoteWhereInput!]
   archiveAt: DateTimeNullableFilter
+  completedAt: DateTimeNullableFilter
   config: NoteConfigNullableRelationFilter
   createdAt: DateTimeNullableFilter
   deletedAt: DateTimeNullableFilter
@@ -848,6 +866,7 @@ input NoteWhereUniqueInput {
   NOT: [NoteWhereInput!]
   OR: [NoteWhereInput!]
   archiveAt: DateTimeNullableFilter
+  completedAt: DateTimeNullableFilter
   config: NoteConfigNullableRelationFilter
   createdAt: DateTimeNullableFilter
   deletedAt: DateTimeNullableFilter
@@ -1634,6 +1653,7 @@ type User {
 
 type UserConfig {
   id: String!
+  showCompleted: Boolean!
   theme: ThemeColor
   user: User!
   userId: String!
@@ -1642,11 +1662,13 @@ type UserConfig {
 type UserConfigCountAggregate {
   _all: Int!
   id: Int!
+  showCompleted: Int!
   theme: Int!
   userId: Int!
 }
 
 input UserConfigCreateInput {
+  showCompleted: Boolean
   theme: ThemeColor
   user: UserCreateNestedOneWithoutConfigInput!
 }
@@ -1663,17 +1685,20 @@ input UserConfigCreateOrConnectWithoutUserInput {
 }
 
 input UserConfigCreateWithoutUserInput {
+  showCompleted: Boolean
   theme: ThemeColor
 }
 
 type UserConfigMaxAggregate {
   id: String
+  showCompleted: Boolean
   theme: ThemeColor
   userId: String
 }
 
 type UserConfigMinAggregate {
   id: String
+  showCompleted: Boolean
   theme: ThemeColor
   userId: String
 }
@@ -1697,12 +1722,14 @@ input UserConfigOrderByRelevanceInput {
 input UserConfigOrderByWithRelationInput {
   _relevance: UserConfigOrderByRelevanceInput
   id: SortOrder
+  showCompleted: SortOrder
   theme: SortOrderInput
   user: UserOrderByWithRelationInput
   userId: SortOrder
 }
 
 input UserConfigUpdateInput {
+  showCompleted: BoolFieldUpdateOperationsInput
   theme: NullableEnumThemeColorFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutConfigNestedInput
 }
@@ -1723,6 +1750,7 @@ input UserConfigUpdateToOneWithWhereWithoutUserInput {
 }
 
 input UserConfigUpdateWithoutUserInput {
+  showCompleted: BoolFieldUpdateOperationsInput
   theme: NullableEnumThemeColorFieldUpdateOperationsInput
 }
 
@@ -1737,6 +1765,7 @@ input UserConfigWhereInput {
   NOT: [UserConfigWhereInput!]
   OR: [UserConfigWhereInput!]
   id: StringFilter
+  showCompleted: BoolFilter
   theme: EnumThemeColorNullableFilter
   user: UserRelationFilter
   userId: StringFilter
@@ -1747,6 +1776,7 @@ input UserConfigWhereUniqueInput {
   NOT: [UserConfigWhereInput!]
   OR: [UserConfigWhereInput!]
   id: String
+  showCompleted: BoolFilter
   theme: EnumThemeColorNullableFilter
   user: UserRelationFilter
   userId: String

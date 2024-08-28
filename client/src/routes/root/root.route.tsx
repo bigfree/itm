@@ -7,10 +7,13 @@ import { FC, FunctionComponent, lazy, LazyExoticComponent, ReactElement, Suspens
 import { AppShell, rem } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
 import { AppShellHeaderCss, AppShellMainCss, AppShellNavbarCss, AppShellRootCss } from '@routes/root/root.css.ts';
-import AppHeader from '@components/app/header/app-header.component.tsx';
 
 const CreateNote: LazyExoticComponent<FunctionComponent> = lazy(
     () => import('@components/create-note/create-note.component.tsx'),
+);
+
+const AppHeader: LazyExoticComponent<FunctionComponent> = lazy(
+    () => import('@components/app/header/app-header.component.tsx'),
 );
 
 const RootRoute: FC = (): ReactElement => {
@@ -28,7 +31,9 @@ const RootRoute: FC = (): ReactElement => {
             }}
         >
             <AppShell.Header>
-                <AppHeader />
+                <Suspense fallback={null}>
+                    <AppHeader />
+                </Suspense>
             </AppShell.Header>
             <AppShell.Main>
                 <Suspense fallback={null}>

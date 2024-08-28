@@ -115,8 +115,9 @@ export class NoteService {
      * Archive note
      * @param noteId
      * @param userId
+     * @param select
      */
-    public async archive(noteId: string, userId: string): Promise<Note> {
+    public async archive(noteId: string, userId: string, select: Prisma.NoteSelect): Promise<Note> {
         const existingNote = await this.prismaService.note.findUnique({
             where: {
                 id: noteId,
@@ -148,11 +149,6 @@ export class NoteService {
         }
 
         return this.prismaService.note.update({
-            include: {
-                config: true,
-                tasks: true,
-                _count: true,
-            },
             where: {
                 id: noteId,
                 userId: userId,
@@ -160,6 +156,7 @@ export class NoteService {
             data: {
                 archiveAt: new Date(),
             },
+            select,
         });
     }
 

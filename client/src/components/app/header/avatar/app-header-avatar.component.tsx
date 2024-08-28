@@ -6,11 +6,14 @@ import {
     AppHeaderAvatarPlaceholderCss,
     AppHeaderAvatarRootCss,
 } from '@components/app/header/avatar/app-header-avatar.css.ts';
+import { userConfigVar } from '@stores/config.store.ts';
 
 type AppHeaderAvatarProps = NonNullable<unknown>;
 
 const AppHeaderAvatar: FC<AppHeaderAvatarProps> = (): ReactElement => {
-    const { data } = useQuery(MeQuery);
+    const { data } = useQuery(MeQuery, {
+        onCompleted: (data) => userConfigVar(data.me.config),
+    });
     return (
         <Avatar
             radius={'md'}

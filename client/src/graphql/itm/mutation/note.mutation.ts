@@ -25,3 +25,22 @@ export const UpdateNoteMutation = gql(/*GraphQL*/ `
         }
     }
 `);
+
+export const ArchivedNoteMutation = gql(/*GraphQL*/ `
+    mutation ArchivedNote($id: String!) {
+        archivedNote(id: $id) {
+            __typename
+            id
+            archiveAt
+        }
+    }
+`);
+
+export const RemoveNoteMutation = gql(/*GraphQL*/ `
+    mutation RemoveNote($where: NoteWhereUniqueInput!) {
+        removeNote(where: $where) {
+            __typename
+            id
+        }
+    }
+`);

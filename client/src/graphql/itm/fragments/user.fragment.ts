@@ -7,5 +7,9 @@ export const MeFragment = gql(/* GraphQL */ `
         type
         role
         email
+        config {
+            __typename
+            ...UserConfigFragment
+        }
     }
 `);

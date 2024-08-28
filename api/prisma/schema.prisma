@@ -116,8 +116,9 @@ model Profile {
 
 model UserConfig {
   /// @HideField({ match: 'UserConfig*@(Create|Update)*Input' })
-  id    String      @id @default(cuid())
-  theme ThemeColor? @default(AUTO)
+  id            String      @id @default(cuid())
+  theme         ThemeColor? @default(AUTO)
+  showCompleted Boolean     @default(false)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
@@ -154,13 +155,15 @@ model Note {
   tasks       Task[]
 
   /// @FieldType('DateTime')
-  pinnedAt  DateTime?
+  completedAt DateTime?
   /// @FieldType('DateTime')
-  deletedAt DateTime?
+  pinnedAt    DateTime?
   /// @FieldType('DateTime')
-  archiveAt DateTime?
+  deletedAt   DateTime?
   /// @FieldType('DateTime')
-  createdAt DateTime? @default(now())
+  archiveAt   DateTime?
+  /// @FieldType('DateTime')
+  createdAt   DateTime? @default(now())
 
   // Indexes
   @@index(fields: [id], type: Hash)

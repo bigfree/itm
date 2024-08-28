@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, ReactElement, useCallback, useState } from 'react';
-import { TextInput } from '@mantine/core';
+import { Box, TextInput } from '@mantine/core';
 import { ApolloCache, useMutation } from '@apollo/client';
 import { CreateNoteMutation } from '@graphql/itm/mutation/note.mutation.ts';
 import useAuthStore, { AuthStore } from '@stores/auth.store.ts';
@@ -70,15 +70,16 @@ const CreateNote: FC<CreateNoteProps> = (): ReactElement => {
                     deletedAt: null,
                     pinnedAt: null,
                     archiveAt: null,
+                    completedAt: null,
                 },
             },
         });
     }, [createNote, currentUserId, noteName]);
 
     return (
-        <div>
+        <Box p={'md'} pb={0}>
             <TextInput value={noteName} onChange={handleOnChangeNote} onBlur={handleOnBlurNote} />
-        </div>
+        </Box>
     );
 };
 

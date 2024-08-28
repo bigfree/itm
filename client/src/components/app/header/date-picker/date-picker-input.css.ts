@@ -16,7 +16,7 @@ export const DatePickerInputCss = style({
     justifyContent: 'center',
 });
 
-export const TodayButtonCss = style({
+export const DateToolButtonCss = style({
     borderRadius: vars.radius.sm,
     height: rem(36),
     width: rem(36),
@@ -30,7 +30,7 @@ export const TodayButtonCss = style({
     }
 });
 
-export const TodayButtonSvgCss = style({
+export const DateToolButtonSvgCss = style({
     height: rem(36),
     width: rem(36),
     padding: rem(6),

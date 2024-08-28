@@ -110,11 +110,16 @@ export class NoteResolver {
      * Archived note
      * @param accessTokenData
      * @param noteId
+     * @param select
      */
     @UseGuards(GqlThrottlerGuard, new RolesGuard([UserRole.ROLE_USER]))
     @Mutation(() => Note)
-    public async archivedNote(@CurrentUser() accessTokenData: AccessTokenData, @Args('id') noteId: string) {
-        const note: Note = await this.noteService.archive(noteId, accessTokenData.id);
+    public async archivedNote(
+        @CurrentUser() accessTokenData: AccessTokenData,
+        @Args('id') noteId: string,
+        @PrismaSelect() select: Prisma.NoteSelect,
+    ) {
+        const note: Note = await this.noteService.archive(noteId, accessTokenData.id, select);
 
         await this.pubSub.publish(PublishStateEnum.NOTE_UPDATED, {
             [PublishStateEnum.NOTE_UPDATED]: note,

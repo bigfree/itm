@@ -12,7 +12,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(utc);
 
 const App: FC = (): ReactElement => (
-    <MantineProvider theme={mainTheme} defaultColorScheme={'light'} classNamesPrefix={'flow'}>
+    <MantineProvider theme={mainTheme} defaultColorScheme={'light'} classNamesPrefix={'itm'}>
         <ModalsProvider>
             <RouterProvider router={browserRouter} />
         </ModalsProvider>
