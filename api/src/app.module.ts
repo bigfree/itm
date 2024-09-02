@@ -22,9 +22,10 @@ import { winstonConfig } from './common/config/winston.config';
 import { graphqlConfig } from './common/config/graphql.config';
 import { AppVersionMiddleware } from './common/middleware/app-version/app-version.middleware';
 import { UserConfigModule } from './user-config/user-config.module';
-import { NoteModule } from './note/note.module';
-import { NoteConfigModule } from './note-config/note-config.module';
-import { TaskModule } from './task/task.module';
+import { BullModule } from '@nestjs/bull';
+import { bullConfig } from './common/config/bull.config';
+import { ProcessTransportController } from './process-transport/process-transport.controller';
+import { ProcessTransportService } from './process-transport/process-transport.service';
 
 @Module({
     imports: [
@@ -48,16 +49,18 @@ import { TaskModule } from './task/task.module';
             inject: [ConfigService],
             useFactory: graphqlConfig,
         }),
+        BullModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: bullConfig,
+        }),
         LogModule,
         UserModule,
         AuthorizeModule,
         RefreshTokenModule,
         UserConfigModule,
-        NoteModule,
-        NoteConfigModule,
-        TaskModule,
     ],
-    controllers: [AppController],
+    controllers: [AppController, ProcessTransportController],
     providers: [
         AppService,
         PrismaService,
@@ -66,6 +69,7 @@ import { TaskModule } from './task/task.module';
         TokensService,
         JwtService,
         RefreshTokenService,
+        ProcessTransportService,
     ],
 })
 export class AppModule implements NestModule {

@@ -57,15 +57,16 @@ model User {
   createdAt  DateTime? @default(now())
 
   // Relations
-  role          UserRole[]
+  role                 UserRole[]
   /// @HideField({ match: 'User*@(Where)*Input', output: true })
-  password      Password       @relation(fields: [passwordId], references: [id], onDelete: Cascade)
+  password             Password              @relation(fields: [passwordId], references: [id], onDelete: Cascade)
   /// @HideField({ input: true, output: true })
-  refreshTokens RefreshToken[]
-  profile       Profile?
-  config        UserConfig?
-  notes         Note[]
-  tasks         Task[]
+  refreshTokens        RefreshToken[]
+  profile              Profile?
+  config               UserConfig?
+  transportsCollection TransportCollection[]
+  transports           Transport[]
+  transportsVersions   TransportVersion[]
 
   @@index(fields: [id], type: Hash)
   @@index(fields: [email], type: Hash)
@@ -143,68 +144,152 @@ model Log {
   @@index(fields: [data(ops: JsonbOps)], type: Gin)
 }
 
-model Note {
-  /// @HideField({ match: 'Note*@(Create|Update)*Input' })
-  id          String      @id @default(cuid())
-  name        String?     @db.VarChar(255)
-  description String?     @db.Text
-  userId      String
-  order       Int?        @db.Integer
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  config      NoteConfig?
-  tasks       Task[]
+model TransportCollection {
+  /// @HideField({ match: 'TransportCollection*@(Create|Update)*Input' })
+  id            String      @id @default(cuid())
+  name          String      @db.VarChar(255)
+  createdUser   User        @relation(fields: [createdUserId], references: [id])
+  createdUserId String
+  Transport     Transport[]
 
   /// @FieldType('DateTime')
-  completedAt DateTime?
+  archiveAt DateTime?
   /// @FieldType('DateTime')
-  pinnedAt    DateTime?
+  createdAt DateTime? @default(now())
   /// @FieldType('DateTime')
-  deletedAt   DateTime?
-  /// @FieldType('DateTime')
-  archiveAt   DateTime?
-  /// @FieldType('DateTime')
-  createdAt   DateTime? @default(now())
+  deletedAt DateTime?
 
   // Indexes
   @@index(fields: [id], type: Hash)
 }
 
-model NoteConfig {
-  /// @HideField({ match: 'NoteConfig*@(Create|Update)*Input' })
-  id                  String  @id @default(cuid())
-  /// @FieldType('HexColorCode')
-  color               String? @db.VarChar(15)
-  isOpenCompletedTask Boolean @default(false)
-  noteId              String  @unique
-  note                Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+model Transport {
+  /// @HideField({ match: 'Transport*@(Create|Update)*Input' })
+  id                    String              @id @default(cuid())
+  url                   String              @db.VarChar(255)
+  name                  String              @db.VarChar(255)
+  description           String?             @db.Text
+  method                TransportType
+  isAllow               Boolean             @default(false) @db.Boolean
+  transportCollection   TransportCollection @relation(fields: [transportCollectionId], references: [id], onDelete: Cascade)
+  transportCollectionId String
+  createdUser           User                @relation(fields: [createdUserId], references: [id])
+  createdUserId         String
+
+  /// @FieldType('DateTime')
+  archiveAt DateTime?
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+  /// @FieldType('DateTime')
+  deletedAt DateTime?
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+  @@index(fields: [url], type: Hash)
+  @@index(fields: [method], type: Hash)
+}
+
+model TransportVersion {
+  /// @HideField({ match: 'TransportVersions*@(Create|Update)*Input' })
+  id            String    @id @default(cuid())
+  /// @FieldType('DateTime')
+  version       DateTime? @default(now())
+  /// @PropertyType('TF.JsonObject')
+  transport     Json?     @db.JsonB
+  createdUser   User      @relation(fields: [createdUserId], references: [id])
+  createdUserId String
+
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+  @@index(fields: [transport(ops: JsonbOps)], type: Gin)
+}
+
+model Queue {
+  /// @HideField({ match: 'Queue*@(Create|Update)*Input' })
+  id           String    @id @default(cuid())
+  /// @HideField({ input: true, output: false })
+  jobId        Int?      @db.Integer()
+  /// @FieldType('DateTime')
+  message      Json?     @db.JsonB
+  status       String?   @db.VarChar(20)
+  /// @HideField({ input: true, output: false })
+  failedReason String?   @db.VarChar(400)
+  /// @HideField({ input: true, output: false })
+  enqueueAt    DateTime?
+  /// @HideField({ input: true, output: false })
+  attempt      Int?
+  /// @HideField({ input: true, output: false })
+  finishedAt   DateTime?
 
   // Indexes
   @@index(fields: [id], type: Hash)
 }
 
-// TODO: create graphql service
-model Task {
-  /// @HideField({ match: 'Task*@(Create|Update)*Input' })
-  id     String  @id @default(cuid())
-  name   String? @db.VarChar(8000)
-  order  Int?    @db.Integer
-  noteId String
-  note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  userId String
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  /// @FieldType('DateTime')
-  pinnedAt    DateTime?
-  /// @FieldType('DateTime')
-  completedAt DateTime?
-  /// @FieldType('DateTime')
-  deletedAt   DateTime?
-  /// @FieldType('DateTime')
-  createdAt   DateTime? @default(now())
-
-  // Indexes
-  @@index(fields: [id], type: Hash)
-}
+// model Note {
+//   /// @HideField({ match: 'Note*@(Create|Update)*Input' })
+//   id          String      @id @default(cuid())
+//   name        String?     @db.VarChar(255)
+//   description String?     @db.Text
+//   userId      String
+//   order       Int?        @db.Integer
+//   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   config      NoteConfig?
+//   tasks       Task[]
+//
+//   /// @FieldType('DateTime')
+//   completedAt DateTime?
+//   /// @FieldType('DateTime')
+//   pinnedAt    DateTime?
+//   /// @FieldType('DateTime')
+//   deletedAt   DateTime?
+//   /// @FieldType('DateTime')
+//   archiveAt   DateTime?
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime? @default(now())
+//
+//   // Indexes
+//   @@index(fields: [id], type: Hash)
+// }
+//
+// model NoteConfig {
+//   /// @HideField({ match: 'NoteConfig*@(Create|Update)*Input' })
+//   id                  String  @id @default(cuid())
+//   /// @FieldType('HexColorCode')
+//   color               String? @db.VarChar(15)
+//   isOpenCompletedTask Boolean @default(false)
+//   noteId              String  @unique
+//   note                Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+//
+//   // Indexes
+//   @@index(fields: [id], type: Hash)
+// }
+//
+// // TODO: create graphql service
+// model Task {
+//   /// @HideField({ match: 'Task*@(Create|Update)*Input' })
+//   id     String  @id @default(cuid())
+//   name   String? @db.VarChar(8000)
+//   order  Int?    @db.Integer
+//   noteId String
+//   note   Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+//   userId String
+//   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//
+//   /// @FieldType('DateTime')
+//   pinnedAt    DateTime?
+//   /// @FieldType('DateTime')
+//   completedAt DateTime?
+//   /// @FieldType('DateTime')
+//   deletedAt   DateTime?
+//   /// @FieldType('DateTime')
+//   createdAt   DateTime? @default(now())
+//
+//   // Indexes
+//   @@index(fields: [id], type: Hash)
+// }
 
 // model Workspace {
 //   /// @HideField({ match: 'Workspace*@(Create|Update)*Input' })
@@ -451,4 +536,12 @@ enum LogType {
 enum LogFrom {
   API
   APP
+}
+
+enum TransportType {
+  GET
+  POST
+  PATCH
+  PUT
+  DELETE
 }

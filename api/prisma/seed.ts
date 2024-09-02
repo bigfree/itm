@@ -1,4 +1,4 @@
-import { PrismaClient, UserRole, UserType } from '@prisma/client';
+import { PrismaClient, TransportType, User, UserRole, UserType } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { faker } from '@faker-js/faker/locale/sk';
 
@@ -10,15 +10,13 @@ async function main() {
     await prisma.user.deleteMany();
     await prisma.log.deleteMany();
     await prisma.refreshToken.deleteMany();
-    await prisma.note.deleteMany();
-    await prisma.task.deleteMany();
 
     console.log('Seeding...');
 
     /**
      * Create user with role Admin
      */
-    const roleAdminUser = await prisma.user.create({
+    const roleAdminUser: User = await prisma.user.create({
         data: {
             email: 'adam@miko.sk',
             role: [UserRole.ROLE_GUEST, UserRole.ROLE_USER, UserRole.ROLE_ADMIN],
@@ -40,98 +38,128 @@ async function main() {
         },
     });
 
-    /**
-     * Create users with role User
-     */
-    Array(50)
-        .fill(null)
-        .map(async (value, index) => {
-            const sexType = faker.person.sexType();
-            const firstName = faker.person.firstName(sexType);
-            const lastName = faker.person.lastName(sexType);
-            const email = faker.internet
-                .email({
-                    firstName,
-                    lastName,
-                })
-                .toLowerCase();
-
-            await prisma.user.create({
-                include: {
-                    profile: true,
-                    password: true,
-                },
-                data: {
-                    email,
-                    role: [UserRole.ROLE_GUEST, UserRole.ROLE_USER],
-                    type: UserType.USER,
-                    password: {
-                        create: {
-                            password: await hash('123456', 10),
-                        },
-                    },
-                    profile: {
-                        create: {
-                            firstName,
-                            lastName,
-                            bio: faker.person.bio(),
-                            avatar: faker.image.avatar(),
-                            username: `Userko${index}`,
-                        },
-                    },
-                },
-            });
-        });
-
-    /**
-     * Create user with role Guest
-     */
-    await prisma.user.create({
+    const createdTransportCollection = await prisma.transportCollection.create({
         data: {
-            email: 'guest@guest.sk',
-            role: [UserRole.ROLE_GUEST],
-            type: UserType.GUEST,
-            password: {
-                create: {
-                    password: await hash('123456', 10),
-                },
-            },
-            profile: {
-                create: {
-                    firstName: 'Guest',
-                    lastName: 'Guest',
-                    username: 'Guestko',
+            name: 'Test transport collection',
+            createdUser: {
+                connect: {
+                    id: roleAdminUser.id,
                 },
             },
         },
     });
 
-    let noteOrder: number = 0;
-    Array(5)
-        .fill(null)
-        .map(async () => {
-            const seedNote = await prisma.note.create({
-                data: {
-                    userId: roleAdminUser.id,
-                    name: faker.lorem.paragraph({ min: 1, max: 2 }),
-                    order: noteOrder++,
+    const createdTestTransport = await prisma.transport.create({
+        data: {
+            name: 'Test transport',
+            method: TransportType.GET,
+            url: 'test-transport/aaaa',
+            isAllow: true,
+            createdUser: {
+                connect: {
+                    id: roleAdminUser.id,
                 },
-            });
+            },
+            transportCollection: {
+                connect: {
+                    id: createdTransportCollection.id,
+                },
+            },
+        },
+    });
 
-            let taskOrder: number = 0;
-            Array(3)
-                .fill(null)
-                .map(async () => {
-                    await prisma.task.create({
-                        data: {
-                            userId: roleAdminUser.id,
-                            noteId: seedNote.id,
-                            name: faker.lorem.sentences({ min: 1, max: 1 }),
-                            order: taskOrder++,
-                        },
-                    });
-                });
-        });
+    /**
+     * Create users with role User
+     */
+    // Array(50)
+    //     .fill(null)
+    //     .map(async (value, index) => {
+    //         const sexType = faker.person.sexType();
+    //         const firstName = faker.person.firstName(sexType);
+    //         const lastName = faker.person.lastName(sexType);
+    //         const email = faker.internet
+    //             .email({
+    //                 firstName,
+    //                 lastName,
+    //             })
+    //             .toLowerCase();
+    //
+    //         await prisma.user.create({
+    //             include: {
+    //                 profile: true,
+    //                 password: true,
+    //             },
+    //             data: {
+    //                 email,
+    //                 role: [UserRole.ROLE_GUEST, UserRole.ROLE_USER],
+    //                 type: UserType.USER,
+    //                 password: {
+    //                     create: {
+    //                         password: await hash('123456', 10),
+    //                     },
+    //                 },
+    //                 profile: {
+    //                     create: {
+    //                         firstName,
+    //                         lastName,
+    //                         bio: faker.person.bio(),
+    //                         avatar: faker.image.avatar(),
+    //                         username: `Userko${index}`,
+    //                     },
+    //                 },
+    //             },
+    //         });
+    //     });
+    //
+    // /**
+    //  * Create user with role Guest
+    //  */
+    // await prisma.user.create({
+    //     data: {
+    //         email: 'guest@guest.sk',
+    //         role: [UserRole.ROLE_GUEST],
+    //         type: UserType.GUEST,
+    //         password: {
+    //             create: {
+    //                 password: await hash('123456', 10),
+    //             },
+    //         },
+    //         profile: {
+    //             create: {
+    //                 firstName: 'Guest',
+    //                 lastName: 'Guest',
+    //                 username: 'Guestko',
+    //             },
+    //         },
+    //     },
+    // });
+    //
+    // let noteOrder: number = 0;
+    // Array(5)
+    //     .fill(null)
+    //     .map(async () => {
+    //         const seedNote = await prisma.note.create({
+    //             data: {
+    //                 userId: roleAdminUser.id,
+    //                 name: faker.lorem.paragraph({ min: 1, max: 2 }),
+    //                 order: noteOrder++,
+    //             },
+    //         });
+    //
+    //         let taskOrder: number = 0;
+    //         Array(3)
+    //             .fill(null)
+    //             .map(async () => {
+    //                 await prisma.task.create({
+    //                     data: {
+    //                         userId: roleAdminUser.id,
+    //                         noteId: seedNote.id,
+    //                         name: faker.lorem.sentences({ min: 1, max: 1 }),
+    //                         order: taskOrder++,
+    //                     },
+    //                 });
+    //             });
+    //     });
 
     // /**
     //  * Create workspace
@@ -237,6 +265,8 @@ async function main() {
 
     console.log({
         roleAdminUser,
+        createdTransportCollection,
+        createdTestTransport,
     });
 }
 
