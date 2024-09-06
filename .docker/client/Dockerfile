@@ -1,4 +1,4 @@
-FROM node:22.4.0-alpine As development
+FROM node:22.4.0-alpine AS development
 EXPOSE 3000
 
 WORKDIR /usr/src/client

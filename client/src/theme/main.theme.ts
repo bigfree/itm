@@ -7,7 +7,6 @@ import {
     Tooltip,
 } from '@mantine/core';
 import { generateColors } from '@mantine/colors-generator';
-import { MantineVars, themeToVars } from '@mantine/vanilla-extract';
 
 /**
  * Represents a set of extended custom colors.
@@ -69,11 +68,3 @@ export const mainTheme: MantineThemeOverride = createTheme({
         // }),
     },
 });
-
-/**
- * Converts a Mantine theme object into corresponding MantineVars object.
- *
- * @param {object} mainTheme - The Mantine theme object to convert.
- * @returns {MantineVars} - The converted MantineVars object.
- */
-export const vars: MantineVars = themeToVars(mainTheme);

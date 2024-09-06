@@ -1,2 +1,4 @@
-node_modules/
-dist/
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

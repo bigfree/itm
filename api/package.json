@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -111,6 +112,7 @@
     "webpack": "^5.91.0"
   },
   "prisma": {
+    "schema": "prisma/schema.prisma",
     "seed": "ts-node prisma/seed.ts"
   },
   "jest": {

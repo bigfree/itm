@@ -7,7 +7,7 @@ type AppHeaderConfigProps = NonNullable<unknown>;
 
 const AppHeaderConfig: FC<AppHeaderConfigProps> = (): ReactElement => {
     return (
-        <UnstyledButton className={AppHeaderConfigButtonCss}>
+        <UnstyledButton>
             <IconSettings size={24} stroke={1.8} />
         </UnstyledButton>
     );

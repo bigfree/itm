@@ -1,28 +1,34 @@
-import { FC, Fragment, ReactElement } from 'react';
-import { Flex } from '@mantine/core';
-import { AppHeaderFlexCss } from '@components/app/header/app-header.css.ts';
+import { FC, ReactElement } from 'react';
+import { Flex, Grid, rem } from '@mantine/core';
+import { createStyles } from '@mantine/emotion';
 import AppHeaderAvatar from '@components/app/header/avatar/app-header-avatar.component.tsx';
 import AppHeaderNotifications from '@components/app/header/notifications/app-header-notifications.component.tsx';
 import AppHeaderConfig from '@components/app/header/config/app-header-config.component.tsx';
-import DatePicker from '@components/app/header/date-picker/date-picker.component.tsx';
 
 type AppHeaderProps = NonNullable<unknown>;
 
+const useStyles = createStyles((theme, _, u) => ({
+    grid: {
+        height: rem(60),
+    }
+}));
+
 const AppHeader: FC<AppHeaderProps> = (): ReactElement => {
+    const { classes } = useStyles();
+
     return (
-        <Fragment>
-            <Flex className={AppHeaderFlexCss} align={'center'}>
+        <Grid align={'center'} className={classes.grid}>
+            <Grid.Col span={'auto'}>
                 ITM
-            </Flex>
-            <Flex style={{ flex: 1 }} align={'center'} justify={'center'}>
-                <DatePicker/>
-            </Flex>
-            <Flex className={AppHeaderFlexCss} align={'center'} gap={'xs'}>
-                <AppHeaderAvatar />
-                <AppHeaderConfig />
-                <AppHeaderNotifications />
-            </Flex>
-        </Fragment>
+            </Grid.Col>
+            <Grid.Col span={'content'}>
+                <Flex align={'center'} gap={'xs'}>
+                    <AppHeaderAvatar />
+                    <AppHeaderConfig />
+                    <AppHeaderNotifications />
+                </Flex>
+            </Grid.Col>
+        </Grid>
     );
 };
 

@@ -74,6 +74,17 @@ export type EnumThemeColorNullableFilter = {
   notIn?: InputMaybe<Array<ThemeColor>>;
 };
 
+export type EnumTransportTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<TransportType>;
+};
+
+export type EnumTransportTypeFilter = {
+  equals?: InputMaybe<TransportType>;
+  in?: InputMaybe<Array<TransportType>>;
+  not?: InputMaybe<NestedEnumTransportTypeFilter>;
+  notIn?: InputMaybe<Array<TransportType>>;
+};
+
 export type EnumUserRoleNullableListFilter = {
   equals?: InputMaybe<Array<UserRole>>;
   has?: InputMaybe<UserRole>;
@@ -91,17 +102,6 @@ export type EnumUserTypeFilter = {
   in?: InputMaybe<Array<UserType>>;
   not?: InputMaybe<NestedEnumUserTypeFilter>;
   notIn?: InputMaybe<Array<UserType>>;
-};
-
-export type IntNullableFilter = {
-  equals?: InputMaybe<Scalars['Int']['input']>;
-  gt?: InputMaybe<Scalars['Int']['input']>;
-  gte?: InputMaybe<Scalars['Int']['input']>;
-  in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  lt?: InputMaybe<Scalars['Int']['input']>;
-  lte?: InputMaybe<Scalars['Int']['input']>;
-  not?: InputMaybe<NestedIntNullableFilter>;
-  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type JsonNullableFilter = {
@@ -231,41 +231,19 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  archivedNote: Note;
-  completedMyTask: Task;
   createLog: Log;
   createMyConfig: UserConfig;
-  createNote: Note;
-  createNoteConfig: NoteConfig;
-  createTask: Task;
   createUser: User;
   createUserConfig: UserConfig;
   deleteUser: User;
   login: Authorize;
   logout: User;
-  pinnedNote: Note;
   refreshTokens: Authorize;
   register: Authorize;
-  removeNote: Note;
-  removeTask: Task;
   updateMyConfig: UserConfig;
-  updateNote: Note;
-  updateNoteConfig: NoteConfig;
-  updateTask: Task;
   updateUser: User;
   updateUserConfig: UserConfig;
-  upsertNoteConfig: NoteConfig;
   upsertUserConfig: UserConfig;
-};
-
-
-export type MutationArchivedNoteArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationCompletedMyTaskArgs = {
-  id: Scalars['String']['input'];
 };
 
 
@@ -276,21 +254,6 @@ export type MutationCreateLogArgs = {
 
 export type MutationCreateMyConfigArgs = {
   userConfigCreateInput: UserConfigCreateInput;
-};
-
-
-export type MutationCreateNoteArgs = {
-  data: NoteCreateInput;
-};
-
-
-export type MutationCreateNoteConfigArgs = {
-  data: NoteConfigCreateInput;
-};
-
-
-export type MutationCreateTaskArgs = {
-  data: TaskCreateInput;
 };
 
 
@@ -314,11 +277,6 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationPinnedNoteArgs = {
-  id: Scalars['String']['input'];
-};
-
-
 export type MutationRefreshTokensArgs = {
   refreshInput: RefreshInput;
 };
@@ -329,36 +287,8 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationRemoveNoteArgs = {
-  where: NoteWhereUniqueInput;
-};
-
-
-export type MutationRemoveTaskArgs = {
-  where: TaskWhereUniqueInput;
-};
-
-
 export type MutationUpdateMyConfigArgs = {
   userConfigUpdateInput: UserConfigUpdateInput;
-};
-
-
-export type MutationUpdateNoteArgs = {
-  data: NoteUpdateInput;
-  where: NoteWhereUniqueInput;
-};
-
-
-export type MutationUpdateNoteConfigArgs = {
-  data: NoteConfigUpdateInput;
-  where: NoteConfigWhereUniqueInput;
-};
-
-
-export type MutationUpdateTaskArgs = {
-  data: TaskUpdateInput;
-  where: TaskWhereUniqueInput;
 };
 
 
@@ -371,13 +301,6 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateUserConfigArgs = {
   data: UserConfigUpdateInput;
   where: UserConfigWhereUniqueInput;
-};
-
-
-export type MutationUpsertNoteConfigArgs = {
-  create: NoteConfigCreateInput;
-  update: NoteConfigUpdateInput;
-  where: NoteConfigWhereUniqueInput;
 };
 
 
@@ -424,22 +347,18 @@ export type NestedEnumThemeColorNullableFilter = {
   notIn?: InputMaybe<Array<ThemeColor>>;
 };
 
+export type NestedEnumTransportTypeFilter = {
+  equals?: InputMaybe<TransportType>;
+  in?: InputMaybe<Array<TransportType>>;
+  not?: InputMaybe<NestedEnumTransportTypeFilter>;
+  notIn?: InputMaybe<Array<TransportType>>;
+};
+
 export type NestedEnumUserTypeFilter = {
   equals?: InputMaybe<UserType>;
   in?: InputMaybe<Array<UserType>>;
   not?: InputMaybe<NestedEnumUserTypeFilter>;
   notIn?: InputMaybe<Array<UserType>>;
-};
-
-export type NestedIntNullableFilter = {
-  equals?: InputMaybe<Scalars['Int']['input']>;
-  gt?: InputMaybe<Scalars['Int']['input']>;
-  gte?: InputMaybe<Scalars['Int']['input']>;
-  in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  lt?: InputMaybe<Scalars['Int']['input']>;
-  lte?: InputMaybe<Scalars['Int']['input']>;
-  not?: InputMaybe<NestedIntNullableFilter>;
-  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type NestedStringFilter = {
@@ -472,589 +391,12 @@ export type NestedStringNullableFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type Note = {
-  __typename?: 'Note';
-  _count: NoteCount;
-  archiveAt?: Maybe<Scalars['DateTime']['output']>;
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  config?: Maybe<NoteConfig>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  tasks?: Maybe<Array<Task>>;
-  user: User;
-  userId: Scalars['String']['output'];
-};
-
-
-export type NoteTasksArgs = {
-  cursor?: InputMaybe<TaskWhereUniqueInput>;
-  distinct?: InputMaybe<Array<TaskScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput>>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<TaskWhereInput>;
-};
-
-export type NoteAvgAggregate = {
-  __typename?: 'NoteAvgAggregate';
-  order?: Maybe<Scalars['Float']['output']>;
-};
-
-export type NoteConfig = {
-  __typename?: 'NoteConfig';
-  color?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  isOpenCompletedTask: Scalars['Boolean']['output'];
-  note: Note;
-  noteId: Scalars['String']['output'];
-};
-
-export type NoteConfigCountAggregate = {
-  __typename?: 'NoteConfigCountAggregate';
-  _all: Scalars['Int']['output'];
-  color: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  isOpenCompletedTask: Scalars['Int']['output'];
-  noteId: Scalars['Int']['output'];
-};
-
-export type NoteConfigCreateInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
-  isOpenCompletedTask?: InputMaybe<Scalars['Boolean']['input']>;
-  note: NoteCreateNestedOneWithoutConfigInput;
-};
-
-export type NoteConfigCreateNestedOneWithoutNoteInput = {
-  connect?: InputMaybe<NoteConfigWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteConfigCreateOrConnectWithoutNoteInput>;
-  create?: InputMaybe<NoteConfigCreateWithoutNoteInput>;
-};
-
-export type NoteConfigCreateOrConnectWithoutNoteInput = {
-  create: NoteConfigCreateWithoutNoteInput;
-  where: NoteConfigWhereUniqueInput;
-};
-
-export type NoteConfigCreateWithoutNoteInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
-  isOpenCompletedTask?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type NoteConfigMaxAggregate = {
-  __typename?: 'NoteConfigMaxAggregate';
-  color?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  isOpenCompletedTask?: Maybe<Scalars['Boolean']['output']>;
-  noteId?: Maybe<Scalars['String']['output']>;
-};
-
-export type NoteConfigMinAggregate = {
-  __typename?: 'NoteConfigMinAggregate';
-  color?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  isOpenCompletedTask?: Maybe<Scalars['Boolean']['output']>;
-  noteId?: Maybe<Scalars['String']['output']>;
-};
-
-export type NoteConfigNullableRelationFilter = {
-  is?: InputMaybe<NoteConfigWhereInput>;
-  isNot?: InputMaybe<NoteConfigWhereInput>;
-};
-
-export enum NoteConfigOrderByRelevanceFieldEnum {
-  Color = 'color',
-  Id = 'id',
-  NoteId = 'noteId'
-}
-
-export type NoteConfigOrderByRelevanceInput = {
-  fields: Array<NoteConfigOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
-};
-
-export type NoteConfigOrderByWithRelationInput = {
-  _relevance?: InputMaybe<NoteConfigOrderByRelevanceInput>;
-  color?: InputMaybe<SortOrderInput>;
-  id?: InputMaybe<SortOrder>;
-  isOpenCompletedTask?: InputMaybe<SortOrder>;
-  note?: InputMaybe<NoteOrderByWithRelationInput>;
-  noteId?: InputMaybe<SortOrder>;
-};
-
-export type NoteConfigUpdateInput = {
-  color?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  isOpenCompletedTask?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  note?: InputMaybe<NoteUpdateOneRequiredWithoutConfigNestedInput>;
-};
-
-export type NoteConfigUpdateOneWithoutNoteNestedInput = {
-  connect?: InputMaybe<NoteConfigWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteConfigCreateOrConnectWithoutNoteInput>;
-  create?: InputMaybe<NoteConfigCreateWithoutNoteInput>;
-  delete?: InputMaybe<NoteConfigWhereInput>;
-  disconnect?: InputMaybe<NoteConfigWhereInput>;
-  update?: InputMaybe<NoteConfigUpdateToOneWithWhereWithoutNoteInput>;
-  upsert?: InputMaybe<NoteConfigUpsertWithoutNoteInput>;
-};
-
-export type NoteConfigUpdateToOneWithWhereWithoutNoteInput = {
-  data: NoteConfigUpdateWithoutNoteInput;
-  where?: InputMaybe<NoteConfigWhereInput>;
-};
-
-export type NoteConfigUpdateWithoutNoteInput = {
-  color?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  isOpenCompletedTask?: InputMaybe<BoolFieldUpdateOperationsInput>;
-};
-
-export type NoteConfigUpsertWithoutNoteInput = {
-  create: NoteConfigCreateWithoutNoteInput;
-  update: NoteConfigUpdateWithoutNoteInput;
-  where?: InputMaybe<NoteConfigWhereInput>;
-};
-
-export type NoteConfigWhereInput = {
-  AND?: InputMaybe<Array<NoteConfigWhereInput>>;
-  NOT?: InputMaybe<Array<NoteConfigWhereInput>>;
-  OR?: InputMaybe<Array<NoteConfigWhereInput>>;
-  color?: InputMaybe<StringNullableFilter>;
-  id?: InputMaybe<StringFilter>;
-  isOpenCompletedTask?: InputMaybe<BoolFilter>;
-  note?: InputMaybe<NoteRelationFilter>;
-  noteId?: InputMaybe<StringFilter>;
-};
-
-export type NoteConfigWhereUniqueInput = {
-  AND?: InputMaybe<Array<NoteConfigWhereInput>>;
-  NOT?: InputMaybe<Array<NoteConfigWhereInput>>;
-  OR?: InputMaybe<Array<NoteConfigWhereInput>>;
-  color?: InputMaybe<StringNullableFilter>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  isOpenCompletedTask?: InputMaybe<BoolFilter>;
-  note?: InputMaybe<NoteRelationFilter>;
-  noteId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type NoteCount = {
-  __typename?: 'NoteCount';
-  tasks: Scalars['Int']['output'];
-};
-
-export type NoteCountAggregate = {
-  __typename?: 'NoteCountAggregate';
-  _all: Scalars['Int']['output'];
-  archiveAt: Scalars['Int']['output'];
-  completedAt: Scalars['Int']['output'];
-  createdAt: Scalars['Int']['output'];
-  deletedAt: Scalars['Int']['output'];
-  description: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['Int']['output'];
-  order: Scalars['Int']['output'];
-  pinnedAt: Scalars['Int']['output'];
-  userId: Scalars['Int']['output'];
-};
-
-export type NoteCreateInput = {
-  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  config?: InputMaybe<NoteConfigCreateNestedOneWithoutNoteInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
-  user: UserCreateNestedOneWithoutNotesInput;
-};
-
-export type NoteCreateManyUserInput = {
-  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type NoteCreateManyUserInputEnvelope = {
-  data: Array<NoteCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type NoteCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<NoteWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<NoteCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<NoteCreateWithoutUserInput>>;
-  createMany?: InputMaybe<NoteCreateManyUserInputEnvelope>;
-};
-
-export type NoteCreateNestedOneWithoutConfigInput = {
-  connect?: InputMaybe<NoteWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteCreateOrConnectWithoutConfigInput>;
-  create?: InputMaybe<NoteCreateWithoutConfigInput>;
-};
-
-export type NoteCreateNestedOneWithoutTasksInput = {
-  connect?: InputMaybe<NoteWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteCreateOrConnectWithoutTasksInput>;
-  create?: InputMaybe<NoteCreateWithoutTasksInput>;
-};
-
-export type NoteCreateOrConnectWithoutConfigInput = {
-  create: NoteCreateWithoutConfigInput;
-  where: NoteWhereUniqueInput;
-};
-
-export type NoteCreateOrConnectWithoutTasksInput = {
-  create: NoteCreateWithoutTasksInput;
-  where: NoteWhereUniqueInput;
-};
-
-export type NoteCreateOrConnectWithoutUserInput = {
-  create: NoteCreateWithoutUserInput;
-  where: NoteWhereUniqueInput;
-};
-
-export type NoteCreateWithoutConfigInput = {
-  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
-  user: UserCreateNestedOneWithoutNotesInput;
-};
-
-export type NoteCreateWithoutTasksInput = {
-  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  config?: InputMaybe<NoteConfigCreateNestedOneWithoutNoteInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  user: UserCreateNestedOneWithoutNotesInput;
-};
-
-export type NoteCreateWithoutUserInput = {
-  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  config?: InputMaybe<NoteConfigCreateNestedOneWithoutNoteInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutNoteInput>;
-};
-
-export type NoteListRelationFilter = {
-  every?: InputMaybe<NoteWhereInput>;
-  none?: InputMaybe<NoteWhereInput>;
-  some?: InputMaybe<NoteWhereInput>;
-};
-
-export type NoteMaxAggregate = {
-  __typename?: 'NoteMaxAggregate';
-  archiveAt?: Maybe<Scalars['DateTime']['output']>;
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  userId?: Maybe<Scalars['String']['output']>;
-};
-
-export type NoteMinAggregate = {
-  __typename?: 'NoteMinAggregate';
-  archiveAt?: Maybe<Scalars['DateTime']['output']>;
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  userId?: Maybe<Scalars['String']['output']>;
-};
-
-export type NoteOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>;
-};
-
-export enum NoteOrderByRelevanceFieldEnum {
-  Description = 'description',
-  Id = 'id',
-  Name = 'name',
-  UserId = 'userId'
-}
-
-export type NoteOrderByRelevanceInput = {
-  fields: Array<NoteOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
-};
-
-export type NoteOrderByWithRelationInput = {
-  _relevance?: InputMaybe<NoteOrderByRelevanceInput>;
-  archiveAt?: InputMaybe<SortOrderInput>;
-  completedAt?: InputMaybe<SortOrderInput>;
-  config?: InputMaybe<NoteConfigOrderByWithRelationInput>;
-  createdAt?: InputMaybe<SortOrderInput>;
-  deletedAt?: InputMaybe<SortOrderInput>;
-  description?: InputMaybe<SortOrderInput>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrderInput>;
-  order?: InputMaybe<SortOrderInput>;
-  pinnedAt?: InputMaybe<SortOrderInput>;
-  tasks?: InputMaybe<TaskOrderByRelationAggregateInput>;
-  user?: InputMaybe<UserOrderByWithRelationInput>;
-  userId?: InputMaybe<SortOrder>;
-};
-
-export type NoteRelationFilter = {
-  is?: InputMaybe<NoteWhereInput>;
-  isNot?: InputMaybe<NoteWhereInput>;
-};
-
-export enum NoteScalarFieldEnum {
-  ArchiveAt = 'archiveAt',
-  CompletedAt = 'completedAt',
-  CreatedAt = 'createdAt',
-  DeletedAt = 'deletedAt',
-  Description = 'description',
-  Id = 'id',
-  Name = 'name',
-  Order = 'order',
-  PinnedAt = 'pinnedAt',
-  UserId = 'userId'
-}
-
-export type NoteScalarWhereInput = {
-  AND?: InputMaybe<Array<NoteScalarWhereInput>>;
-  NOT?: InputMaybe<Array<NoteScalarWhereInput>>;
-  OR?: InputMaybe<Array<NoteScalarWhereInput>>;
-  archiveAt?: InputMaybe<DateTimeNullableFilter>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringNullableFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringNullableFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type NoteSumAggregate = {
-  __typename?: 'NoteSumAggregate';
-  order?: Maybe<Scalars['Int']['output']>;
-};
-
-export type NoteUpdateInput = {
-  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  config?: InputMaybe<NoteConfigUpdateOneWithoutNoteNestedInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
-};
-
-export type NoteUpdateManyMutationInput = {
-  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-};
-
-export type NoteUpdateManyWithWhereWithoutUserInput = {
-  data: NoteUpdateManyMutationInput;
-  where: NoteScalarWhereInput;
-};
-
-export type NoteUpdateManyWithoutUserNestedInput = {
-  connect?: InputMaybe<Array<NoteWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<NoteCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<NoteCreateWithoutUserInput>>;
-  createMany?: InputMaybe<NoteCreateManyUserInputEnvelope>;
-  delete?: InputMaybe<Array<NoteWhereUniqueInput>>;
-  deleteMany?: InputMaybe<Array<NoteScalarWhereInput>>;
-  disconnect?: InputMaybe<Array<NoteWhereUniqueInput>>;
-  set?: InputMaybe<Array<NoteWhereUniqueInput>>;
-  update?: InputMaybe<Array<NoteUpdateWithWhereUniqueWithoutUserInput>>;
-  updateMany?: InputMaybe<Array<NoteUpdateManyWithWhereWithoutUserInput>>;
-  upsert?: InputMaybe<Array<NoteUpsertWithWhereUniqueWithoutUserInput>>;
-};
-
-export type NoteUpdateOneRequiredWithoutConfigNestedInput = {
-  connect?: InputMaybe<NoteWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteCreateOrConnectWithoutConfigInput>;
-  create?: InputMaybe<NoteCreateWithoutConfigInput>;
-  update?: InputMaybe<NoteUpdateToOneWithWhereWithoutConfigInput>;
-  upsert?: InputMaybe<NoteUpsertWithoutConfigInput>;
-};
-
-export type NoteUpdateOneRequiredWithoutTasksNestedInput = {
-  connect?: InputMaybe<NoteWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NoteCreateOrConnectWithoutTasksInput>;
-  create?: InputMaybe<NoteCreateWithoutTasksInput>;
-  update?: InputMaybe<NoteUpdateToOneWithWhereWithoutTasksInput>;
-  upsert?: InputMaybe<NoteUpsertWithoutTasksInput>;
-};
-
-export type NoteUpdateToOneWithWhereWithoutConfigInput = {
-  data: NoteUpdateWithoutConfigInput;
-  where?: InputMaybe<NoteWhereInput>;
-};
-
-export type NoteUpdateToOneWithWhereWithoutTasksInput = {
-  data: NoteUpdateWithoutTasksInput;
-  where?: InputMaybe<NoteWhereInput>;
-};
-
-export type NoteUpdateWithWhereUniqueWithoutUserInput = {
-  data: NoteUpdateWithoutUserInput;
-  where: NoteWhereUniqueInput;
-};
-
-export type NoteUpdateWithoutConfigInput = {
-  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
-};
-
-export type NoteUpdateWithoutTasksInput = {
-  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  config?: InputMaybe<NoteConfigUpdateOneWithoutNoteNestedInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutNotesNestedInput>;
-};
-
-export type NoteUpdateWithoutUserInput = {
-  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  config?: InputMaybe<NoteConfigUpdateOneWithoutNoteNestedInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutNoteNestedInput>;
-};
-
-export type NoteUpsertWithWhereUniqueWithoutUserInput = {
-  create: NoteCreateWithoutUserInput;
-  update: NoteUpdateWithoutUserInput;
-  where: NoteWhereUniqueInput;
-};
-
-export type NoteUpsertWithoutConfigInput = {
-  create: NoteCreateWithoutConfigInput;
-  update: NoteUpdateWithoutConfigInput;
-  where?: InputMaybe<NoteWhereInput>;
-};
-
-export type NoteUpsertWithoutTasksInput = {
-  create: NoteCreateWithoutTasksInput;
-  update: NoteUpdateWithoutTasksInput;
-  where?: InputMaybe<NoteWhereInput>;
-};
-
-export type NoteWhereInput = {
-  AND?: InputMaybe<Array<NoteWhereInput>>;
-  NOT?: InputMaybe<Array<NoteWhereInput>>;
-  OR?: InputMaybe<Array<NoteWhereInput>>;
-  archiveAt?: InputMaybe<DateTimeNullableFilter>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  config?: InputMaybe<NoteConfigNullableRelationFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringNullableFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringNullableFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  tasks?: InputMaybe<TaskListRelationFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type NoteWhereUniqueInput = {
-  AND?: InputMaybe<Array<NoteWhereInput>>;
-  NOT?: InputMaybe<Array<NoteWhereInput>>;
-  OR?: InputMaybe<Array<NoteWhereInput>>;
-  archiveAt?: InputMaybe<DateTimeNullableFilter>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  config?: InputMaybe<NoteConfigNullableRelationFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  description?: InputMaybe<StringNullableFilter>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<StringNullableFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  tasks?: InputMaybe<TaskListRelationFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type NullableEnumThemeColorFieldUpdateOperationsInput = {
   set?: InputMaybe<ThemeColor>;
-};
-
-export type NullableIntFieldUpdateOperationsInput = {
-  decrement?: InputMaybe<Scalars['Int']['input']>;
-  divide?: InputMaybe<Scalars['Int']['input']>;
-  increment?: InputMaybe<Scalars['Int']['input']>;
-  multiply?: InputMaybe<Scalars['Int']['input']>;
-  set?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -1345,11 +687,6 @@ export type Query = {
   logs: Array<Log>;
   me: User;
   myConfig: UserConfig;
-  note: Note;
-  noteConfig: NoteConfig;
-  notes: Array<Note>;
-  task: Task;
-  tasks: Array<Task>;
   user: User;
   userConfig: UserConfig;
   users: Array<User>;
@@ -1368,41 +705,6 @@ export type QueryLogsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LogWhereInput>;
-};
-
-
-export type QueryNoteArgs = {
-  where: NoteWhereUniqueInput;
-};
-
-
-export type QueryNoteConfigArgs = {
-  where: NoteConfigWhereUniqueInput;
-};
-
-
-export type QueryNotesArgs = {
-  cursor?: InputMaybe<NoteWhereUniqueInput>;
-  distinct?: InputMaybe<Array<NoteScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<NoteOrderByWithRelationInput>>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<NoteWhereInput>;
-};
-
-
-export type QueryTaskArgs = {
-  where: TaskWhereUniqueInput;
-};
-
-
-export type QueryTasksArgs = {
-  cursor?: InputMaybe<TaskWhereUniqueInput>;
-  distinct?: InputMaybe<Array<TaskScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput>>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<TaskWhereInput>;
 };
 
 
@@ -1429,6 +731,53 @@ export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive'
 }
+
+export type QueueAvgAggregate = {
+  __typename?: 'QueueAvgAggregate';
+  attempt?: Maybe<Scalars['Float']['output']>;
+  jobId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type QueueCountAggregate = {
+  __typename?: 'QueueCountAggregate';
+  _all: Scalars['Int']['output'];
+  attempt: Scalars['Int']['output'];
+  enqueueAt: Scalars['Int']['output'];
+  failedReason: Scalars['Int']['output'];
+  finishedAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  jobId: Scalars['Int']['output'];
+  message: Scalars['Int']['output'];
+  status: Scalars['Int']['output'];
+};
+
+export type QueueMaxAggregate = {
+  __typename?: 'QueueMaxAggregate';
+  attempt?: Maybe<Scalars['Int']['output']>;
+  enqueueAt?: Maybe<Scalars['DateTime']['output']>;
+  failedReason?: Maybe<Scalars['String']['output']>;
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  jobId?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+export type QueueMinAggregate = {
+  __typename?: 'QueueMinAggregate';
+  attempt?: Maybe<Scalars['Int']['output']>;
+  enqueueAt?: Maybe<Scalars['DateTime']['output']>;
+  failedReason?: Maybe<Scalars['String']['output']>;
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  jobId?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+export type QueueSumAggregate = {
+  __typename?: 'QueueSumAggregate';
+  attempt?: Maybe<Scalars['Int']['output']>;
+  jobId?: Maybe<Scalars['Int']['output']>;
+};
 
 export type RefreshInput = {
   /** Refresh token */
@@ -1516,368 +865,10 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   logCreated: Log;
-  noteConfigCreated: Note;
-  noteConfigUpdated: Note;
-  noteConfigUpserted: Note;
-  noteCreated: Note;
-  noteDeleted: Note;
-  noteUpdated: Note;
-  taskCreated: Task;
-  taskDeleted: Task;
-  taskUpdated: Task;
   userCreated: User;
   userDeleted: User;
   userLogout: User;
   userUpdated: User;
-};
-
-export type Task = {
-  __typename?: 'Task';
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['String']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  note: Note;
-  noteId: Scalars['String']['output'];
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  user: User;
-  userId: Scalars['String']['output'];
-};
-
-export type TaskAvgAggregate = {
-  __typename?: 'TaskAvgAggregate';
-  order?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TaskCountAggregate = {
-  __typename?: 'TaskCountAggregate';
-  _all: Scalars['Int']['output'];
-  completedAt: Scalars['Int']['output'];
-  createdAt: Scalars['Int']['output'];
-  deletedAt: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['Int']['output'];
-  noteId: Scalars['Int']['output'];
-  order: Scalars['Int']['output'];
-  pinnedAt: Scalars['Int']['output'];
-  userId: Scalars['Int']['output'];
-};
-
-export type TaskCreateInput = {
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  note: NoteCreateNestedOneWithoutTasksInput;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  user: UserCreateNestedOneWithoutTasksInput;
-};
-
-export type TaskCreateManyNoteInput = {
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  userId: Scalars['String']['input'];
-};
-
-export type TaskCreateManyNoteInputEnvelope = {
-  data: Array<TaskCreateManyNoteInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type TaskCreateManyUserInput = {
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  noteId: Scalars['String']['input'];
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type TaskCreateManyUserInputEnvelope = {
-  data: Array<TaskCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type TaskCreateNestedManyWithoutNoteInput = {
-  connect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<TaskCreateOrConnectWithoutNoteInput>>;
-  create?: InputMaybe<Array<TaskCreateWithoutNoteInput>>;
-  createMany?: InputMaybe<TaskCreateManyNoteInputEnvelope>;
-};
-
-export type TaskCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<TaskCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<TaskCreateWithoutUserInput>>;
-  createMany?: InputMaybe<TaskCreateManyUserInputEnvelope>;
-};
-
-export type TaskCreateOrConnectWithoutNoteInput = {
-  create: TaskCreateWithoutNoteInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskCreateOrConnectWithoutUserInput = {
-  create: TaskCreateWithoutUserInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskCreateWithoutNoteInput = {
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  user: UserCreateNestedOneWithoutTasksInput;
-};
-
-export type TaskCreateWithoutUserInput = {
-  completedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  note: NoteCreateNestedOneWithoutTasksInput;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  pinnedAt?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type TaskListRelationFilter = {
-  every?: InputMaybe<TaskWhereInput>;
-  none?: InputMaybe<TaskWhereInput>;
-  some?: InputMaybe<TaskWhereInput>;
-};
-
-export type TaskMaxAggregate = {
-  __typename?: 'TaskMaxAggregate';
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  noteId?: Maybe<Scalars['String']['output']>;
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  userId?: Maybe<Scalars['String']['output']>;
-};
-
-export type TaskMinAggregate = {
-  __typename?: 'TaskMinAggregate';
-  completedAt?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  noteId?: Maybe<Scalars['String']['output']>;
-  order?: Maybe<Scalars['Int']['output']>;
-  pinnedAt?: Maybe<Scalars['DateTime']['output']>;
-  userId?: Maybe<Scalars['String']['output']>;
-};
-
-export type TaskOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>;
-};
-
-export enum TaskOrderByRelevanceFieldEnum {
-  Id = 'id',
-  Name = 'name',
-  NoteId = 'noteId',
-  UserId = 'userId'
-}
-
-export type TaskOrderByRelevanceInput = {
-  fields: Array<TaskOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
-};
-
-export type TaskOrderByWithRelationInput = {
-  _relevance?: InputMaybe<TaskOrderByRelevanceInput>;
-  completedAt?: InputMaybe<SortOrderInput>;
-  createdAt?: InputMaybe<SortOrderInput>;
-  deletedAt?: InputMaybe<SortOrderInput>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrderInput>;
-  note?: InputMaybe<NoteOrderByWithRelationInput>;
-  noteId?: InputMaybe<SortOrder>;
-  order?: InputMaybe<SortOrderInput>;
-  pinnedAt?: InputMaybe<SortOrderInput>;
-  user?: InputMaybe<UserOrderByWithRelationInput>;
-  userId?: InputMaybe<SortOrder>;
-};
-
-export enum TaskScalarFieldEnum {
-  CompletedAt = 'completedAt',
-  CreatedAt = 'createdAt',
-  DeletedAt = 'deletedAt',
-  Id = 'id',
-  Name = 'name',
-  NoteId = 'noteId',
-  Order = 'order',
-  PinnedAt = 'pinnedAt',
-  UserId = 'userId'
-}
-
-export type TaskScalarWhereInput = {
-  AND?: InputMaybe<Array<TaskScalarWhereInput>>;
-  NOT?: InputMaybe<Array<TaskScalarWhereInput>>;
-  OR?: InputMaybe<Array<TaskScalarWhereInput>>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringNullableFilter>;
-  noteId?: InputMaybe<StringFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type TaskSumAggregate = {
-  __typename?: 'TaskSumAggregate';
-  order?: Maybe<Scalars['Int']['output']>;
-};
-
-export type TaskUpdateInput = {
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  note?: InputMaybe<NoteUpdateOneRequiredWithoutTasksNestedInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutTasksNestedInput>;
-};
-
-export type TaskUpdateManyMutationInput = {
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-};
-
-export type TaskUpdateManyWithWhereWithoutNoteInput = {
-  data: TaskUpdateManyMutationInput;
-  where: TaskScalarWhereInput;
-};
-
-export type TaskUpdateManyWithWhereWithoutUserInput = {
-  data: TaskUpdateManyMutationInput;
-  where: TaskScalarWhereInput;
-};
-
-export type TaskUpdateManyWithoutNoteNestedInput = {
-  connect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<TaskCreateOrConnectWithoutNoteInput>>;
-  create?: InputMaybe<Array<TaskCreateWithoutNoteInput>>;
-  createMany?: InputMaybe<TaskCreateManyNoteInputEnvelope>;
-  delete?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  deleteMany?: InputMaybe<Array<TaskScalarWhereInput>>;
-  disconnect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  set?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  update?: InputMaybe<Array<TaskUpdateWithWhereUniqueWithoutNoteInput>>;
-  updateMany?: InputMaybe<Array<TaskUpdateManyWithWhereWithoutNoteInput>>;
-  upsert?: InputMaybe<Array<TaskUpsertWithWhereUniqueWithoutNoteInput>>;
-};
-
-export type TaskUpdateManyWithoutUserNestedInput = {
-  connect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<TaskCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<TaskCreateWithoutUserInput>>;
-  createMany?: InputMaybe<TaskCreateManyUserInputEnvelope>;
-  delete?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  deleteMany?: InputMaybe<Array<TaskScalarWhereInput>>;
-  disconnect?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  set?: InputMaybe<Array<TaskWhereUniqueInput>>;
-  update?: InputMaybe<Array<TaskUpdateWithWhereUniqueWithoutUserInput>>;
-  updateMany?: InputMaybe<Array<TaskUpdateManyWithWhereWithoutUserInput>>;
-  upsert?: InputMaybe<Array<TaskUpsertWithWhereUniqueWithoutUserInput>>;
-};
-
-export type TaskUpdateWithWhereUniqueWithoutNoteInput = {
-  data: TaskUpdateWithoutNoteInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskUpdateWithWhereUniqueWithoutUserInput = {
-  data: TaskUpdateWithoutUserInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskUpdateWithoutNoteInput = {
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutTasksNestedInput>;
-};
-
-export type TaskUpdateWithoutUserInput = {
-  completedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-  name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  note?: InputMaybe<NoteUpdateOneRequiredWithoutTasksNestedInput>;
-  order?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
-  pinnedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
-};
-
-export type TaskUpsertWithWhereUniqueWithoutNoteInput = {
-  create: TaskCreateWithoutNoteInput;
-  update: TaskUpdateWithoutNoteInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskUpsertWithWhereUniqueWithoutUserInput = {
-  create: TaskCreateWithoutUserInput;
-  update: TaskUpdateWithoutUserInput;
-  where: TaskWhereUniqueInput;
-};
-
-export type TaskWhereInput = {
-  AND?: InputMaybe<Array<TaskWhereInput>>;
-  NOT?: InputMaybe<Array<TaskWhereInput>>;
-  OR?: InputMaybe<Array<TaskWhereInput>>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringNullableFilter>;
-  note?: InputMaybe<NoteRelationFilter>;
-  noteId?: InputMaybe<StringFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type TaskWhereUniqueInput = {
-  AND?: InputMaybe<Array<TaskWhereInput>>;
-  NOT?: InputMaybe<Array<TaskWhereInput>>;
-  OR?: InputMaybe<Array<TaskWhereInput>>;
-  completedAt?: InputMaybe<DateTimeNullableFilter>;
-  createdAt?: InputMaybe<DateTimeNullableFilter>;
-  deletedAt?: InputMaybe<DateTimeNullableFilter>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<StringNullableFilter>;
-  note?: InputMaybe<NoteRelationFilter>;
-  noteId?: InputMaybe<StringFilter>;
-  order?: InputMaybe<IntNullableFilter>;
-  pinnedAt?: InputMaybe<DateTimeNullableFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<StringFilter>;
 };
 
 export enum ThemeColor {
@@ -1886,6 +877,702 @@ export enum ThemeColor {
   Light = 'LIGHT'
 }
 
+export type Transport = {
+  __typename?: 'Transport';
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUser: User;
+  createdUserId: Scalars['String']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  isAllow: Scalars['Boolean']['output'];
+  method: TransportType;
+  name: Scalars['String']['output'];
+  transportCollection: TransportCollection;
+  transportCollectionId: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
+export type TransportCollection = {
+  __typename?: 'TransportCollection';
+  Transport?: Maybe<Array<Transport>>;
+  _count: TransportCollectionCount;
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUser: User;
+  createdUserId: Scalars['String']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type TransportCollectionCount = {
+  __typename?: 'TransportCollectionCount';
+  Transport: Scalars['Int']['output'];
+};
+
+export type TransportCollectionCountAggregate = {
+  __typename?: 'TransportCollectionCountAggregate';
+  _all: Scalars['Int']['output'];
+  archiveAt: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  createdUserId: Scalars['Int']['output'];
+  deletedAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
+};
+
+export type TransportCollectionCreateManyCreatedUserInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type TransportCollectionCreateManyCreatedUserInputEnvelope = {
+  data: Array<TransportCollectionCreateManyCreatedUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type TransportCollectionCreateNestedManyWithoutCreatedUserInput = {
+  connect?: InputMaybe<Array<TransportCollectionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCollectionCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportCollectionCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportCollectionCreateManyCreatedUserInputEnvelope>;
+};
+
+export type TransportCollectionCreateNestedOneWithoutTransportInput = {
+  connect?: InputMaybe<TransportCollectionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TransportCollectionCreateOrConnectWithoutTransportInput>;
+  create?: InputMaybe<TransportCollectionCreateWithoutTransportInput>;
+};
+
+export type TransportCollectionCreateOrConnectWithoutCreatedUserInput = {
+  create: TransportCollectionCreateWithoutCreatedUserInput;
+  where: TransportCollectionWhereUniqueInput;
+};
+
+export type TransportCollectionCreateOrConnectWithoutTransportInput = {
+  create: TransportCollectionCreateWithoutTransportInput;
+  where: TransportCollectionWhereUniqueInput;
+};
+
+export type TransportCollectionCreateWithoutCreatedUserInput = {
+  Transport?: InputMaybe<TransportCreateNestedManyWithoutTransportCollectionInput>;
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type TransportCollectionCreateWithoutTransportInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdUser: UserCreateNestedOneWithoutTransportsCollectionInput;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type TransportCollectionListRelationFilter = {
+  every?: InputMaybe<TransportCollectionWhereInput>;
+  none?: InputMaybe<TransportCollectionWhereInput>;
+  some?: InputMaybe<TransportCollectionWhereInput>;
+};
+
+export type TransportCollectionMaxAggregate = {
+  __typename?: 'TransportCollectionMaxAggregate';
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type TransportCollectionMinAggregate = {
+  __typename?: 'TransportCollectionMinAggregate';
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type TransportCollectionOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type TransportCollectionRelationFilter = {
+  is?: InputMaybe<TransportCollectionWhereInput>;
+  isNot?: InputMaybe<TransportCollectionWhereInput>;
+};
+
+export type TransportCollectionScalarWhereInput = {
+  AND?: InputMaybe<Array<TransportCollectionScalarWhereInput>>;
+  NOT?: InputMaybe<Array<TransportCollectionScalarWhereInput>>;
+  OR?: InputMaybe<Array<TransportCollectionScalarWhereInput>>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type TransportCollectionUpdateManyMutationInput = {
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportCollectionUpdateManyWithWhereWithoutCreatedUserInput = {
+  data: TransportCollectionUpdateManyMutationInput;
+  where: TransportCollectionScalarWhereInput;
+};
+
+export type TransportCollectionUpdateManyWithoutCreatedUserNestedInput = {
+  connect?: InputMaybe<Array<TransportCollectionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCollectionCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportCollectionCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportCollectionCreateManyCreatedUserInputEnvelope>;
+  delete?: InputMaybe<Array<TransportCollectionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<TransportCollectionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<TransportCollectionWhereUniqueInput>>;
+  set?: InputMaybe<Array<TransportCollectionWhereUniqueInput>>;
+  update?: InputMaybe<Array<TransportCollectionUpdateWithWhereUniqueWithoutCreatedUserInput>>;
+  updateMany?: InputMaybe<Array<TransportCollectionUpdateManyWithWhereWithoutCreatedUserInput>>;
+  upsert?: InputMaybe<Array<TransportCollectionUpsertWithWhereUniqueWithoutCreatedUserInput>>;
+};
+
+export type TransportCollectionUpdateOneRequiredWithoutTransportNestedInput = {
+  connect?: InputMaybe<TransportCollectionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TransportCollectionCreateOrConnectWithoutTransportInput>;
+  create?: InputMaybe<TransportCollectionCreateWithoutTransportInput>;
+  update?: InputMaybe<TransportCollectionUpdateToOneWithWhereWithoutTransportInput>;
+  upsert?: InputMaybe<TransportCollectionUpsertWithoutTransportInput>;
+};
+
+export type TransportCollectionUpdateToOneWithWhereWithoutTransportInput = {
+  data: TransportCollectionUpdateWithoutTransportInput;
+  where?: InputMaybe<TransportCollectionWhereInput>;
+};
+
+export type TransportCollectionUpdateWithWhereUniqueWithoutCreatedUserInput = {
+  data: TransportCollectionUpdateWithoutCreatedUserInput;
+  where: TransportCollectionWhereUniqueInput;
+};
+
+export type TransportCollectionUpdateWithoutCreatedUserInput = {
+  Transport?: InputMaybe<TransportUpdateManyWithoutTransportCollectionNestedInput>;
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportCollectionUpdateWithoutTransportInput = {
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdUser?: InputMaybe<UserUpdateOneRequiredWithoutTransportsCollectionNestedInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportCollectionUpsertWithWhereUniqueWithoutCreatedUserInput = {
+  create: TransportCollectionCreateWithoutCreatedUserInput;
+  update: TransportCollectionUpdateWithoutCreatedUserInput;
+  where: TransportCollectionWhereUniqueInput;
+};
+
+export type TransportCollectionUpsertWithoutTransportInput = {
+  create: TransportCollectionCreateWithoutTransportInput;
+  update: TransportCollectionUpdateWithoutTransportInput;
+  where?: InputMaybe<TransportCollectionWhereInput>;
+};
+
+export type TransportCollectionWhereInput = {
+  AND?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  NOT?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  OR?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  Transport?: InputMaybe<TransportListRelationFilter>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type TransportCollectionWhereUniqueInput = {
+  AND?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  NOT?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  OR?: InputMaybe<Array<TransportCollectionWhereInput>>;
+  Transport?: InputMaybe<TransportListRelationFilter>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type TransportCountAggregate = {
+  __typename?: 'TransportCountAggregate';
+  _all: Scalars['Int']['output'];
+  archiveAt: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  createdUserId: Scalars['Int']['output'];
+  deletedAt: Scalars['Int']['output'];
+  description: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isAllow: Scalars['Int']['output'];
+  method: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
+  transportCollectionId: Scalars['Int']['output'];
+  url: Scalars['Int']['output'];
+};
+
+export type TransportCreateManyCreatedUserInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isAllow?: InputMaybe<Scalars['Boolean']['input']>;
+  method: TransportType;
+  name: Scalars['String']['input'];
+  transportCollectionId: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type TransportCreateManyCreatedUserInputEnvelope = {
+  data: Array<TransportCreateManyCreatedUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type TransportCreateManyTransportCollectionInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdUserId: Scalars['String']['input'];
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isAllow?: InputMaybe<Scalars['Boolean']['input']>;
+  method: TransportType;
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type TransportCreateManyTransportCollectionInputEnvelope = {
+  data: Array<TransportCreateManyTransportCollectionInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type TransportCreateNestedManyWithoutCreatedUserInput = {
+  connect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportCreateManyCreatedUserInputEnvelope>;
+};
+
+export type TransportCreateNestedManyWithoutTransportCollectionInput = {
+  connect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCreateOrConnectWithoutTransportCollectionInput>>;
+  create?: InputMaybe<Array<TransportCreateWithoutTransportCollectionInput>>;
+  createMany?: InputMaybe<TransportCreateManyTransportCollectionInputEnvelope>;
+};
+
+export type TransportCreateOrConnectWithoutCreatedUserInput = {
+  create: TransportCreateWithoutCreatedUserInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportCreateOrConnectWithoutTransportCollectionInput = {
+  create: TransportCreateWithoutTransportCollectionInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportCreateWithoutCreatedUserInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isAllow?: InputMaybe<Scalars['Boolean']['input']>;
+  method: TransportType;
+  name: Scalars['String']['input'];
+  transportCollection: TransportCollectionCreateNestedOneWithoutTransportInput;
+  url: Scalars['String']['input'];
+};
+
+export type TransportCreateWithoutTransportCollectionInput = {
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdUser: UserCreateNestedOneWithoutTransportsInput;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isAllow?: InputMaybe<Scalars['Boolean']['input']>;
+  method: TransportType;
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type TransportListRelationFilter = {
+  every?: InputMaybe<TransportWhereInput>;
+  none?: InputMaybe<TransportWhereInput>;
+  some?: InputMaybe<TransportWhereInput>;
+};
+
+export type TransportMaxAggregate = {
+  __typename?: 'TransportMaxAggregate';
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  isAllow?: Maybe<Scalars['Boolean']['output']>;
+  method?: Maybe<TransportType>;
+  name?: Maybe<Scalars['String']['output']>;
+  transportCollectionId?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type TransportMinAggregate = {
+  __typename?: 'TransportMinAggregate';
+  archiveAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  isAllow?: Maybe<Scalars['Boolean']['output']>;
+  method?: Maybe<TransportType>;
+  name?: Maybe<Scalars['String']['output']>;
+  transportCollectionId?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type TransportOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type TransportScalarWhereInput = {
+  AND?: InputMaybe<Array<TransportScalarWhereInput>>;
+  NOT?: InputMaybe<Array<TransportScalarWhereInput>>;
+  OR?: InputMaybe<Array<TransportScalarWhereInput>>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  description?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  isAllow?: InputMaybe<BoolFilter>;
+  method?: InputMaybe<EnumTransportTypeFilter>;
+  name?: InputMaybe<StringFilter>;
+  transportCollectionId?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+};
+
+export enum TransportType {
+  Delete = 'DELETE',
+  Get = 'GET',
+  Patch = 'PATCH',
+  Post = 'POST',
+  Put = 'PUT'
+}
+
+export type TransportUpdateManyMutationInput = {
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  isAllow?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  method?: InputMaybe<EnumTransportTypeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+  url?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportUpdateManyWithWhereWithoutCreatedUserInput = {
+  data: TransportUpdateManyMutationInput;
+  where: TransportScalarWhereInput;
+};
+
+export type TransportUpdateManyWithWhereWithoutTransportCollectionInput = {
+  data: TransportUpdateManyMutationInput;
+  where: TransportScalarWhereInput;
+};
+
+export type TransportUpdateManyWithoutCreatedUserNestedInput = {
+  connect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportCreateManyCreatedUserInputEnvelope>;
+  delete?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<TransportScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  set?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  update?: InputMaybe<Array<TransportUpdateWithWhereUniqueWithoutCreatedUserInput>>;
+  updateMany?: InputMaybe<Array<TransportUpdateManyWithWhereWithoutCreatedUserInput>>;
+  upsert?: InputMaybe<Array<TransportUpsertWithWhereUniqueWithoutCreatedUserInput>>;
+};
+
+export type TransportUpdateManyWithoutTransportCollectionNestedInput = {
+  connect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportCreateOrConnectWithoutTransportCollectionInput>>;
+  create?: InputMaybe<Array<TransportCreateWithoutTransportCollectionInput>>;
+  createMany?: InputMaybe<TransportCreateManyTransportCollectionInputEnvelope>;
+  delete?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<TransportScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  set?: InputMaybe<Array<TransportWhereUniqueInput>>;
+  update?: InputMaybe<Array<TransportUpdateWithWhereUniqueWithoutTransportCollectionInput>>;
+  updateMany?: InputMaybe<Array<TransportUpdateManyWithWhereWithoutTransportCollectionInput>>;
+  upsert?: InputMaybe<Array<TransportUpsertWithWhereUniqueWithoutTransportCollectionInput>>;
+};
+
+export type TransportUpdateWithWhereUniqueWithoutCreatedUserInput = {
+  data: TransportUpdateWithoutCreatedUserInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportUpdateWithWhereUniqueWithoutTransportCollectionInput = {
+  data: TransportUpdateWithoutTransportCollectionInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportUpdateWithoutCreatedUserInput = {
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  isAllow?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  method?: InputMaybe<EnumTransportTypeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+  transportCollection?: InputMaybe<TransportCollectionUpdateOneRequiredWithoutTransportNestedInput>;
+  url?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportUpdateWithoutTransportCollectionInput = {
+  archiveAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  createdUser?: InputMaybe<UserUpdateOneRequiredWithoutTransportsNestedInput>;
+  deletedAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  isAllow?: InputMaybe<BoolFieldUpdateOperationsInput>;
+  method?: InputMaybe<EnumTransportTypeFieldUpdateOperationsInput>;
+  name?: InputMaybe<StringFieldUpdateOperationsInput>;
+  url?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TransportUpsertWithWhereUniqueWithoutCreatedUserInput = {
+  create: TransportCreateWithoutCreatedUserInput;
+  update: TransportUpdateWithoutCreatedUserInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportUpsertWithWhereUniqueWithoutTransportCollectionInput = {
+  create: TransportCreateWithoutTransportCollectionInput;
+  update: TransportUpdateWithoutTransportCollectionInput;
+  where: TransportWhereUniqueInput;
+};
+
+export type TransportVersion = {
+  __typename?: 'TransportVersion';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUser: User;
+  createdUserId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  transport?: Maybe<Scalars['JSON']['output']>;
+  version?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type TransportVersionCountAggregate = {
+  __typename?: 'TransportVersionCountAggregate';
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  createdUserId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  transport: Scalars['Int']['output'];
+  version: Scalars['Int']['output'];
+};
+
+export type TransportVersionCreateManyCreatedUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  transport?: InputMaybe<Scalars['JSON']['input']>;
+  version?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type TransportVersionCreateManyCreatedUserInputEnvelope = {
+  data: Array<TransportVersionCreateManyCreatedUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type TransportVersionCreateNestedManyWithoutCreatedUserInput = {
+  connect?: InputMaybe<Array<TransportVersionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportVersionCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportVersionCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportVersionCreateManyCreatedUserInputEnvelope>;
+};
+
+export type TransportVersionCreateOrConnectWithoutCreatedUserInput = {
+  create: TransportVersionCreateWithoutCreatedUserInput;
+  where: TransportVersionWhereUniqueInput;
+};
+
+export type TransportVersionCreateWithoutCreatedUserInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  transport?: InputMaybe<Scalars['JSON']['input']>;
+  version?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type TransportVersionListRelationFilter = {
+  every?: InputMaybe<TransportVersionWhereInput>;
+  none?: InputMaybe<TransportVersionWhereInput>;
+  some?: InputMaybe<TransportVersionWhereInput>;
+};
+
+export type TransportVersionMaxAggregate = {
+  __typename?: 'TransportVersionMaxAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type TransportVersionMinAggregate = {
+  __typename?: 'TransportVersionMinAggregate';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdUserId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type TransportVersionOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type TransportVersionScalarWhereInput = {
+  AND?: InputMaybe<Array<TransportVersionScalarWhereInput>>;
+  NOT?: InputMaybe<Array<TransportVersionScalarWhereInput>>;
+  OR?: InputMaybe<Array<TransportVersionScalarWhereInput>>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  transport?: InputMaybe<JsonNullableFilter>;
+  version?: InputMaybe<DateTimeNullableFilter>;
+};
+
+export type TransportVersionUpdateManyMutationInput = {
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  transport?: InputMaybe<Scalars['JSON']['input']>;
+  version?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type TransportVersionUpdateManyWithWhereWithoutCreatedUserInput = {
+  data: TransportVersionUpdateManyMutationInput;
+  where: TransportVersionScalarWhereInput;
+};
+
+export type TransportVersionUpdateManyWithoutCreatedUserNestedInput = {
+  connect?: InputMaybe<Array<TransportVersionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<TransportVersionCreateOrConnectWithoutCreatedUserInput>>;
+  create?: InputMaybe<Array<TransportVersionCreateWithoutCreatedUserInput>>;
+  createMany?: InputMaybe<TransportVersionCreateManyCreatedUserInputEnvelope>;
+  delete?: InputMaybe<Array<TransportVersionWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<TransportVersionScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<TransportVersionWhereUniqueInput>>;
+  set?: InputMaybe<Array<TransportVersionWhereUniqueInput>>;
+  update?: InputMaybe<Array<TransportVersionUpdateWithWhereUniqueWithoutCreatedUserInput>>;
+  updateMany?: InputMaybe<Array<TransportVersionUpdateManyWithWhereWithoutCreatedUserInput>>;
+  upsert?: InputMaybe<Array<TransportVersionUpsertWithWhereUniqueWithoutCreatedUserInput>>;
+};
+
+export type TransportVersionUpdateWithWhereUniqueWithoutCreatedUserInput = {
+  data: TransportVersionUpdateWithoutCreatedUserInput;
+  where: TransportVersionWhereUniqueInput;
+};
+
+export type TransportVersionUpdateWithoutCreatedUserInput = {
+  createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  transport?: InputMaybe<Scalars['JSON']['input']>;
+  version?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
+};
+
+export type TransportVersionUpsertWithWhereUniqueWithoutCreatedUserInput = {
+  create: TransportVersionCreateWithoutCreatedUserInput;
+  update: TransportVersionUpdateWithoutCreatedUserInput;
+  where: TransportVersionWhereUniqueInput;
+};
+
+export type TransportVersionWhereInput = {
+  AND?: InputMaybe<Array<TransportVersionWhereInput>>;
+  NOT?: InputMaybe<Array<TransportVersionWhereInput>>;
+  OR?: InputMaybe<Array<TransportVersionWhereInput>>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
+  transport?: InputMaybe<JsonNullableFilter>;
+  version?: InputMaybe<DateTimeNullableFilter>;
+};
+
+export type TransportVersionWhereUniqueInput = {
+  AND?: InputMaybe<Array<TransportVersionWhereInput>>;
+  NOT?: InputMaybe<Array<TransportVersionWhereInput>>;
+  OR?: InputMaybe<Array<TransportVersionWhereInput>>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  transport?: InputMaybe<JsonNullableFilter>;
+  version?: InputMaybe<DateTimeNullableFilter>;
+};
+
+export type TransportWhereInput = {
+  AND?: InputMaybe<Array<TransportWhereInput>>;
+  NOT?: InputMaybe<Array<TransportWhereInput>>;
+  OR?: InputMaybe<Array<TransportWhereInput>>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  description?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<StringFilter>;
+  isAllow?: InputMaybe<BoolFilter>;
+  method?: InputMaybe<EnumTransportTypeFilter>;
+  name?: InputMaybe<StringFilter>;
+  transportCollection?: InputMaybe<TransportCollectionRelationFilter>;
+  transportCollectionId?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+};
+
+export type TransportWhereUniqueInput = {
+  AND?: InputMaybe<Array<TransportWhereInput>>;
+  NOT?: InputMaybe<Array<TransportWhereInput>>;
+  OR?: InputMaybe<Array<TransportWhereInput>>;
+  archiveAt?: InputMaybe<DateTimeNullableFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  createdUser?: InputMaybe<UserRelationFilter>;
+  createdUserId?: InputMaybe<StringFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  description?: InputMaybe<StringNullableFilter>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isAllow?: InputMaybe<BoolFilter>;
+  method?: InputMaybe<EnumTransportTypeFilter>;
+  name?: InputMaybe<StringFilter>;
+  transportCollection?: InputMaybe<TransportCollectionRelationFilter>;
+  transportCollectionId?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+};
+
 export type User = {
   __typename?: 'User';
   _count: UserCount;
@@ -1893,10 +1580,11 @@ export type User = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['EmailAddress']['output'];
   id: Scalars['String']['output'];
-  notes?: Maybe<Array<Note>>;
   profile?: Maybe<Profile>;
   role?: Maybe<Array<UserRole>>;
-  tasks?: Maybe<Array<Task>>;
+  transports?: Maybe<Array<Transport>>;
+  transportsCollection?: Maybe<Array<TransportCollection>>;
+  transportsVersions?: Maybe<Array<TransportVersion>>;
   type: UserType;
 };
 
@@ -2037,9 +1725,10 @@ export type UserConfigWhereUniqueInput = {
 
 export type UserCount = {
   __typename?: 'UserCount';
-  notes: Scalars['Int']['output'];
   refreshTokens: Scalars['Int']['output'];
-  tasks: Scalars['Int']['output'];
+  transports: Scalars['Int']['output'];
+  transportsCollection: Scalars['Int']['output'];
+  transportsVersions: Scalars['Int']['output'];
 };
 
 export type UserCountAggregate = {
@@ -2056,11 +1745,12 @@ export type UserCreateInput = {
   config?: InputMaybe<UserConfigCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['EmailAddress']['input'];
-  notes?: InputMaybe<NoteCreateNestedManyWithoutUserInput>;
   password: PasswordCreateNestedOneWithoutUserInput;
   profile?: InputMaybe<ProfileCreateNestedOneWithoutUserInput>;
   role?: InputMaybe<UserCreateroleInput>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutUserInput>;
+  transports?: InputMaybe<TransportCreateNestedManyWithoutCreatedUserInput>;
+  transportsCollection?: InputMaybe<TransportCollectionCreateNestedManyWithoutCreatedUserInput>;
+  transportsVersions?: InputMaybe<TransportVersionCreateNestedManyWithoutCreatedUserInput>;
   type?: InputMaybe<UserType>;
 };
 
@@ -2070,16 +1760,16 @@ export type UserCreateNestedOneWithoutConfigInput = {
   create?: InputMaybe<UserCreateWithoutConfigInput>;
 };
 
-export type UserCreateNestedOneWithoutNotesInput = {
+export type UserCreateNestedOneWithoutTransportsCollectionInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutNotesInput>;
-  create?: InputMaybe<UserCreateWithoutNotesInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTransportsCollectionInput>;
+  create?: InputMaybe<UserCreateWithoutTransportsCollectionInput>;
 };
 
-export type UserCreateNestedOneWithoutTasksInput = {
+export type UserCreateNestedOneWithoutTransportsInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTasksInput>;
-  create?: InputMaybe<UserCreateWithoutTasksInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTransportsInput>;
+  create?: InputMaybe<UserCreateWithoutTransportsInput>;
 };
 
 export type UserCreateOrConnectWithoutConfigInput = {
@@ -2087,46 +1777,49 @@ export type UserCreateOrConnectWithoutConfigInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutNotesInput = {
-  create: UserCreateWithoutNotesInput;
+export type UserCreateOrConnectWithoutTransportsCollectionInput = {
+  create: UserCreateWithoutTransportsCollectionInput;
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutTasksInput = {
-  create: UserCreateWithoutTasksInput;
+export type UserCreateOrConnectWithoutTransportsInput = {
+  create: UserCreateWithoutTransportsInput;
   where: UserWhereUniqueInput;
 };
 
 export type UserCreateWithoutConfigInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['EmailAddress']['input'];
-  notes?: InputMaybe<NoteCreateNestedManyWithoutUserInput>;
   password: PasswordCreateNestedOneWithoutUserInput;
   profile?: InputMaybe<ProfileCreateNestedOneWithoutUserInput>;
   role?: InputMaybe<UserCreateroleInput>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutUserInput>;
+  transports?: InputMaybe<TransportCreateNestedManyWithoutCreatedUserInput>;
+  transportsCollection?: InputMaybe<TransportCollectionCreateNestedManyWithoutCreatedUserInput>;
+  transportsVersions?: InputMaybe<TransportVersionCreateNestedManyWithoutCreatedUserInput>;
   type?: InputMaybe<UserType>;
 };
 
-export type UserCreateWithoutNotesInput = {
+export type UserCreateWithoutTransportsCollectionInput = {
   config?: InputMaybe<UserConfigCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['EmailAddress']['input'];
   password: PasswordCreateNestedOneWithoutUserInput;
   profile?: InputMaybe<ProfileCreateNestedOneWithoutUserInput>;
   role?: InputMaybe<UserCreateroleInput>;
-  tasks?: InputMaybe<TaskCreateNestedManyWithoutUserInput>;
+  transports?: InputMaybe<TransportCreateNestedManyWithoutCreatedUserInput>;
+  transportsVersions?: InputMaybe<TransportVersionCreateNestedManyWithoutCreatedUserInput>;
   type?: InputMaybe<UserType>;
 };
 
-export type UserCreateWithoutTasksInput = {
+export type UserCreateWithoutTransportsInput = {
   config?: InputMaybe<UserConfigCreateNestedOneWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email: Scalars['EmailAddress']['input'];
-  notes?: InputMaybe<NoteCreateNestedManyWithoutUserInput>;
   password: PasswordCreateNestedOneWithoutUserInput;
   profile?: InputMaybe<ProfileCreateNestedOneWithoutUserInput>;
   role?: InputMaybe<UserCreateroleInput>;
+  transportsCollection?: InputMaybe<TransportCollectionCreateNestedManyWithoutCreatedUserInput>;
+  transportsVersions?: InputMaybe<TransportVersionCreateNestedManyWithoutCreatedUserInput>;
   type?: InputMaybe<UserType>;
 };
 
@@ -2173,12 +1866,13 @@ export type UserOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrderInput>;
   email?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
-  notes?: InputMaybe<NoteOrderByRelationAggregateInput>;
   password?: InputMaybe<PasswordOrderByWithRelationInput>;
   passwordId?: InputMaybe<SortOrder>;
   profile?: InputMaybe<ProfileOrderByWithRelationInput>;
   role?: InputMaybe<SortOrder>;
-  tasks?: InputMaybe<TaskOrderByRelationAggregateInput>;
+  transports?: InputMaybe<TransportOrderByRelationAggregateInput>;
+  transportsCollection?: InputMaybe<TransportCollectionOrderByRelationAggregateInput>;
+  transportsVersions?: InputMaybe<TransportVersionOrderByRelationAggregateInput>;
   type?: InputMaybe<SortOrder>;
 };
 
@@ -2213,11 +1907,12 @@ export type UserUpdateInput = {
   config?: InputMaybe<UserConfigUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
-  notes?: InputMaybe<NoteUpdateManyWithoutUserNestedInput>;
   password?: InputMaybe<PasswordUpdateOneRequiredWithoutUserNestedInput>;
   profile?: InputMaybe<ProfileUpdateOneWithoutUserNestedInput>;
   role?: InputMaybe<UserUpdateroleInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutUserNestedInput>;
+  transports?: InputMaybe<TransportUpdateManyWithoutCreatedUserNestedInput>;
+  transportsCollection?: InputMaybe<TransportCollectionUpdateManyWithoutCreatedUserNestedInput>;
+  transportsVersions?: InputMaybe<TransportVersionUpdateManyWithoutCreatedUserNestedInput>;
   type?: InputMaybe<EnumUserTypeFieldUpdateOperationsInput>;
 };
 
@@ -2229,20 +1924,20 @@ export type UserUpdateOneRequiredWithoutConfigNestedInput = {
   upsert?: InputMaybe<UserUpsertWithoutConfigInput>;
 };
 
-export type UserUpdateOneRequiredWithoutNotesNestedInput = {
+export type UserUpdateOneRequiredWithoutTransportsCollectionNestedInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutNotesInput>;
-  create?: InputMaybe<UserCreateWithoutNotesInput>;
-  update?: InputMaybe<UserUpdateToOneWithWhereWithoutNotesInput>;
-  upsert?: InputMaybe<UserUpsertWithoutNotesInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTransportsCollectionInput>;
+  create?: InputMaybe<UserCreateWithoutTransportsCollectionInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutTransportsCollectionInput>;
+  upsert?: InputMaybe<UserUpsertWithoutTransportsCollectionInput>;
 };
 
-export type UserUpdateOneRequiredWithoutTasksNestedInput = {
+export type UserUpdateOneRequiredWithoutTransportsNestedInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTasksInput>;
-  create?: InputMaybe<UserCreateWithoutTasksInput>;
-  update?: InputMaybe<UserUpdateToOneWithWhereWithoutTasksInput>;
-  upsert?: InputMaybe<UserUpsertWithoutTasksInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutTransportsInput>;
+  create?: InputMaybe<UserCreateWithoutTransportsInput>;
+  update?: InputMaybe<UserUpdateToOneWithWhereWithoutTransportsInput>;
+  upsert?: InputMaybe<UserUpsertWithoutTransportsInput>;
 };
 
 export type UserUpdateToOneWithWhereWithoutConfigInput = {
@@ -2250,46 +1945,49 @@ export type UserUpdateToOneWithWhereWithoutConfigInput = {
   where?: InputMaybe<UserWhereInput>;
 };
 
-export type UserUpdateToOneWithWhereWithoutNotesInput = {
-  data: UserUpdateWithoutNotesInput;
+export type UserUpdateToOneWithWhereWithoutTransportsCollectionInput = {
+  data: UserUpdateWithoutTransportsCollectionInput;
   where?: InputMaybe<UserWhereInput>;
 };
 
-export type UserUpdateToOneWithWhereWithoutTasksInput = {
-  data: UserUpdateWithoutTasksInput;
+export type UserUpdateToOneWithWhereWithoutTransportsInput = {
+  data: UserUpdateWithoutTransportsInput;
   where?: InputMaybe<UserWhereInput>;
 };
 
 export type UserUpdateWithoutConfigInput = {
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
-  notes?: InputMaybe<NoteUpdateManyWithoutUserNestedInput>;
   password?: InputMaybe<PasswordUpdateOneRequiredWithoutUserNestedInput>;
   profile?: InputMaybe<ProfileUpdateOneWithoutUserNestedInput>;
   role?: InputMaybe<UserUpdateroleInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutUserNestedInput>;
+  transports?: InputMaybe<TransportUpdateManyWithoutCreatedUserNestedInput>;
+  transportsCollection?: InputMaybe<TransportCollectionUpdateManyWithoutCreatedUserNestedInput>;
+  transportsVersions?: InputMaybe<TransportVersionUpdateManyWithoutCreatedUserNestedInput>;
   type?: InputMaybe<EnumUserTypeFieldUpdateOperationsInput>;
 };
 
-export type UserUpdateWithoutNotesInput = {
+export type UserUpdateWithoutTransportsCollectionInput = {
   config?: InputMaybe<UserConfigUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   password?: InputMaybe<PasswordUpdateOneRequiredWithoutUserNestedInput>;
   profile?: InputMaybe<ProfileUpdateOneWithoutUserNestedInput>;
   role?: InputMaybe<UserUpdateroleInput>;
-  tasks?: InputMaybe<TaskUpdateManyWithoutUserNestedInput>;
+  transports?: InputMaybe<TransportUpdateManyWithoutCreatedUserNestedInput>;
+  transportsVersions?: InputMaybe<TransportVersionUpdateManyWithoutCreatedUserNestedInput>;
   type?: InputMaybe<EnumUserTypeFieldUpdateOperationsInput>;
 };
 
-export type UserUpdateWithoutTasksInput = {
+export type UserUpdateWithoutTransportsInput = {
   config?: InputMaybe<UserConfigUpdateOneWithoutUserNestedInput>;
   createdAt?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
-  notes?: InputMaybe<NoteUpdateManyWithoutUserNestedInput>;
   password?: InputMaybe<PasswordUpdateOneRequiredWithoutUserNestedInput>;
   profile?: InputMaybe<ProfileUpdateOneWithoutUserNestedInput>;
   role?: InputMaybe<UserUpdateroleInput>;
+  transportsCollection?: InputMaybe<TransportCollectionUpdateManyWithoutCreatedUserNestedInput>;
+  transportsVersions?: InputMaybe<TransportVersionUpdateManyWithoutCreatedUserNestedInput>;
   type?: InputMaybe<EnumUserTypeFieldUpdateOperationsInput>;
 };
 
@@ -2304,15 +2002,15 @@ export type UserUpsertWithoutConfigInput = {
   where?: InputMaybe<UserWhereInput>;
 };
 
-export type UserUpsertWithoutNotesInput = {
-  create: UserCreateWithoutNotesInput;
-  update: UserUpdateWithoutNotesInput;
+export type UserUpsertWithoutTransportsCollectionInput = {
+  create: UserCreateWithoutTransportsCollectionInput;
+  update: UserUpdateWithoutTransportsCollectionInput;
   where?: InputMaybe<UserWhereInput>;
 };
 
-export type UserUpsertWithoutTasksInput = {
-  create: UserCreateWithoutTasksInput;
-  update: UserUpdateWithoutTasksInput;
+export type UserUpsertWithoutTransportsInput = {
+  create: UserCreateWithoutTransportsInput;
+  update: UserUpdateWithoutTransportsInput;
   where?: InputMaybe<UserWhereInput>;
 };
 
@@ -2324,10 +2022,11 @@ export type UserWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>;
   email?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
-  notes?: InputMaybe<NoteListRelationFilter>;
   profile?: InputMaybe<ProfileNullableRelationFilter>;
   role?: InputMaybe<EnumUserRoleNullableListFilter>;
-  tasks?: InputMaybe<TaskListRelationFilter>;
+  transports?: InputMaybe<TransportListRelationFilter>;
+  transportsCollection?: InputMaybe<TransportCollectionListRelationFilter>;
+  transportsVersions?: InputMaybe<TransportVersionListRelationFilter>;
   type?: InputMaybe<EnumUserTypeFilter>;
 };
 
@@ -2339,20 +2038,15 @@ export type UserWhereUniqueInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>;
   email?: InputMaybe<Scalars['EmailAddress']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
-  notes?: InputMaybe<NoteListRelationFilter>;
   profile?: InputMaybe<ProfileNullableRelationFilter>;
   role?: InputMaybe<EnumUserRoleNullableListFilter>;
-  tasks?: InputMaybe<TaskListRelationFilter>;
+  transports?: InputMaybe<TransportListRelationFilter>;
+  transportsCollection?: InputMaybe<TransportCollectionListRelationFilter>;
+  transportsVersions?: InputMaybe<TransportVersionListRelationFilter>;
   type?: InputMaybe<EnumUserTypeFilter>;
 };
 
-export type NoteFragmentFragment = { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null };
-
-export type NoteConfigFragmentFragment = { __typename?: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean };
-
 export type ProfileFragmentFragment = { __typename: 'Profile', id: string, acronym?: string | null, avatar?: string | null, firstName: string, lastName: string, username?: string | null, bio?: string | null };
-
-export type TaskFragmentFragment = { __typename?: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null };
 
 export type UserConfigFragmentFragment = { __typename: 'UserConfig', id: string, theme?: ThemeColor | null, showCompleted: boolean };
 
@@ -2385,66 +2079,6 @@ export type UpdateUserConfigMutationVariables = Exact<{
 
 export type UpdateUserConfigMutation = { __typename?: 'Mutation', updateUserConfig: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null } };
 
-export type UpsertNoteConfigMutationMutationVariables = Exact<{
-  create: NoteConfigCreateInput;
-  update: NoteConfigUpdateInput;
-  where: NoteConfigWhereUniqueInput;
-}>;
-
-
-export type UpsertNoteConfigMutationMutation = { __typename?: 'Mutation', upsertNoteConfig: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } };
-
-export type CreateNoteMutationVariables = Exact<{
-  data: NoteCreateInput;
-}>;
-
-
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null } };
-
-export type UpdateNoteMutationVariables = Exact<{
-  data: NoteUpdateInput;
-  where: NoteWhereUniqueInput;
-}>;
-
-
-export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote: { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null } };
-
-export type ArchivedNoteMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type ArchivedNoteMutation = { __typename?: 'Mutation', archivedNote: { __typename: 'Note', id: string, archiveAt?: any | null } };
-
-export type RemoveNoteMutationVariables = Exact<{
-  where: NoteWhereUniqueInput;
-}>;
-
-
-export type RemoveNoteMutation = { __typename?: 'Mutation', removeNote: { __typename: 'Note', id: string } };
-
-export type UpdateTaskMutationMutationVariables = Exact<{
-  data: TaskUpdateInput;
-  where: TaskWhereUniqueInput;
-}>;
-
-
-export type UpdateTaskMutationMutation = { __typename?: 'Mutation', updateTask: { __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null } };
-
-export type CreateTaskMutationMutationVariables = Exact<{
-  data: TaskCreateInput;
-}>;
-
-
-export type CreateTaskMutationMutation = { __typename?: 'Mutation', createTask: { __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null } };
-
-export type RemoveTaskMutationMutationVariables = Exact<{
-  where: TaskWhereUniqueInput;
-}>;
-
-
-export type RemoveTaskMutationMutation = { __typename?: 'Mutation', removeTask: { __typename: 'Task', id: string } };
-
 export type UpdateMeConfigMutationVariables = Exact<{
   input: UserConfigUpdateInput;
 }>;
@@ -2452,52 +2086,12 @@ export type UpdateMeConfigMutationVariables = Exact<{
 
 export type UpdateMeConfigMutation = { __typename?: 'Mutation', updateMyConfig: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null, showCompleted: boolean } };
 
-export type NoteQueryQueryVariables = Exact<{
-  where: NoteWhereUniqueInput;
-}>;
-
-
-export type NoteQueryQuery = { __typename?: 'Query', note: { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null, _count: { __typename?: 'NoteCount', tasks: number } } };
-
-export type NotesQueryVariables = Exact<{
-  noteWhere?: InputMaybe<NoteWhereInput>;
-  noteOrderBy?: InputMaybe<Array<NoteOrderByWithRelationInput> | NoteOrderByWithRelationInput>;
-}>;
-
-
-export type NotesQuery = { __typename: 'Query', notes: Array<{ __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null }> };
-
-export type NotesQueryFragmentFragment = { __typename: 'Note', id: string, name?: string | null, description?: string | null, createdAt?: any | null, pinnedAt?: any | null, archiveAt?: any | null, deletedAt?: any | null, completedAt?: any | null, config?: { __typename: 'NoteConfig', id: string, color?: string | null, isOpenCompletedTask: boolean } | null, tasks?: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> | null };
-
-export type TasksQueryVariables = Exact<{
-  where?: InputMaybe<TaskWhereInput>;
-  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput> | TaskOrderByWithRelationInput>;
-}>;
-
-
-export type TasksQuery = { __typename: 'Query', tasks: Array<{ __typename: 'Task', id: string, name?: string | null, noteId: string, userId: string, pinnedAt?: any | null, order?: number | null, createdAt?: any | null, completedAt?: any | null }> };
-
 export const ProfileFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"acronym"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}}]} as unknown as DocumentNode<ProfileFragmentFragment, unknown>;
 export const UserConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<UserConfigFragmentFragment, unknown>;
 export const MeFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<MeFragmentFragment, unknown>;
 export const MyConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MyConfigFragmentFragment, unknown>;
-export const NoteFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<NoteFragmentFragment, unknown>;
-export const NoteConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<NoteConfigFragmentFragment, unknown>;
-export const TaskFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<TaskFragmentFragment, unknown>;
-export const NotesQueryFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotesQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<NotesQueryFragmentFragment, unknown>;
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MeFragment"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"acronym"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
 export const MyConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"myConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MyConfigQuery, MyConfigQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const UpdateUserConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<UpdateUserConfigMutation, UpdateUserConfigMutationVariables>;
-export const UpsertNoteConfigMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertNoteConfigMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"create"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigCreateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"update"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfigWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertNoteConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"create"}}},{"kind":"Argument","name":{"kind":"Name","value":"update"},"value":{"kind":"Variable","name":{"kind":"Name","value":"update"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<UpsertNoteConfigMutationMutation, UpsertNoteConfigMutationMutationVariables>;
-export const CreateNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}}]} as unknown as DocumentNode<CreateNoteMutation, CreateNoteMutationVariables>;
-export const UpdateNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<UpdateNoteMutation, UpdateNoteMutationVariables>;
-export const ArchivedNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ArchivedNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archivedNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}}]}}]}}]} as unknown as DocumentNode<ArchivedNoteMutation, ArchivedNoteMutationVariables>;
-export const RemoveNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<RemoveNoteMutation, RemoveNoteMutationVariables>;
-export const UpdateTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<UpdateTaskMutationMutation, UpdateTaskMutationMutationVariables>;
-export const CreateTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<CreateTaskMutationMutation, CreateTaskMutationMutationVariables>;
-export const RemoveTaskMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveTaskMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<RemoveTaskMutationMutation, RemoveTaskMutationMutationVariables>;
 export const UpdateMeConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateMeConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigUpdateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateMyConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userConfigUpdateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<UpdateMeConfigMutation, UpdateMeConfigMutationVariables>;
-export const NoteQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"NoteQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"_count"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<NoteQueryQuery, NoteQueryQueryVariables>;
-export const NotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Notes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"noteWhere"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"noteOrderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NoteOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"noteWhere"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"noteOrderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NotesQueryFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NoteConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NoteConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"isOpenCompletedTask"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotesQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteFragment"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"NoteConfigFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}}]} as unknown as DocumentNode<NotesQuery, NotesQueryVariables>;
-export const TasksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"pinnedAt"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"completedAt"}}]}}]} as unknown as DocumentNode<TasksQuery, TasksQueryVariables>;
