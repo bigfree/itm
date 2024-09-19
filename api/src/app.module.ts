@@ -26,6 +26,8 @@ import { BullModule } from '@nestjs/bull';
 import { bullConfig } from './common/config/bull.config';
 import { ProcessTransportController } from './process-transport/process-transport.controller';
 import { ProcessTransportService } from './process-transport/process-transport.service';
+import { TransportCollectionsModule } from './transport-collections/transport-collections.module';
+import { TransportsModule } from './transports/transports.module';
 
 @Module({
     imports: [
@@ -59,6 +61,8 @@ import { ProcessTransportService } from './process-transport/process-transport.s
         AuthorizeModule,
         RefreshTokenModule,
         UserConfigModule,
+        TransportCollectionsModule,
+        TransportsModule,
     ],
     controllers: [AppController, ProcessTransportController],
     providers: [

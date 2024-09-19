@@ -20,51 +20,50 @@ import { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql/languag
 import { onError } from '@apollo/client/link/error';
 import localForage from 'localforage';
 import useAccessTokenStore from '@stores/tokens/access-token.store.ts';
-import { find, get } from 'lodash-es';
-import dayjs from 'dayjs';
 
 const cache: InMemoryCache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
-                notes: {
-                    keyArgs: (args) => {
-                        if (!args) {
-                            return '';
-                        }
-
-                        const date = get(find(args.where.AND, 'createdAt.gte'), 'createdAt.gte');
-                        // TODO: archiveAt deleteAt??
-                        const archived = get(find(args.where.AND, 'archiveAt.equals'), 'archiveAt.equals');
-                        // TODO: really deleteAt??
-                        const deleted = get(find(args.where.AND, 'deletedAt.equals'), 'deletedAt.equals');
-
-                        const variables = {
-                            date: dayjs(date).format('YYYY-MM-DD'),
-                            archived: !!archived,
-                            deleted: !!deleted,
-                        };
-
-                        return `(${JSON.stringify(variables)})`;
-                    },
-                },
-                tasks: {
-                    keyArgs: (args) => {
-                        if (!args) {
-                            return '';
-                        }
-
-                        const noteId = get(args.where, 'noteId.equals');
-                        const deleted = get(args.where, 'deletedAt.deletedAt');
-
-                        const variables = {
-                            noteId: noteId,
-                            deleted: !!deleted,
-                        };
-
-                        return `(${JSON.stringify(variables)})`;
-                    },
-                },
+                // transportCollections: {}
+                // notes: {
+                //     keyArgs: (args) => {
+                //         if (!args) {
+                //             return '';
+                //         }
+                //
+                //         const date = get(find(args.where.AND, 'createdAt.gte'), 'createdAt.gte');
+                //         // TODO: archiveAt deleteAt??
+                //         const archived = get(find(args.where.AND, 'archiveAt.equals'), 'archiveAt.equals');
+                //         // TODO: really deleteAt??
+                //         const deleted = get(find(args.where.AND, 'deletedAt.equals'), 'deletedAt.equals');
+                //
+                //         const variables = {
+                //             date: dayjs(date).format('YYYY-MM-DD'),
+                //             archived: !!archived,
+                //             deleted: !!deleted,
+                //         };
+                //
+                //         return `(${JSON.stringify(variables)})`;
+                //     },
+                // },
+                // tasks: {
+                //     keyArgs: (args) => {
+                //         if (!args) {
+                //             return '';
+                //         }
+                //
+                //         const noteId = get(args.where, 'noteId.equals');
+                //         const deleted = get(args.where, 'deletedAt.deletedAt');
+                //
+                //         const variables = {
+                //             noteId: noteId,
+                //             deleted: !!deleted,
+                //         };
+                //
+                //         return `(${JSON.stringify(variables)})`;
+                //     },
+                // },
             },
         },
     },

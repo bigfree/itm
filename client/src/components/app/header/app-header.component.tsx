@@ -17,7 +17,7 @@ const AppHeader: FC<AppHeaderProps> = (): ReactElement => {
     const { classes } = useStyles();
 
     return (
-        <Grid align={'center'} className={classes.grid}>
+        <Grid align={'center'} className={classes.grid} gutter={0}>
             <Grid.Col span={'auto'}>
                 ITM
             </Grid.Col>

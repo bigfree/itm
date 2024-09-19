@@ -6,6 +6,10 @@ const prisma = new PrismaClient();
 
 async function main() {
     console.log('Deleting...');
+    await prisma.tagOnTransport.deleteMany();
+    await prisma.transport.deleteMany();
+    await prisma.transportCollection.deleteMany();
+    await prisma.tag.deleteMany();
     await prisma.userConfig.deleteMany();
     await prisma.user.deleteMany();
     await prisma.log.deleteMany();
@@ -49,6 +53,12 @@ async function main() {
         },
     });
 
+    const createdTestTag = await prisma.tag.create({
+        data: {
+            name: 'Test',
+        },
+    });
+
     const createdTestTransport = await prisma.transport.create({
         data: {
             name: 'Test transport',
@@ -63,6 +73,11 @@ async function main() {
             transportCollection: {
                 connect: {
                     id: createdTransportCollection.id,
+                },
+            },
+            tagOnTransport: {
+                create: {
+                    tagId: createdTestTag.id,
                 },
             },
         },

@@ -58,6 +58,17 @@ input EnumThemeColorNullableFilter {
   notIn: [ThemeColor!]
 }
 
+input EnumTransportTypeFieldUpdateOperationsInput {
+  set: TransportType
+}
+
+input EnumTransportTypeFilter {
+  equals: TransportType
+  in: [TransportType!]
+  not: NestedEnumTransportTypeFilter
+  notIn: [TransportType!]
+}
+
 input EnumUserRoleNullableListFilter {
   equals: [UserRole!]
   has: UserRole
@@ -75,17 +86,6 @@ input EnumUserTypeFilter {
   in: [UserType!]
   not: NestedEnumUserTypeFilter
   notIn: [UserType!]
-}
-
-input IntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
-  notIn: [Int!]
 }
 
 """
@@ -220,30 +220,19 @@ input LoginInput {
 }
 
 type Mutation {
-  archivedNote(id: String!): Note!
-  completedMyTask(id: String!): Task!
   createLog(data: LogCreateInput): Log!
   createMyConfig(userConfigCreateInput: UserConfigCreateInput!): UserConfig!
-  createNote(data: NoteCreateInput!): Note!
-  createNoteConfig(data: NoteConfigCreateInput!): NoteConfig!
-  createTask(data: TaskCreateInput!): Task!
+  createTransportCollection(data: TransportCollectionCreateInput!): TransportCollection!
   createUser(data: UserCreateInput!): User!
   createUserConfig(data: UserConfigCreateInput!): UserConfig!
   deleteUser(where: UserWhereUniqueInput!): User!
   login(loginInput: LoginInput!): Authorize!
   logout: User!
-  pinnedNote(id: String!): Note!
   refreshTokens(refreshInput: RefreshInput!): Authorize!
   register(registerInput: RegisterInput!): Authorize!
-  removeNote(where: NoteWhereUniqueInput!): Note!
-  removeTask(where: TaskWhereUniqueInput!): Task!
   updateMyConfig(userConfigUpdateInput: UserConfigUpdateInput!): UserConfig!
-  updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
-  updateNoteConfig(data: NoteConfigUpdateInput!, where: NoteConfigWhereUniqueInput!): NoteConfig!
-  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   updateUserConfig(data: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
-  upsertNoteConfig(create: NoteConfigCreateInput!, update: NoteConfigUpdateInput!, where: NoteConfigWhereUniqueInput!): NoteConfig!
   upsertUserConfig(create: UserConfigCreateInput!, update: UserConfigUpdateInput!, where: UserConfigWhereUniqueInput!): UserConfig!
 }
 
@@ -284,22 +273,18 @@ input NestedEnumThemeColorNullableFilter {
   notIn: [ThemeColor!]
 }
 
+input NestedEnumTransportTypeFilter {
+  equals: TransportType
+  in: [TransportType!]
+  not: NestedEnumTransportTypeFilter
+  notIn: [TransportType!]
+}
+
 input NestedEnumUserTypeFilter {
   equals: UserType
   in: [UserType!]
   not: NestedEnumUserTypeFilter
   notIn: [UserType!]
-}
-
-input NestedIntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
-  notIn: [Int!]
 }
 
 input NestedStringFilter {
@@ -332,568 +317,12 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
-type Note {
-  _count: NoteCount!
-  archiveAt: DateTime
-  completedAt: DateTime
-  config: NoteConfig
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  id: String!
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]
-  user: User!
-  userId: String!
-}
-
-type NoteAvgAggregate {
-  order: Float
-}
-
-type NoteConfig {
-  color: String
-  id: String!
-  isOpenCompletedTask: Boolean!
-  note: Note!
-  noteId: String!
-}
-
-type NoteConfigCountAggregate {
-  _all: Int!
-  color: Int!
-  id: Int!
-  isOpenCompletedTask: Int!
-  noteId: Int!
-}
-
-input NoteConfigCreateInput {
-  color: String
-  isOpenCompletedTask: Boolean
-  note: NoteCreateNestedOneWithoutConfigInput!
-}
-
-input NoteConfigCreateNestedOneWithoutNoteInput {
-  connect: NoteConfigWhereUniqueInput
-  connectOrCreate: NoteConfigCreateOrConnectWithoutNoteInput
-  create: NoteConfigCreateWithoutNoteInput
-}
-
-input NoteConfigCreateOrConnectWithoutNoteInput {
-  create: NoteConfigCreateWithoutNoteInput!
-  where: NoteConfigWhereUniqueInput!
-}
-
-input NoteConfigCreateWithoutNoteInput {
-  color: String
-  isOpenCompletedTask: Boolean
-}
-
-type NoteConfigMaxAggregate {
-  color: String
-  id: String
-  isOpenCompletedTask: Boolean
-  noteId: String
-}
-
-type NoteConfigMinAggregate {
-  color: String
-  id: String
-  isOpenCompletedTask: Boolean
-  noteId: String
-}
-
-input NoteConfigNullableRelationFilter {
-  is: NoteConfigWhereInput
-  isNot: NoteConfigWhereInput
-}
-
-enum NoteConfigOrderByRelevanceFieldEnum {
-  color
-  id
-  noteId
-}
-
-input NoteConfigOrderByRelevanceInput {
-  fields: [NoteConfigOrderByRelevanceFieldEnum!]!
-  search: String!
-  sort: SortOrder!
-}
-
-input NoteConfigOrderByWithRelationInput {
-  _relevance: NoteConfigOrderByRelevanceInput
-  color: SortOrderInput
-  id: SortOrder
-  isOpenCompletedTask: SortOrder
-  note: NoteOrderByWithRelationInput
-  noteId: SortOrder
-}
-
-input NoteConfigUpdateInput {
-  color: NullableStringFieldUpdateOperationsInput
-  isOpenCompletedTask: BoolFieldUpdateOperationsInput
-  note: NoteUpdateOneRequiredWithoutConfigNestedInput
-}
-
-input NoteConfigUpdateOneWithoutNoteNestedInput {
-  connect: NoteConfigWhereUniqueInput
-  connectOrCreate: NoteConfigCreateOrConnectWithoutNoteInput
-  create: NoteConfigCreateWithoutNoteInput
-  delete: NoteConfigWhereInput
-  disconnect: NoteConfigWhereInput
-  update: NoteConfigUpdateToOneWithWhereWithoutNoteInput
-  upsert: NoteConfigUpsertWithoutNoteInput
-}
-
-input NoteConfigUpdateToOneWithWhereWithoutNoteInput {
-  data: NoteConfigUpdateWithoutNoteInput!
-  where: NoteConfigWhereInput
-}
-
-input NoteConfigUpdateWithoutNoteInput {
-  color: NullableStringFieldUpdateOperationsInput
-  isOpenCompletedTask: BoolFieldUpdateOperationsInput
-}
-
-input NoteConfigUpsertWithoutNoteInput {
-  create: NoteConfigCreateWithoutNoteInput!
-  update: NoteConfigUpdateWithoutNoteInput!
-  where: NoteConfigWhereInput
-}
-
-input NoteConfigWhereInput {
-  AND: [NoteConfigWhereInput!]
-  NOT: [NoteConfigWhereInput!]
-  OR: [NoteConfigWhereInput!]
-  color: StringNullableFilter
-  id: StringFilter
-  isOpenCompletedTask: BoolFilter
-  note: NoteRelationFilter
-  noteId: StringFilter
-}
-
-input NoteConfigWhereUniqueInput {
-  AND: [NoteConfigWhereInput!]
-  NOT: [NoteConfigWhereInput!]
-  OR: [NoteConfigWhereInput!]
-  color: StringNullableFilter
-  id: String
-  isOpenCompletedTask: BoolFilter
-  note: NoteRelationFilter
-  noteId: String
-}
-
-type NoteCount {
-  tasks: Int!
-}
-
-type NoteCountAggregate {
-  _all: Int!
-  archiveAt: Int!
-  completedAt: Int!
-  createdAt: Int!
-  deletedAt: Int!
-  description: Int!
-  id: Int!
-  name: Int!
-  order: Int!
-  pinnedAt: Int!
-  userId: Int!
-}
-
-input NoteCreateInput {
-  archiveAt: DateTime
-  completedAt: DateTime
-  config: NoteConfigCreateNestedOneWithoutNoteInput
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  tasks: TaskCreateNestedManyWithoutNoteInput
-  user: UserCreateNestedOneWithoutNotesInput!
-}
-
-input NoteCreateManyUserInput {
-  archiveAt: DateTime
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-}
-
-input NoteCreateManyUserInputEnvelope {
-  data: [NoteCreateManyUserInput!]!
-  skipDuplicates: Boolean
-}
-
-input NoteCreateNestedManyWithoutUserInput {
-  connect: [NoteWhereUniqueInput!]
-  connectOrCreate: [NoteCreateOrConnectWithoutUserInput!]
-  create: [NoteCreateWithoutUserInput!]
-  createMany: NoteCreateManyUserInputEnvelope
-}
-
-input NoteCreateNestedOneWithoutConfigInput {
-  connect: NoteWhereUniqueInput
-  connectOrCreate: NoteCreateOrConnectWithoutConfigInput
-  create: NoteCreateWithoutConfigInput
-}
-
-input NoteCreateNestedOneWithoutTasksInput {
-  connect: NoteWhereUniqueInput
-  connectOrCreate: NoteCreateOrConnectWithoutTasksInput
-  create: NoteCreateWithoutTasksInput
-}
-
-input NoteCreateOrConnectWithoutConfigInput {
-  create: NoteCreateWithoutConfigInput!
-  where: NoteWhereUniqueInput!
-}
-
-input NoteCreateOrConnectWithoutTasksInput {
-  create: NoteCreateWithoutTasksInput!
-  where: NoteWhereUniqueInput!
-}
-
-input NoteCreateOrConnectWithoutUserInput {
-  create: NoteCreateWithoutUserInput!
-  where: NoteWhereUniqueInput!
-}
-
-input NoteCreateWithoutConfigInput {
-  archiveAt: DateTime
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  tasks: TaskCreateNestedManyWithoutNoteInput
-  user: UserCreateNestedOneWithoutNotesInput!
-}
-
-input NoteCreateWithoutTasksInput {
-  archiveAt: DateTime
-  completedAt: DateTime
-  config: NoteConfigCreateNestedOneWithoutNoteInput
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  user: UserCreateNestedOneWithoutNotesInput!
-}
-
-input NoteCreateWithoutUserInput {
-  archiveAt: DateTime
-  completedAt: DateTime
-  config: NoteConfigCreateNestedOneWithoutNoteInput
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  tasks: TaskCreateNestedManyWithoutNoteInput
-}
-
-input NoteListRelationFilter {
-  every: NoteWhereInput
-  none: NoteWhereInput
-  some: NoteWhereInput
-}
-
-type NoteMaxAggregate {
-  archiveAt: DateTime
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  id: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  userId: String
-}
-
-type NoteMinAggregate {
-  archiveAt: DateTime
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  description: String
-  id: String
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  userId: String
-}
-
-input NoteOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-enum NoteOrderByRelevanceFieldEnum {
-  description
-  id
-  name
-  userId
-}
-
-input NoteOrderByRelevanceInput {
-  fields: [NoteOrderByRelevanceFieldEnum!]!
-  search: String!
-  sort: SortOrder!
-}
-
-input NoteOrderByWithRelationInput {
-  _relevance: NoteOrderByRelevanceInput
-  archiveAt: SortOrderInput
-  completedAt: SortOrderInput
-  config: NoteConfigOrderByWithRelationInput
-  createdAt: SortOrderInput
-  deletedAt: SortOrderInput
-  description: SortOrderInput
-  id: SortOrder
-  name: SortOrderInput
-  order: SortOrderInput
-  pinnedAt: SortOrderInput
-  tasks: TaskOrderByRelationAggregateInput
-  user: UserOrderByWithRelationInput
-  userId: SortOrder
-}
-
-input NoteRelationFilter {
-  is: NoteWhereInput
-  isNot: NoteWhereInput
-}
-
-enum NoteScalarFieldEnum {
-  archiveAt
-  completedAt
-  createdAt
-  deletedAt
-  description
-  id
-  name
-  order
-  pinnedAt
-  userId
-}
-
-input NoteScalarWhereInput {
-  AND: [NoteScalarWhereInput!]
-  NOT: [NoteScalarWhereInput!]
-  OR: [NoteScalarWhereInput!]
-  archiveAt: DateTimeNullableFilter
-  completedAt: DateTimeNullableFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  description: StringNullableFilter
-  id: StringFilter
-  name: StringNullableFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  userId: StringFilter
-}
-
-type NoteSumAggregate {
-  order: Int
-}
-
-input NoteUpdateInput {
-  archiveAt: NullableDateTimeFieldUpdateOperationsInput
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  config: NoteConfigUpdateOneWithoutNoteNestedInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  description: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  tasks: TaskUpdateManyWithoutNoteNestedInput
-  user: UserUpdateOneRequiredWithoutNotesNestedInput
-}
-
-input NoteUpdateManyMutationInput {
-  archiveAt: NullableDateTimeFieldUpdateOperationsInput
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  description: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input NoteUpdateManyWithWhereWithoutUserInput {
-  data: NoteUpdateManyMutationInput!
-  where: NoteScalarWhereInput!
-}
-
-input NoteUpdateManyWithoutUserNestedInput {
-  connect: [NoteWhereUniqueInput!]
-  connectOrCreate: [NoteCreateOrConnectWithoutUserInput!]
-  create: [NoteCreateWithoutUserInput!]
-  createMany: NoteCreateManyUserInputEnvelope
-  delete: [NoteWhereUniqueInput!]
-  deleteMany: [NoteScalarWhereInput!]
-  disconnect: [NoteWhereUniqueInput!]
-  set: [NoteWhereUniqueInput!]
-  update: [NoteUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [NoteUpdateManyWithWhereWithoutUserInput!]
-  upsert: [NoteUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input NoteUpdateOneRequiredWithoutConfigNestedInput {
-  connect: NoteWhereUniqueInput
-  connectOrCreate: NoteCreateOrConnectWithoutConfigInput
-  create: NoteCreateWithoutConfigInput
-  update: NoteUpdateToOneWithWhereWithoutConfigInput
-  upsert: NoteUpsertWithoutConfigInput
-}
-
-input NoteUpdateOneRequiredWithoutTasksNestedInput {
-  connect: NoteWhereUniqueInput
-  connectOrCreate: NoteCreateOrConnectWithoutTasksInput
-  create: NoteCreateWithoutTasksInput
-  update: NoteUpdateToOneWithWhereWithoutTasksInput
-  upsert: NoteUpsertWithoutTasksInput
-}
-
-input NoteUpdateToOneWithWhereWithoutConfigInput {
-  data: NoteUpdateWithoutConfigInput!
-  where: NoteWhereInput
-}
-
-input NoteUpdateToOneWithWhereWithoutTasksInput {
-  data: NoteUpdateWithoutTasksInput!
-  where: NoteWhereInput
-}
-
-input NoteUpdateWithWhereUniqueWithoutUserInput {
-  data: NoteUpdateWithoutUserInput!
-  where: NoteWhereUniqueInput!
-}
-
-input NoteUpdateWithoutConfigInput {
-  archiveAt: NullableDateTimeFieldUpdateOperationsInput
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  description: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  tasks: TaskUpdateManyWithoutNoteNestedInput
-  user: UserUpdateOneRequiredWithoutNotesNestedInput
-}
-
-input NoteUpdateWithoutTasksInput {
-  archiveAt: NullableDateTimeFieldUpdateOperationsInput
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  config: NoteConfigUpdateOneWithoutNoteNestedInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  description: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutNotesNestedInput
-}
-
-input NoteUpdateWithoutUserInput {
-  archiveAt: NullableDateTimeFieldUpdateOperationsInput
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  config: NoteConfigUpdateOneWithoutNoteNestedInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  description: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  tasks: TaskUpdateManyWithoutNoteNestedInput
-}
-
-input NoteUpsertWithWhereUniqueWithoutUserInput {
-  create: NoteCreateWithoutUserInput!
-  update: NoteUpdateWithoutUserInput!
-  where: NoteWhereUniqueInput!
-}
-
-input NoteUpsertWithoutConfigInput {
-  create: NoteCreateWithoutConfigInput!
-  update: NoteUpdateWithoutConfigInput!
-  where: NoteWhereInput
-}
-
-input NoteUpsertWithoutTasksInput {
-  create: NoteCreateWithoutTasksInput!
-  update: NoteUpdateWithoutTasksInput!
-  where: NoteWhereInput
-}
-
-input NoteWhereInput {
-  AND: [NoteWhereInput!]
-  NOT: [NoteWhereInput!]
-  OR: [NoteWhereInput!]
-  archiveAt: DateTimeNullableFilter
-  completedAt: DateTimeNullableFilter
-  config: NoteConfigNullableRelationFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  description: StringNullableFilter
-  id: StringFilter
-  name: StringNullableFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  tasks: TaskListRelationFilter
-  user: UserRelationFilter
-  userId: StringFilter
-}
-
-input NoteWhereUniqueInput {
-  AND: [NoteWhereInput!]
-  NOT: [NoteWhereInput!]
-  OR: [NoteWhereInput!]
-  archiveAt: DateTimeNullableFilter
-  completedAt: DateTimeNullableFilter
-  config: NoteConfigNullableRelationFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  description: StringNullableFilter
-  id: String
-  name: StringNullableFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  tasks: TaskListRelationFilter
-  user: UserRelationFilter
-  userId: StringFilter
-}
-
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
 input NullableEnumThemeColorFieldUpdateOperationsInput {
   set: ThemeColor
-}
-
-input NullableIntFieldUpdateOperationsInput {
-  decrement: Int
-  divide: Int
-  increment: Int
-  multiply: Int
-  set: Int
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -1176,11 +605,7 @@ type Query {
   logs(cursor: LogWhereUniqueInput, distinct: [LogScalarFieldEnum!], orderBy: [LogOrderByWithRelationInput!], skip: Int, take: Int, where: LogWhereInput): [Log!]!
   me: User!
   myConfig: UserConfig!
-  note(where: NoteWhereUniqueInput!): Note!
-  noteConfig(where: NoteConfigWhereUniqueInput!): NoteConfig!
-  notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
-  task(where: TaskWhereUniqueInput!): Task!
-  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
+  transportCollections(cursor: TransportCollectionWhereUniqueInput, distinct: [TransportCollectionScalarFieldEnum!], orderBy: [TransportCollectionOrderByWithRelationInput!], skip: Int, take: Int, where: TransportCollectionWhereInput): [TransportCollection!]!
   user(where: UserWhereUniqueInput!): User!
   userConfig(where: UserConfigWhereUniqueInput!): UserConfig!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
@@ -1189,6 +614,48 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+type QueueAvgAggregate {
+  attempt: Float
+  jobId: Float
+}
+
+type QueueCountAggregate {
+  _all: Int!
+  attempt: Int!
+  enqueueAt: Int!
+  failedReason: Int!
+  finishedAt: Int!
+  id: Int!
+  jobId: Int!
+  message: Int!
+  status: Int!
+}
+
+type QueueMaxAggregate {
+  attempt: Int
+  enqueueAt: DateTime
+  failedReason: String
+  finishedAt: DateTime
+  id: String
+  jobId: Int
+  status: String
+}
+
+type QueueMinAggregate {
+  attempt: Int
+  enqueueAt: DateTime
+  failedReason: String
+  finishedAt: DateTime
+  id: String
+  jobId: Int
+  status: String
+}
+
+type QueueSumAggregate {
+  attempt: Int
+  jobId: Int
 }
 
 input RefreshInput {
@@ -1274,362 +741,11 @@ input StringNullableFilter {
 
 type Subscription {
   logCreated: Log!
-  noteConfigCreated: Note!
-  noteConfigUpdated: Note!
-  noteConfigUpserted: Note!
-  noteCreated: Note!
-  noteDeleted: Note!
-  noteUpdated: Note!
-  taskCreated: Task!
-  taskDeleted: Task!
-  taskUpdated: Task!
+  transportCollectionCreated: User!
   userCreated: User!
   userDeleted: User!
   userLogout: User!
   userUpdated: User!
-}
-
-type Task {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: String!
-  name: String
-  note: Note!
-  noteId: String!
-  order: Int
-  pinnedAt: DateTime
-  user: User!
-  userId: String!
-}
-
-type TaskAvgAggregate {
-  order: Float
-}
-
-type TaskCountAggregate {
-  _all: Int!
-  completedAt: Int!
-  createdAt: Int!
-  deletedAt: Int!
-  id: Int!
-  name: Int!
-  noteId: Int!
-  order: Int!
-  pinnedAt: Int!
-  userId: Int!
-}
-
-input TaskCreateInput {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  name: String
-  note: NoteCreateNestedOneWithoutTasksInput!
-  order: Int
-  pinnedAt: DateTime
-  user: UserCreateNestedOneWithoutTasksInput!
-}
-
-input TaskCreateManyNoteInput {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  userId: String!
-}
-
-input TaskCreateManyNoteInputEnvelope {
-  data: [TaskCreateManyNoteInput!]!
-  skipDuplicates: Boolean
-}
-
-input TaskCreateManyUserInput {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  name: String
-  noteId: String!
-  order: Int
-  pinnedAt: DateTime
-}
-
-input TaskCreateManyUserInputEnvelope {
-  data: [TaskCreateManyUserInput!]!
-  skipDuplicates: Boolean
-}
-
-input TaskCreateNestedManyWithoutNoteInput {
-  connect: [TaskWhereUniqueInput!]
-  connectOrCreate: [TaskCreateOrConnectWithoutNoteInput!]
-  create: [TaskCreateWithoutNoteInput!]
-  createMany: TaskCreateManyNoteInputEnvelope
-}
-
-input TaskCreateNestedManyWithoutUserInput {
-  connect: [TaskWhereUniqueInput!]
-  connectOrCreate: [TaskCreateOrConnectWithoutUserInput!]
-  create: [TaskCreateWithoutUserInput!]
-  createMany: TaskCreateManyUserInputEnvelope
-}
-
-input TaskCreateOrConnectWithoutNoteInput {
-  create: TaskCreateWithoutNoteInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskCreateOrConnectWithoutUserInput {
-  create: TaskCreateWithoutUserInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskCreateWithoutNoteInput {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  name: String
-  order: Int
-  pinnedAt: DateTime
-  user: UserCreateNestedOneWithoutTasksInput!
-}
-
-input TaskCreateWithoutUserInput {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  name: String
-  note: NoteCreateNestedOneWithoutTasksInput!
-  order: Int
-  pinnedAt: DateTime
-}
-
-input TaskListRelationFilter {
-  every: TaskWhereInput
-  none: TaskWhereInput
-  some: TaskWhereInput
-}
-
-type TaskMaxAggregate {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: String
-  name: String
-  noteId: String
-  order: Int
-  pinnedAt: DateTime
-  userId: String
-}
-
-type TaskMinAggregate {
-  completedAt: DateTime
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: String
-  name: String
-  noteId: String
-  order: Int
-  pinnedAt: DateTime
-  userId: String
-}
-
-input TaskOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-enum TaskOrderByRelevanceFieldEnum {
-  id
-  name
-  noteId
-  userId
-}
-
-input TaskOrderByRelevanceInput {
-  fields: [TaskOrderByRelevanceFieldEnum!]!
-  search: String!
-  sort: SortOrder!
-}
-
-input TaskOrderByWithRelationInput {
-  _relevance: TaskOrderByRelevanceInput
-  completedAt: SortOrderInput
-  createdAt: SortOrderInput
-  deletedAt: SortOrderInput
-  id: SortOrder
-  name: SortOrderInput
-  note: NoteOrderByWithRelationInput
-  noteId: SortOrder
-  order: SortOrderInput
-  pinnedAt: SortOrderInput
-  user: UserOrderByWithRelationInput
-  userId: SortOrder
-}
-
-enum TaskScalarFieldEnum {
-  completedAt
-  createdAt
-  deletedAt
-  id
-  name
-  noteId
-  order
-  pinnedAt
-  userId
-}
-
-input TaskScalarWhereInput {
-  AND: [TaskScalarWhereInput!]
-  NOT: [TaskScalarWhereInput!]
-  OR: [TaskScalarWhereInput!]
-  completedAt: DateTimeNullableFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  id: StringFilter
-  name: StringNullableFilter
-  noteId: StringFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  userId: StringFilter
-}
-
-type TaskSumAggregate {
-  order: Int
-}
-
-input TaskUpdateInput {
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  note: NoteUpdateOneRequiredWithoutTasksNestedInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutTasksNestedInput
-}
-
-input TaskUpdateManyMutationInput {
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input TaskUpdateManyWithWhereWithoutNoteInput {
-  data: TaskUpdateManyMutationInput!
-  where: TaskScalarWhereInput!
-}
-
-input TaskUpdateManyWithWhereWithoutUserInput {
-  data: TaskUpdateManyMutationInput!
-  where: TaskScalarWhereInput!
-}
-
-input TaskUpdateManyWithoutNoteNestedInput {
-  connect: [TaskWhereUniqueInput!]
-  connectOrCreate: [TaskCreateOrConnectWithoutNoteInput!]
-  create: [TaskCreateWithoutNoteInput!]
-  createMany: TaskCreateManyNoteInputEnvelope
-  delete: [TaskWhereUniqueInput!]
-  deleteMany: [TaskScalarWhereInput!]
-  disconnect: [TaskWhereUniqueInput!]
-  set: [TaskWhereUniqueInput!]
-  update: [TaskUpdateWithWhereUniqueWithoutNoteInput!]
-  updateMany: [TaskUpdateManyWithWhereWithoutNoteInput!]
-  upsert: [TaskUpsertWithWhereUniqueWithoutNoteInput!]
-}
-
-input TaskUpdateManyWithoutUserNestedInput {
-  connect: [TaskWhereUniqueInput!]
-  connectOrCreate: [TaskCreateOrConnectWithoutUserInput!]
-  create: [TaskCreateWithoutUserInput!]
-  createMany: TaskCreateManyUserInputEnvelope
-  delete: [TaskWhereUniqueInput!]
-  deleteMany: [TaskScalarWhereInput!]
-  disconnect: [TaskWhereUniqueInput!]
-  set: [TaskWhereUniqueInput!]
-  update: [TaskUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [TaskUpdateManyWithWhereWithoutUserInput!]
-  upsert: [TaskUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input TaskUpdateWithWhereUniqueWithoutNoteInput {
-  data: TaskUpdateWithoutNoteInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskUpdateWithWhereUniqueWithoutUserInput {
-  data: TaskUpdateWithoutUserInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskUpdateWithoutNoteInput {
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutTasksNestedInput
-}
-
-input TaskUpdateWithoutUserInput {
-  completedAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: NullableDateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  note: NoteUpdateOneRequiredWithoutTasksNestedInput
-  order: NullableIntFieldUpdateOperationsInput
-  pinnedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input TaskUpsertWithWhereUniqueWithoutNoteInput {
-  create: TaskCreateWithoutNoteInput!
-  update: TaskUpdateWithoutNoteInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskUpsertWithWhereUniqueWithoutUserInput {
-  create: TaskCreateWithoutUserInput!
-  update: TaskUpdateWithoutUserInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskWhereInput {
-  AND: [TaskWhereInput!]
-  NOT: [TaskWhereInput!]
-  OR: [TaskWhereInput!]
-  completedAt: DateTimeNullableFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  id: StringFilter
-  name: StringNullableFilter
-  note: NoteRelationFilter
-  noteId: StringFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  user: UserRelationFilter
-  userId: StringFilter
-}
-
-input TaskWhereUniqueInput {
-  AND: [TaskWhereInput!]
-  NOT: [TaskWhereInput!]
-  OR: [TaskWhereInput!]
-  completedAt: DateTimeNullableFilter
-  createdAt: DateTimeNullableFilter
-  deletedAt: DateTimeNullableFilter
-  id: String
-  name: StringNullableFilter
-  note: NoteRelationFilter
-  noteId: StringFilter
-  order: IntNullableFilter
-  pinnedAt: DateTimeNullableFilter
-  user: UserRelationFilter
-  userId: StringFilter
 }
 
 enum ThemeColor {
@@ -1638,16 +754,744 @@ enum ThemeColor {
   LIGHT
 }
 
+type Transport {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUser: User!
+  createdUserId: String!
+  deletedAt: DateTime
+  description: String
+  id: String!
+  isAllow: Boolean!
+  method: TransportType!
+  name: String!
+  transportCollection: TransportCollection
+  transportCollectionId: String
+  url: String!
+}
+
+type TransportCollection {
+  Transport: [Transport!]
+  _count: TransportCollectionCount!
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUser: User!
+  createdUserId: String!
+  deletedAt: DateTime
+  id: String!
+  name: String!
+}
+
+type TransportCollectionCount {
+  Transport: Int!
+}
+
+type TransportCollectionCountAggregate {
+  _all: Int!
+  archiveAt: Int!
+  createdAt: Int!
+  createdUserId: Int!
+  deletedAt: Int!
+  id: Int!
+  name: Int!
+}
+
+input TransportCollectionCreateInput {
+  Transport: TransportCreateNestedManyWithoutTransportCollectionInput
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUser: UserCreateNestedOneWithoutTransportsCollectionInput!
+  deletedAt: DateTime
+  name: String!
+}
+
+input TransportCollectionCreateManyCreatedUserInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String!
+}
+
+input TransportCollectionCreateManyCreatedUserInputEnvelope {
+  data: [TransportCollectionCreateManyCreatedUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransportCollectionCreateNestedManyWithoutCreatedUserInput {
+  connect: [TransportCollectionWhereUniqueInput!]
+  connectOrCreate: [TransportCollectionCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportCollectionCreateWithoutCreatedUserInput!]
+  createMany: TransportCollectionCreateManyCreatedUserInputEnvelope
+}
+
+input TransportCollectionCreateNestedOneWithoutTransportInput {
+  connect: TransportCollectionWhereUniqueInput
+  connectOrCreate: TransportCollectionCreateOrConnectWithoutTransportInput
+  create: TransportCollectionCreateWithoutTransportInput
+}
+
+input TransportCollectionCreateOrConnectWithoutCreatedUserInput {
+  create: TransportCollectionCreateWithoutCreatedUserInput!
+  where: TransportCollectionWhereUniqueInput!
+}
+
+input TransportCollectionCreateOrConnectWithoutTransportInput {
+  create: TransportCollectionCreateWithoutTransportInput!
+  where: TransportCollectionWhereUniqueInput!
+}
+
+input TransportCollectionCreateWithoutCreatedUserInput {
+  Transport: TransportCreateNestedManyWithoutTransportCollectionInput
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  name: String!
+}
+
+input TransportCollectionCreateWithoutTransportInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUser: UserCreateNestedOneWithoutTransportsCollectionInput!
+  deletedAt: DateTime
+  name: String!
+}
+
+input TransportCollectionListRelationFilter {
+  every: TransportCollectionWhereInput
+  none: TransportCollectionWhereInput
+  some: TransportCollectionWhereInput
+}
+
+type TransportCollectionMaxAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUserId: String
+  deletedAt: DateTime
+  id: String
+  name: String
+}
+
+type TransportCollectionMinAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUserId: String
+  deletedAt: DateTime
+  id: String
+  name: String
+}
+
+input TransportCollectionNullableRelationFilter {
+  is: TransportCollectionWhereInput
+  isNot: TransportCollectionWhereInput
+}
+
+input TransportCollectionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum TransportCollectionOrderByRelevanceFieldEnum {
+  createdUserId
+  id
+  name
+}
+
+input TransportCollectionOrderByRelevanceInput {
+  fields: [TransportCollectionOrderByRelevanceFieldEnum!]!
+  search: String!
+  sort: SortOrder!
+}
+
+input TransportCollectionOrderByWithRelationInput {
+  Transport: TransportOrderByRelationAggregateInput
+  _relevance: TransportCollectionOrderByRelevanceInput
+  archiveAt: SortOrderInput
+  createdAt: SortOrderInput
+  createdUser: UserOrderByWithRelationInput
+  createdUserId: SortOrder
+  deletedAt: SortOrderInput
+  id: SortOrder
+  name: SortOrder
+}
+
+enum TransportCollectionScalarFieldEnum {
+  archiveAt
+  createdAt
+  createdUserId
+  deletedAt
+  id
+  name
+}
+
+input TransportCollectionScalarWhereInput {
+  AND: [TransportCollectionScalarWhereInput!]
+  NOT: [TransportCollectionScalarWhereInput!]
+  OR: [TransportCollectionScalarWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  id: StringFilter
+  name: StringFilter
+}
+
+input TransportCollectionUpdateManyMutationInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input TransportCollectionUpdateManyWithWhereWithoutCreatedUserInput {
+  data: TransportCollectionUpdateManyMutationInput!
+  where: TransportCollectionScalarWhereInput!
+}
+
+input TransportCollectionUpdateManyWithoutCreatedUserNestedInput {
+  connect: [TransportCollectionWhereUniqueInput!]
+  connectOrCreate: [TransportCollectionCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportCollectionCreateWithoutCreatedUserInput!]
+  createMany: TransportCollectionCreateManyCreatedUserInputEnvelope
+  delete: [TransportCollectionWhereUniqueInput!]
+  deleteMany: [TransportCollectionScalarWhereInput!]
+  disconnect: [TransportCollectionWhereUniqueInput!]
+  set: [TransportCollectionWhereUniqueInput!]
+  update: [TransportCollectionUpdateWithWhereUniqueWithoutCreatedUserInput!]
+  updateMany: [TransportCollectionUpdateManyWithWhereWithoutCreatedUserInput!]
+  upsert: [TransportCollectionUpsertWithWhereUniqueWithoutCreatedUserInput!]
+}
+
+input TransportCollectionUpdateOneWithoutTransportNestedInput {
+  connect: TransportCollectionWhereUniqueInput
+  connectOrCreate: TransportCollectionCreateOrConnectWithoutTransportInput
+  create: TransportCollectionCreateWithoutTransportInput
+  delete: TransportCollectionWhereInput
+  disconnect: TransportCollectionWhereInput
+  update: TransportCollectionUpdateToOneWithWhereWithoutTransportInput
+  upsert: TransportCollectionUpsertWithoutTransportInput
+}
+
+input TransportCollectionUpdateToOneWithWhereWithoutTransportInput {
+  data: TransportCollectionUpdateWithoutTransportInput!
+  where: TransportCollectionWhereInput
+}
+
+input TransportCollectionUpdateWithWhereUniqueWithoutCreatedUserInput {
+  data: TransportCollectionUpdateWithoutCreatedUserInput!
+  where: TransportCollectionWhereUniqueInput!
+}
+
+input TransportCollectionUpdateWithoutCreatedUserInput {
+  Transport: TransportUpdateManyWithoutTransportCollectionNestedInput
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input TransportCollectionUpdateWithoutTransportInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  createdUser: UserUpdateOneRequiredWithoutTransportsCollectionNestedInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input TransportCollectionUpsertWithWhereUniqueWithoutCreatedUserInput {
+  create: TransportCollectionCreateWithoutCreatedUserInput!
+  update: TransportCollectionUpdateWithoutCreatedUserInput!
+  where: TransportCollectionWhereUniqueInput!
+}
+
+input TransportCollectionUpsertWithoutTransportInput {
+  create: TransportCollectionCreateWithoutTransportInput!
+  update: TransportCollectionUpdateWithoutTransportInput!
+  where: TransportCollectionWhereInput
+}
+
+input TransportCollectionWhereInput {
+  AND: [TransportCollectionWhereInput!]
+  NOT: [TransportCollectionWhereInput!]
+  OR: [TransportCollectionWhereInput!]
+  Transport: TransportListRelationFilter
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  id: StringFilter
+  name: StringFilter
+}
+
+input TransportCollectionWhereUniqueInput {
+  AND: [TransportCollectionWhereInput!]
+  NOT: [TransportCollectionWhereInput!]
+  OR: [TransportCollectionWhereInput!]
+  Transport: TransportListRelationFilter
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  id: String
+  name: StringFilter
+}
+
+type TransportCountAggregate {
+  _all: Int!
+  archiveAt: Int!
+  createdAt: Int!
+  createdUserId: Int!
+  deletedAt: Int!
+  description: Int!
+  id: Int!
+  isAllow: Int!
+  method: Int!
+  name: Int!
+  transportCollectionId: Int!
+  url: Int!
+}
+
+input TransportCreateManyCreatedUserInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  isAllow: Boolean
+  method: TransportType!
+  name: String!
+  transportCollectionId: String
+  url: String!
+}
+
+input TransportCreateManyCreatedUserInputEnvelope {
+  data: [TransportCreateManyCreatedUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransportCreateManyTransportCollectionInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUserId: String!
+  deletedAt: DateTime
+  description: String
+  isAllow: Boolean
+  method: TransportType!
+  name: String!
+  url: String!
+}
+
+input TransportCreateManyTransportCollectionInputEnvelope {
+  data: [TransportCreateManyTransportCollectionInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransportCreateNestedManyWithoutCreatedUserInput {
+  connect: [TransportWhereUniqueInput!]
+  connectOrCreate: [TransportCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportCreateWithoutCreatedUserInput!]
+  createMany: TransportCreateManyCreatedUserInputEnvelope
+}
+
+input TransportCreateNestedManyWithoutTransportCollectionInput {
+  connect: [TransportWhereUniqueInput!]
+  connectOrCreate: [TransportCreateOrConnectWithoutTransportCollectionInput!]
+  create: [TransportCreateWithoutTransportCollectionInput!]
+  createMany: TransportCreateManyTransportCollectionInputEnvelope
+}
+
+input TransportCreateOrConnectWithoutCreatedUserInput {
+  create: TransportCreateWithoutCreatedUserInput!
+  where: TransportWhereUniqueInput!
+}
+
+input TransportCreateOrConnectWithoutTransportCollectionInput {
+  create: TransportCreateWithoutTransportCollectionInput!
+  where: TransportWhereUniqueInput!
+}
+
+input TransportCreateWithoutCreatedUserInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  isAllow: Boolean
+  method: TransportType!
+  name: String!
+  transportCollection: TransportCollectionCreateNestedOneWithoutTransportInput
+  url: String!
+}
+
+input TransportCreateWithoutTransportCollectionInput {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUser: UserCreateNestedOneWithoutTransportsInput!
+  deletedAt: DateTime
+  description: String
+  isAllow: Boolean
+  method: TransportType!
+  name: String!
+  url: String!
+}
+
+input TransportListRelationFilter {
+  every: TransportWhereInput
+  none: TransportWhereInput
+  some: TransportWhereInput
+}
+
+type TransportMaxAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUserId: String
+  deletedAt: DateTime
+  description: String
+  id: String
+  isAllow: Boolean
+  method: TransportType
+  name: String
+  transportCollectionId: String
+  url: String
+}
+
+type TransportMinAggregate {
+  archiveAt: DateTime
+  createdAt: DateTime
+  createdUserId: String
+  deletedAt: DateTime
+  description: String
+  id: String
+  isAllow: Boolean
+  method: TransportType
+  name: String
+  transportCollectionId: String
+  url: String
+}
+
+input TransportOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TransportScalarWhereInput {
+  AND: [TransportScalarWhereInput!]
+  NOT: [TransportScalarWhereInput!]
+  OR: [TransportScalarWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: StringFilter
+  isAllow: BoolFilter
+  method: EnumTransportTypeFilter
+  name: StringFilter
+  transportCollectionId: StringNullableFilter
+  url: StringFilter
+}
+
+enum TransportType {
+  DELETE
+  GET
+  PATCH
+  POST
+  PUT
+}
+
+input TransportUpdateManyMutationInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isAllow: BoolFieldUpdateOperationsInput
+  method: EnumTransportTypeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  url: StringFieldUpdateOperationsInput
+}
+
+input TransportUpdateManyWithWhereWithoutCreatedUserInput {
+  data: TransportUpdateManyMutationInput!
+  where: TransportScalarWhereInput!
+}
+
+input TransportUpdateManyWithWhereWithoutTransportCollectionInput {
+  data: TransportUpdateManyMutationInput!
+  where: TransportScalarWhereInput!
+}
+
+input TransportUpdateManyWithoutCreatedUserNestedInput {
+  connect: [TransportWhereUniqueInput!]
+  connectOrCreate: [TransportCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportCreateWithoutCreatedUserInput!]
+  createMany: TransportCreateManyCreatedUserInputEnvelope
+  delete: [TransportWhereUniqueInput!]
+  deleteMany: [TransportScalarWhereInput!]
+  disconnect: [TransportWhereUniqueInput!]
+  set: [TransportWhereUniqueInput!]
+  update: [TransportUpdateWithWhereUniqueWithoutCreatedUserInput!]
+  updateMany: [TransportUpdateManyWithWhereWithoutCreatedUserInput!]
+  upsert: [TransportUpsertWithWhereUniqueWithoutCreatedUserInput!]
+}
+
+input TransportUpdateManyWithoutTransportCollectionNestedInput {
+  connect: [TransportWhereUniqueInput!]
+  connectOrCreate: [TransportCreateOrConnectWithoutTransportCollectionInput!]
+  create: [TransportCreateWithoutTransportCollectionInput!]
+  createMany: TransportCreateManyTransportCollectionInputEnvelope
+  delete: [TransportWhereUniqueInput!]
+  deleteMany: [TransportScalarWhereInput!]
+  disconnect: [TransportWhereUniqueInput!]
+  set: [TransportWhereUniqueInput!]
+  update: [TransportUpdateWithWhereUniqueWithoutTransportCollectionInput!]
+  updateMany: [TransportUpdateManyWithWhereWithoutTransportCollectionInput!]
+  upsert: [TransportUpsertWithWhereUniqueWithoutTransportCollectionInput!]
+}
+
+input TransportUpdateWithWhereUniqueWithoutCreatedUserInput {
+  data: TransportUpdateWithoutCreatedUserInput!
+  where: TransportWhereUniqueInput!
+}
+
+input TransportUpdateWithWhereUniqueWithoutTransportCollectionInput {
+  data: TransportUpdateWithoutTransportCollectionInput!
+  where: TransportWhereUniqueInput!
+}
+
+input TransportUpdateWithoutCreatedUserInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isAllow: BoolFieldUpdateOperationsInput
+  method: EnumTransportTypeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  transportCollection: TransportCollectionUpdateOneWithoutTransportNestedInput
+  url: StringFieldUpdateOperationsInput
+}
+
+input TransportUpdateWithoutTransportCollectionInput {
+  archiveAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  createdUser: UserUpdateOneRequiredWithoutTransportsNestedInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isAllow: BoolFieldUpdateOperationsInput
+  method: EnumTransportTypeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  url: StringFieldUpdateOperationsInput
+}
+
+input TransportUpsertWithWhereUniqueWithoutCreatedUserInput {
+  create: TransportCreateWithoutCreatedUserInput!
+  update: TransportUpdateWithoutCreatedUserInput!
+  where: TransportWhereUniqueInput!
+}
+
+input TransportUpsertWithWhereUniqueWithoutTransportCollectionInput {
+  create: TransportCreateWithoutTransportCollectionInput!
+  update: TransportUpdateWithoutTransportCollectionInput!
+  where: TransportWhereUniqueInput!
+}
+
+type TransportVersion {
+  createdAt: DateTime
+  createdUser: User!
+  createdUserId: String!
+  id: String!
+  transport: JSON
+  version: DateTime
+}
+
+type TransportVersionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  createdUserId: Int!
+  id: Int!
+  transport: Int!
+  version: Int!
+}
+
+input TransportVersionCreateManyCreatedUserInput {
+  createdAt: DateTime
+  id: String
+  transport: JSON
+  version: DateTime
+}
+
+input TransportVersionCreateManyCreatedUserInputEnvelope {
+  data: [TransportVersionCreateManyCreatedUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input TransportVersionCreateNestedManyWithoutCreatedUserInput {
+  connect: [TransportVersionWhereUniqueInput!]
+  connectOrCreate: [TransportVersionCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportVersionCreateWithoutCreatedUserInput!]
+  createMany: TransportVersionCreateManyCreatedUserInputEnvelope
+}
+
+input TransportVersionCreateOrConnectWithoutCreatedUserInput {
+  create: TransportVersionCreateWithoutCreatedUserInput!
+  where: TransportVersionWhereUniqueInput!
+}
+
+input TransportVersionCreateWithoutCreatedUserInput {
+  createdAt: DateTime
+  id: String
+  transport: JSON
+  version: DateTime
+}
+
+input TransportVersionListRelationFilter {
+  every: TransportVersionWhereInput
+  none: TransportVersionWhereInput
+  some: TransportVersionWhereInput
+}
+
+type TransportVersionMaxAggregate {
+  createdAt: DateTime
+  createdUserId: String
+  id: String
+  version: DateTime
+}
+
+type TransportVersionMinAggregate {
+  createdAt: DateTime
+  createdUserId: String
+  id: String
+  version: DateTime
+}
+
+input TransportVersionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TransportVersionScalarWhereInput {
+  AND: [TransportVersionScalarWhereInput!]
+  NOT: [TransportVersionScalarWhereInput!]
+  OR: [TransportVersionScalarWhereInput!]
+  createdAt: DateTimeNullableFilter
+  createdUserId: StringFilter
+  id: StringFilter
+  transport: JsonNullableFilter
+  version: DateTimeNullableFilter
+}
+
+input TransportVersionUpdateManyMutationInput {
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  transport: JSON
+  version: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input TransportVersionUpdateManyWithWhereWithoutCreatedUserInput {
+  data: TransportVersionUpdateManyMutationInput!
+  where: TransportVersionScalarWhereInput!
+}
+
+input TransportVersionUpdateManyWithoutCreatedUserNestedInput {
+  connect: [TransportVersionWhereUniqueInput!]
+  connectOrCreate: [TransportVersionCreateOrConnectWithoutCreatedUserInput!]
+  create: [TransportVersionCreateWithoutCreatedUserInput!]
+  createMany: TransportVersionCreateManyCreatedUserInputEnvelope
+  delete: [TransportVersionWhereUniqueInput!]
+  deleteMany: [TransportVersionScalarWhereInput!]
+  disconnect: [TransportVersionWhereUniqueInput!]
+  set: [TransportVersionWhereUniqueInput!]
+  update: [TransportVersionUpdateWithWhereUniqueWithoutCreatedUserInput!]
+  updateMany: [TransportVersionUpdateManyWithWhereWithoutCreatedUserInput!]
+  upsert: [TransportVersionUpsertWithWhereUniqueWithoutCreatedUserInput!]
+}
+
+input TransportVersionUpdateWithWhereUniqueWithoutCreatedUserInput {
+  data: TransportVersionUpdateWithoutCreatedUserInput!
+  where: TransportVersionWhereUniqueInput!
+}
+
+input TransportVersionUpdateWithoutCreatedUserInput {
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  transport: JSON
+  version: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input TransportVersionUpsertWithWhereUniqueWithoutCreatedUserInput {
+  create: TransportVersionCreateWithoutCreatedUserInput!
+  update: TransportVersionUpdateWithoutCreatedUserInput!
+  where: TransportVersionWhereUniqueInput!
+}
+
+input TransportVersionWhereInput {
+  AND: [TransportVersionWhereInput!]
+  NOT: [TransportVersionWhereInput!]
+  OR: [TransportVersionWhereInput!]
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  id: StringFilter
+  transport: JsonNullableFilter
+  version: DateTimeNullableFilter
+}
+
+input TransportVersionWhereUniqueInput {
+  AND: [TransportVersionWhereInput!]
+  NOT: [TransportVersionWhereInput!]
+  OR: [TransportVersionWhereInput!]
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  id: String
+  transport: JsonNullableFilter
+  version: DateTimeNullableFilter
+}
+
+input TransportWhereInput {
+  AND: [TransportWhereInput!]
+  NOT: [TransportWhereInput!]
+  OR: [TransportWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: StringFilter
+  isAllow: BoolFilter
+  method: EnumTransportTypeFilter
+  name: StringFilter
+  transportCollection: TransportCollectionNullableRelationFilter
+  transportCollectionId: StringNullableFilter
+  url: StringFilter
+}
+
+input TransportWhereUniqueInput {
+  AND: [TransportWhereInput!]
+  NOT: [TransportWhereInput!]
+  OR: [TransportWhereInput!]
+  archiveAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  createdUser: UserRelationFilter
+  createdUserId: StringFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringNullableFilter
+  id: String
+  isAllow: BoolFilter
+  method: EnumTransportTypeFilter
+  name: StringFilter
+  transportCollection: TransportCollectionNullableRelationFilter
+  transportCollectionId: StringNullableFilter
+  url: StringFilter
+}
+
 type User {
   _count: UserCount!
   config: UserConfig
   createdAt: DateTime
   email: EmailAddress!
   id: String!
-  notes: [Note!]
   profile: Profile
   role: [UserRole!]
-  tasks: [Task!]
+  transports: [Transport!]
+  transportsCollection: [TransportCollection!]
+  transportsVersions: [TransportVersion!]
   type: UserType!
 }
 
@@ -1783,9 +1627,10 @@ input UserConfigWhereUniqueInput {
 }
 
 type UserCount {
-  notes: Int!
   refreshTokens: Int!
-  tasks: Int!
+  transports: Int!
+  transportsCollection: Int!
+  transportsVersions: Int!
 }
 
 type UserCountAggregate {
@@ -1801,11 +1646,12 @@ input UserCreateInput {
   config: UserConfigCreateNestedOneWithoutUserInput
   createdAt: DateTime
   email: EmailAddress!
-  notes: NoteCreateNestedManyWithoutUserInput
   password: PasswordCreateNestedOneWithoutUserInput!
   profile: ProfileCreateNestedOneWithoutUserInput
   role: UserCreateroleInput
-  tasks: TaskCreateNestedManyWithoutUserInput
+  transports: TransportCreateNestedManyWithoutCreatedUserInput
+  transportsCollection: TransportCollectionCreateNestedManyWithoutCreatedUserInput
+  transportsVersions: TransportVersionCreateNestedManyWithoutCreatedUserInput
   type: UserType
 }
 
@@ -1815,16 +1661,16 @@ input UserCreateNestedOneWithoutConfigInput {
   create: UserCreateWithoutConfigInput
 }
 
-input UserCreateNestedOneWithoutNotesInput {
+input UserCreateNestedOneWithoutTransportsCollectionInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutNotesInput
-  create: UserCreateWithoutNotesInput
+  connectOrCreate: UserCreateOrConnectWithoutTransportsCollectionInput
+  create: UserCreateWithoutTransportsCollectionInput
 }
 
-input UserCreateNestedOneWithoutTasksInput {
+input UserCreateNestedOneWithoutTransportsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutTasksInput
-  create: UserCreateWithoutTasksInput
+  connectOrCreate: UserCreateOrConnectWithoutTransportsInput
+  create: UserCreateWithoutTransportsInput
 }
 
 input UserCreateOrConnectWithoutConfigInput {
@@ -1832,46 +1678,49 @@ input UserCreateOrConnectWithoutConfigInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutNotesInput {
-  create: UserCreateWithoutNotesInput!
+input UserCreateOrConnectWithoutTransportsCollectionInput {
+  create: UserCreateWithoutTransportsCollectionInput!
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutTasksInput {
-  create: UserCreateWithoutTasksInput!
+input UserCreateOrConnectWithoutTransportsInput {
+  create: UserCreateWithoutTransportsInput!
   where: UserWhereUniqueInput!
 }
 
 input UserCreateWithoutConfigInput {
   createdAt: DateTime
   email: EmailAddress!
-  notes: NoteCreateNestedManyWithoutUserInput
   password: PasswordCreateNestedOneWithoutUserInput!
   profile: ProfileCreateNestedOneWithoutUserInput
   role: UserCreateroleInput
-  tasks: TaskCreateNestedManyWithoutUserInput
+  transports: TransportCreateNestedManyWithoutCreatedUserInput
+  transportsCollection: TransportCollectionCreateNestedManyWithoutCreatedUserInput
+  transportsVersions: TransportVersionCreateNestedManyWithoutCreatedUserInput
   type: UserType
 }
 
-input UserCreateWithoutNotesInput {
+input UserCreateWithoutTransportsCollectionInput {
   config: UserConfigCreateNestedOneWithoutUserInput
   createdAt: DateTime
   email: EmailAddress!
   password: PasswordCreateNestedOneWithoutUserInput!
   profile: ProfileCreateNestedOneWithoutUserInput
   role: UserCreateroleInput
-  tasks: TaskCreateNestedManyWithoutUserInput
+  transports: TransportCreateNestedManyWithoutCreatedUserInput
+  transportsVersions: TransportVersionCreateNestedManyWithoutCreatedUserInput
   type: UserType
 }
 
-input UserCreateWithoutTasksInput {
+input UserCreateWithoutTransportsInput {
   config: UserConfigCreateNestedOneWithoutUserInput
   createdAt: DateTime
   email: EmailAddress!
-  notes: NoteCreateNestedManyWithoutUserInput
   password: PasswordCreateNestedOneWithoutUserInput!
   profile: ProfileCreateNestedOneWithoutUserInput
   role: UserCreateroleInput
+  transportsCollection: TransportCollectionCreateNestedManyWithoutCreatedUserInput
+  transportsVersions: TransportVersionCreateNestedManyWithoutCreatedUserInput
   type: UserType
 }
 
@@ -1916,12 +1765,13 @@ input UserOrderByWithRelationInput {
   createdAt: SortOrderInput
   email: SortOrder
   id: SortOrder
-  notes: NoteOrderByRelationAggregateInput
   password: PasswordOrderByWithRelationInput
   passwordId: SortOrder
   profile: ProfileOrderByWithRelationInput
   role: SortOrder
-  tasks: TaskOrderByRelationAggregateInput
+  transports: TransportOrderByRelationAggregateInput
+  transportsCollection: TransportCollectionOrderByRelationAggregateInput
+  transportsVersions: TransportVersionOrderByRelationAggregateInput
   type: SortOrder
 }
 
@@ -1956,11 +1806,12 @@ input UserUpdateInput {
   config: UserConfigUpdateOneWithoutUserNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
-  notes: NoteUpdateManyWithoutUserNestedInput
   password: PasswordUpdateOneRequiredWithoutUserNestedInput
   profile: ProfileUpdateOneWithoutUserNestedInput
   role: UserUpdateroleInput
-  tasks: TaskUpdateManyWithoutUserNestedInput
+  transports: TransportUpdateManyWithoutCreatedUserNestedInput
+  transportsCollection: TransportCollectionUpdateManyWithoutCreatedUserNestedInput
+  transportsVersions: TransportVersionUpdateManyWithoutCreatedUserNestedInput
   type: EnumUserTypeFieldUpdateOperationsInput
 }
 
@@ -1972,20 +1823,20 @@ input UserUpdateOneRequiredWithoutConfigNestedInput {
   upsert: UserUpsertWithoutConfigInput
 }
 
-input UserUpdateOneRequiredWithoutNotesNestedInput {
+input UserUpdateOneRequiredWithoutTransportsCollectionNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutNotesInput
-  create: UserCreateWithoutNotesInput
-  update: UserUpdateToOneWithWhereWithoutNotesInput
-  upsert: UserUpsertWithoutNotesInput
+  connectOrCreate: UserCreateOrConnectWithoutTransportsCollectionInput
+  create: UserCreateWithoutTransportsCollectionInput
+  update: UserUpdateToOneWithWhereWithoutTransportsCollectionInput
+  upsert: UserUpsertWithoutTransportsCollectionInput
 }
 
-input UserUpdateOneRequiredWithoutTasksNestedInput {
+input UserUpdateOneRequiredWithoutTransportsNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutTasksInput
-  create: UserCreateWithoutTasksInput
-  update: UserUpdateToOneWithWhereWithoutTasksInput
-  upsert: UserUpsertWithoutTasksInput
+  connectOrCreate: UserCreateOrConnectWithoutTransportsInput
+  create: UserCreateWithoutTransportsInput
+  update: UserUpdateToOneWithWhereWithoutTransportsInput
+  upsert: UserUpsertWithoutTransportsInput
 }
 
 input UserUpdateToOneWithWhereWithoutConfigInput {
@@ -1993,46 +1844,49 @@ input UserUpdateToOneWithWhereWithoutConfigInput {
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutNotesInput {
-  data: UserUpdateWithoutNotesInput!
+input UserUpdateToOneWithWhereWithoutTransportsCollectionInput {
+  data: UserUpdateWithoutTransportsCollectionInput!
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutTasksInput {
-  data: UserUpdateWithoutTasksInput!
+input UserUpdateToOneWithWhereWithoutTransportsInput {
+  data: UserUpdateWithoutTransportsInput!
   where: UserWhereInput
 }
 
 input UserUpdateWithoutConfigInput {
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
-  notes: NoteUpdateManyWithoutUserNestedInput
   password: PasswordUpdateOneRequiredWithoutUserNestedInput
   profile: ProfileUpdateOneWithoutUserNestedInput
   role: UserUpdateroleInput
-  tasks: TaskUpdateManyWithoutUserNestedInput
+  transports: TransportUpdateManyWithoutCreatedUserNestedInput
+  transportsCollection: TransportCollectionUpdateManyWithoutCreatedUserNestedInput
+  transportsVersions: TransportVersionUpdateManyWithoutCreatedUserNestedInput
   type: EnumUserTypeFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutNotesInput {
+input UserUpdateWithoutTransportsCollectionInput {
   config: UserConfigUpdateOneWithoutUserNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   password: PasswordUpdateOneRequiredWithoutUserNestedInput
   profile: ProfileUpdateOneWithoutUserNestedInput
   role: UserUpdateroleInput
-  tasks: TaskUpdateManyWithoutUserNestedInput
+  transports: TransportUpdateManyWithoutCreatedUserNestedInput
+  transportsVersions: TransportVersionUpdateManyWithoutCreatedUserNestedInput
   type: EnumUserTypeFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutTasksInput {
+input UserUpdateWithoutTransportsInput {
   config: UserConfigUpdateOneWithoutUserNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
-  notes: NoteUpdateManyWithoutUserNestedInput
   password: PasswordUpdateOneRequiredWithoutUserNestedInput
   profile: ProfileUpdateOneWithoutUserNestedInput
   role: UserUpdateroleInput
+  transportsCollection: TransportCollectionUpdateManyWithoutCreatedUserNestedInput
+  transportsVersions: TransportVersionUpdateManyWithoutCreatedUserNestedInput
   type: EnumUserTypeFieldUpdateOperationsInput
 }
 
@@ -2047,15 +1901,15 @@ input UserUpsertWithoutConfigInput {
   where: UserWhereInput
 }
 
-input UserUpsertWithoutNotesInput {
-  create: UserCreateWithoutNotesInput!
-  update: UserUpdateWithoutNotesInput!
+input UserUpsertWithoutTransportsCollectionInput {
+  create: UserCreateWithoutTransportsCollectionInput!
+  update: UserUpdateWithoutTransportsCollectionInput!
   where: UserWhereInput
 }
 
-input UserUpsertWithoutTasksInput {
-  create: UserCreateWithoutTasksInput!
-  update: UserUpdateWithoutTasksInput!
+input UserUpsertWithoutTransportsInput {
+  create: UserCreateWithoutTransportsInput!
+  update: UserUpdateWithoutTransportsInput!
   where: UserWhereInput
 }
 
@@ -2067,10 +1921,11 @@ input UserWhereInput {
   createdAt: DateTimeNullableFilter
   email: StringFilter
   id: StringFilter
-  notes: NoteListRelationFilter
   profile: ProfileNullableRelationFilter
   role: EnumUserRoleNullableListFilter
-  tasks: TaskListRelationFilter
+  transports: TransportListRelationFilter
+  transportsCollection: TransportCollectionListRelationFilter
+  transportsVersions: TransportVersionListRelationFilter
   type: EnumUserTypeFilter
 }
 
@@ -2082,9 +1937,10 @@ input UserWhereUniqueInput {
   createdAt: DateTimeNullableFilter
   email: EmailAddress
   id: String
-  notes: NoteListRelationFilter
   profile: ProfileNullableRelationFilter
   role: EnumUserRoleNullableListFilter
-  tasks: TaskListRelationFilter
+  transports: TransportListRelationFilter
+  transportsCollection: TransportCollectionListRelationFilter
+  transportsVersions: TransportVersionListRelationFilter
   type: EnumUserTypeFilter
 }

@@ -165,16 +165,17 @@ model TransportCollection {
 
 model Transport {
   /// @HideField({ match: 'Transport*@(Create|Update)*Input' })
-  id                    String              @id @default(cuid())
-  url                   String              @db.VarChar(255)
-  name                  String              @db.VarChar(255)
-  description           String?             @db.Text
+  id                    String               @id @default(cuid())
+  url                   String               @db.VarChar(255)
+  name                  String               @db.VarChar(255)
+  description           String?              @db.Text
   method                TransportType
-  isAllow               Boolean             @default(false) @db.Boolean
-  transportCollection   TransportCollection @relation(fields: [transportCollectionId], references: [id], onDelete: Cascade)
-  transportCollectionId String
-  createdUser           User                @relation(fields: [createdUserId], references: [id])
+  isAllow               Boolean              @default(false) @db.Boolean
+  transportCollection   TransportCollection? @relation(fields: [transportCollectionId], references: [id], onDelete: Cascade)
+  transportCollectionId String?
+  createdUser           User                 @relation(fields: [createdUserId], references: [id])
   createdUserId         String
+  tagOnTransport        TagOnTransport[]
 
   /// @FieldType('DateTime')
   archiveAt DateTime?
@@ -183,6 +184,8 @@ model Transport {
   /// @FieldType('DateTime')
   deletedAt DateTime?
 
+  // Unique
+  @@unique([url, name, method], name: "uniqueTransport")
   // Indexes
   @@index(fields: [id], type: Hash)
   @@index(fields: [url], type: Hash)
@@ -226,6 +229,31 @@ model Queue {
 
   // Indexes
   @@index(fields: [id], type: Hash)
+}
+
+model Tag {
+  /// @HideField({ match: 'TransportTag*@(Create|Update)*Input' })
+  id             String           @id @default(cuid())
+  name           String           @db.VarChar(100)
+  tagOnTransport TagOnTransport[]
+
+  /// @FieldType('DateTime')
+  createdAt DateTime? @default(now())
+
+  // Indexes
+  @@index(fields: [id], type: Hash)
+}
+
+model TagOnTransport {
+  transport   Transport @relation(fields: [transportId], references: [id])
+  transportId String
+  tag         Tag       @relation(fields: [tagId], references: [id])
+  tagId       String
+
+  /// @FieldType('DateTime')
+  assignedAt DateTime @default(now())
+
+  @@id([transportId, tagId])
 }
 
 // model Note {

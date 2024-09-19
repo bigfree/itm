@@ -233,6 +233,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createLog: Log;
   createMyConfig: UserConfig;
+  createTransportCollection: TransportCollection;
   createUser: User;
   createUserConfig: UserConfig;
   deleteUser: User;
@@ -254,6 +255,11 @@ export type MutationCreateLogArgs = {
 
 export type MutationCreateMyConfigArgs = {
   userConfigCreateInput: UserConfigCreateInput;
+};
+
+
+export type MutationCreateTransportCollectionArgs = {
+  data: TransportCollectionCreateInput;
 };
 
 
@@ -687,6 +693,7 @@ export type Query = {
   logs: Array<Log>;
   me: User;
   myConfig: UserConfig;
+  transportCollections: Array<TransportCollection>;
   user: User;
   userConfig: UserConfig;
   users: Array<User>;
@@ -705,6 +712,16 @@ export type QueryLogsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LogWhereInput>;
+};
+
+
+export type QueryTransportCollectionsArgs = {
+  cursor?: InputMaybe<TransportCollectionWhereUniqueInput>;
+  distinct?: InputMaybe<Array<TransportCollectionScalarFieldEnum>>;
+  orderBy?: InputMaybe<Array<TransportCollectionOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TransportCollectionWhereInput>;
 };
 
 
@@ -865,6 +882,7 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   logCreated: Log;
+  transportCollectionCreated: User;
   userCreated: User;
   userDeleted: User;
   userLogout: User;
@@ -889,8 +907,8 @@ export type Transport = {
   isAllow: Scalars['Boolean']['output'];
   method: TransportType;
   name: Scalars['String']['output'];
-  transportCollection: TransportCollection;
-  transportCollectionId: Scalars['String']['output'];
+  transportCollection?: Maybe<TransportCollection>;
+  transportCollectionId?: Maybe<Scalars['String']['output']>;
   url: Scalars['String']['output'];
 };
 
@@ -921,6 +939,15 @@ export type TransportCollectionCountAggregate = {
   deletedAt: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   name: Scalars['Int']['output'];
+};
+
+export type TransportCollectionCreateInput = {
+  Transport?: InputMaybe<TransportCreateNestedManyWithoutTransportCollectionInput>;
+  archiveAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdUser: UserCreateNestedOneWithoutTransportsCollectionInput;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type TransportCollectionCreateManyCreatedUserInput = {
@@ -1000,14 +1027,47 @@ export type TransportCollectionMinAggregate = {
   name?: Maybe<Scalars['String']['output']>;
 };
 
+export type TransportCollectionNullableRelationFilter = {
+  is?: InputMaybe<TransportCollectionWhereInput>;
+  isNot?: InputMaybe<TransportCollectionWhereInput>;
+};
+
 export type TransportCollectionOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export type TransportCollectionRelationFilter = {
-  is?: InputMaybe<TransportCollectionWhereInput>;
-  isNot?: InputMaybe<TransportCollectionWhereInput>;
+export enum TransportCollectionOrderByRelevanceFieldEnum {
+  CreatedUserId = 'createdUserId',
+  Id = 'id',
+  Name = 'name'
+}
+
+export type TransportCollectionOrderByRelevanceInput = {
+  fields: Array<TransportCollectionOrderByRelevanceFieldEnum>;
+  search: Scalars['String']['input'];
+  sort: SortOrder;
 };
+
+export type TransportCollectionOrderByWithRelationInput = {
+  Transport?: InputMaybe<TransportOrderByRelationAggregateInput>;
+  _relevance?: InputMaybe<TransportCollectionOrderByRelevanceInput>;
+  archiveAt?: InputMaybe<SortOrderInput>;
+  createdAt?: InputMaybe<SortOrderInput>;
+  createdUser?: InputMaybe<UserOrderByWithRelationInput>;
+  createdUserId?: InputMaybe<SortOrder>;
+  deletedAt?: InputMaybe<SortOrderInput>;
+  id?: InputMaybe<SortOrder>;
+  name?: InputMaybe<SortOrder>;
+};
+
+export enum TransportCollectionScalarFieldEnum {
+  ArchiveAt = 'archiveAt',
+  CreatedAt = 'createdAt',
+  CreatedUserId = 'createdUserId',
+  DeletedAt = 'deletedAt',
+  Id = 'id',
+  Name = 'name'
+}
 
 export type TransportCollectionScalarWhereInput = {
   AND?: InputMaybe<Array<TransportCollectionScalarWhereInput>>;
@@ -1047,10 +1107,12 @@ export type TransportCollectionUpdateManyWithoutCreatedUserNestedInput = {
   upsert?: InputMaybe<Array<TransportCollectionUpsertWithWhereUniqueWithoutCreatedUserInput>>;
 };
 
-export type TransportCollectionUpdateOneRequiredWithoutTransportNestedInput = {
+export type TransportCollectionUpdateOneWithoutTransportNestedInput = {
   connect?: InputMaybe<TransportCollectionWhereUniqueInput>;
   connectOrCreate?: InputMaybe<TransportCollectionCreateOrConnectWithoutTransportInput>;
   create?: InputMaybe<TransportCollectionCreateWithoutTransportInput>;
+  delete?: InputMaybe<TransportCollectionWhereInput>;
+  disconnect?: InputMaybe<TransportCollectionWhereInput>;
   update?: InputMaybe<TransportCollectionUpdateToOneWithWhereWithoutTransportInput>;
   upsert?: InputMaybe<TransportCollectionUpsertWithoutTransportInput>;
 };
@@ -1145,7 +1207,7 @@ export type TransportCreateManyCreatedUserInput = {
   isAllow?: InputMaybe<Scalars['Boolean']['input']>;
   method: TransportType;
   name: Scalars['String']['input'];
-  transportCollectionId: Scalars['String']['input'];
+  transportCollectionId?: InputMaybe<Scalars['String']['input']>;
   url: Scalars['String']['input'];
 };
 
@@ -1203,7 +1265,7 @@ export type TransportCreateWithoutCreatedUserInput = {
   isAllow?: InputMaybe<Scalars['Boolean']['input']>;
   method: TransportType;
   name: Scalars['String']['input'];
-  transportCollection: TransportCollectionCreateNestedOneWithoutTransportInput;
+  transportCollection?: InputMaybe<TransportCollectionCreateNestedOneWithoutTransportInput>;
   url: Scalars['String']['input'];
 };
 
@@ -1272,7 +1334,7 @@ export type TransportScalarWhereInput = {
   isAllow?: InputMaybe<BoolFilter>;
   method?: InputMaybe<EnumTransportTypeFilter>;
   name?: InputMaybe<StringFilter>;
-  transportCollectionId?: InputMaybe<StringFilter>;
+  transportCollectionId?: InputMaybe<StringNullableFilter>;
   url?: InputMaybe<StringFilter>;
 };
 
@@ -1351,7 +1413,7 @@ export type TransportUpdateWithoutCreatedUserInput = {
   isAllow?: InputMaybe<BoolFieldUpdateOperationsInput>;
   method?: InputMaybe<EnumTransportTypeFieldUpdateOperationsInput>;
   name?: InputMaybe<StringFieldUpdateOperationsInput>;
-  transportCollection?: InputMaybe<TransportCollectionUpdateOneRequiredWithoutTransportNestedInput>;
+  transportCollection?: InputMaybe<TransportCollectionUpdateOneWithoutTransportNestedInput>;
   url?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
@@ -1549,8 +1611,8 @@ export type TransportWhereInput = {
   isAllow?: InputMaybe<BoolFilter>;
   method?: InputMaybe<EnumTransportTypeFilter>;
   name?: InputMaybe<StringFilter>;
-  transportCollection?: InputMaybe<TransportCollectionRelationFilter>;
-  transportCollectionId?: InputMaybe<StringFilter>;
+  transportCollection?: InputMaybe<TransportCollectionNullableRelationFilter>;
+  transportCollectionId?: InputMaybe<StringNullableFilter>;
   url?: InputMaybe<StringFilter>;
 };
 
@@ -1568,8 +1630,8 @@ export type TransportWhereUniqueInput = {
   isAllow?: InputMaybe<BoolFilter>;
   method?: InputMaybe<EnumTransportTypeFilter>;
   name?: InputMaybe<StringFilter>;
-  transportCollection?: InputMaybe<TransportCollectionRelationFilter>;
-  transportCollectionId?: InputMaybe<StringFilter>;
+  transportCollection?: InputMaybe<TransportCollectionNullableRelationFilter>;
+  transportCollectionId?: InputMaybe<StringNullableFilter>;
   url?: InputMaybe<StringFilter>;
 };
 
@@ -2048,6 +2110,8 @@ export type UserWhereUniqueInput = {
 
 export type ProfileFragmentFragment = { __typename: 'Profile', id: string, acronym?: string | null, avatar?: string | null, firstName: string, lastName: string, username?: string | null, bio?: string | null };
 
+export type TransportCollectionsFragmentFragment = { __typename: 'TransportCollection', id: string, name: string, createdAt?: any | null, archiveAt?: any | null, deletedAt?: any | null };
+
 export type UserConfigFragmentFragment = { __typename: 'UserConfig', id: string, theme?: ThemeColor | null, showCompleted: boolean };
 
 export type MeFragmentFragment = { __typename: 'User', id: string, type: UserType, role?: Array<UserRole> | null, email: any, config?: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null, showCompleted: boolean } | null };
@@ -2086,7 +2150,16 @@ export type UpdateMeConfigMutationVariables = Exact<{
 
 export type UpdateMeConfigMutation = { __typename?: 'Mutation', updateMyConfig: { __typename: 'UserConfig', id: string, theme?: ThemeColor | null, showCompleted: boolean } };
 
+export type TransportCollectionsQueryVariables = Exact<{
+  where?: InputMaybe<TransportCollectionWhereInput>;
+  orderBy?: InputMaybe<Array<TransportCollectionOrderByWithRelationInput> | TransportCollectionOrderByWithRelationInput>;
+}>;
+
+
+export type TransportCollectionsQuery = { __typename: 'Query', transportCollections: Array<{ __typename: 'TransportCollection', id: string, name: string, createdAt?: any | null, archiveAt?: any | null, deletedAt?: any | null }> };
+
 export const ProfileFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"acronym"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}}]}}]} as unknown as DocumentNode<ProfileFragmentFragment, unknown>;
+export const TransportCollectionsFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TransportCollectionsFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TransportCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<TransportCollectionsFragmentFragment, unknown>;
 export const UserConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<UserConfigFragmentFragment, unknown>;
 export const MeFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<MeFragmentFragment, unknown>;
 export const MyConfigFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<MyConfigFragmentFragment, unknown>;
@@ -2095,3 +2168,4 @@ export const MyConfigDocument = {"kind":"Document","definitions":[{"kind":"Opera
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const UpdateUserConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MyConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}}]}}]} as unknown as DocumentNode<UpdateUserConfigMutation, UpdateUserConfigMutationVariables>;
 export const UpdateMeConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateMeConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigUpdateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateMyConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userConfigUpdateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserConfigFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserConfigFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfig"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"theme"}},{"kind":"Field","name":{"kind":"Name","value":"showCompleted"}}]}}]} as unknown as DocumentNode<UpdateMeConfigMutation, UpdateMeConfigMutationVariables>;
+export const TransportCollectionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TransportCollections"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TransportCollectionWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TransportCollectionOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"transportCollections"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TransportCollectionsFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TransportCollectionsFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TransportCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"archiveAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<TransportCollectionsQuery, TransportCollectionsQueryVariables>;
